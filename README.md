@@ -1,3 +1,0 @@
-# PhotoForge
-
-게임
