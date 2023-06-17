@@ -4,10 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Flag
   - Picture
   - Platform
   - MovingPlatform
+  - Frag
+  - EscapeDoor
   layers:
   - Default
   - TransparentFX
