@@ -6,35 +6,47 @@ using UnityEngine;
 
 public class PictureStatus : MonoBehaviour
 {
-    public bool isOverlapped = false;
+    public bool isOverlapped;
 
     private PictureStatus otherPicStatus;
     public GameObject otherPic;
     private Transform otherPicTrans;
 
+    void Start()
+    {
+        isOverlapped = false;
+        otherPic = null;
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.transform.tag == "Picture")
         {
             otherPic = other.gameObject; // 겹친 사진 오브젝트를 가져온다.
-        }
+            print("ENTERENTERENTERENTERENTERENTERENTERENTERENTERENTER");
+        } // 이거 지금 flag랑도 부딪쳐도 실행됨. 수정해야 함 
+       
     }
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.transform.tag == "Picture")
+     
+        if (other.CompareTag("Picture"))
         {
-            isOverlapped = true; 
+            isOverlapped = true;
+            //print("STAYSTAYSTAYSTAYSTAYSTAYSTAYSTAYSTAY");
         }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if(other.transform.tag == "Picture")
-        {
-            isOverlapped = false;
-            // 만약 발판이 옮겨진 경우, 발판의 부모관계 변경 필요 
-        }
+
+            if (other.transform.tag == "Picture")
+            {
+                isOverlapped = false;
+                print("EXITEDEXITEDEXITEDEXITEDEXITEDEXITEDEXITEDEXITEDEXITED");
+                otherPic = null;
+                // 만약 발판이 옮겨진 경우, 발판의 부모관계 변경 필요 
+            }
 
     }
 
@@ -87,10 +99,5 @@ public class PictureStatus : MonoBehaviour
 
     void Update()
     {
-        if (isOverlapped)
-        {
-            print(Calculate_OverlapAreaX() + " " + Calculate_OverlapAreaY());
-        }
-
     }
 }

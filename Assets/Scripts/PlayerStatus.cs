@@ -18,6 +18,7 @@ public class PlayerStatus : MonoBehaviour
 
     }
 
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.transform.tag == "Flag")
