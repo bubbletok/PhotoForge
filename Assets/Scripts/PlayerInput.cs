@@ -6,7 +6,7 @@ public class PlayerInput : MonoBehaviour
 {
     public float horizontal;
     public float vertical;
-    public bool jumped;
+    public float jumped;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +18,6 @@ public class PlayerInput : MonoBehaviour
     {
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
-        jumped = Input.GetButtonDown("Jump");
+        jumped = Input.GetAxis("Jump");
     }
 }

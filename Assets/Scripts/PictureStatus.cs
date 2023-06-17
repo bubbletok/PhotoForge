@@ -23,9 +23,11 @@ public class PictureStatus : MonoBehaviour
         if (other.transform.tag == "Picture")
         {
             otherPic = other.gameObject; // 겹친 사진 오브젝트를 가져온다.
-            print("ENTERENTERENTERENTERENTERENTERENTERENTERENTERENTER");
+
+            //잠시 주석 처리 했음 - 홍송
+            //print("ENTERENTERENTERENTERENTERENTERENTERENTERENTERENTER");
         } // 이거 지금 flag랑도 부딪쳐도 실행됨. 수정해야 함 
-       
+
     }
     void OnTriggerStay2D(Collider2D other)
     {
@@ -43,7 +45,10 @@ public class PictureStatus : MonoBehaviour
             if (other.transform.tag == "Picture")
             {
                 isOverlapped = false;
-                print("EXITEDEXITEDEXITEDEXITEDEXITEDEXITEDEXITEDEXITEDEXITED");
+
+                //잠시 주석 처리 했음 - 홍송
+                //print("EXITEDEXITEDEXITEDEXITEDEXITEDEXITEDEXITEDEXITEDEXITED");
+
                 otherPic = null;
                 // 만약 발판이 옮겨진 경우, 발판의 부모관계 변경 필요 
             }
