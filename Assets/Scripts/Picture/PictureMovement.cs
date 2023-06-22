@@ -6,7 +6,7 @@ using UnityEngine;
 public class PictureMovement : MonoBehaviour
 {
     [SerializeField] LayerMask limitArea;
-    [SerializeField] float pictureMoveSpeed = 5f;
+    //[SerializeField] float pictureMoveSpeed = 5f;
     Vector3 prevMousePos;
     Vector3 diffPicPos;
     Vector3 diifPlayerPos;

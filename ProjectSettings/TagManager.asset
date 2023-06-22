@@ -9,6 +9,9 @@ TagManager:
   - MovingPlatform
   - Frag
   - EscapeDoor
+  - DeadZone
+  - Spike
+  - Shrink
   layers:
   - Default
   - TransparentFX
@@ -45,6 +48,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1284132835
     locked: 0
   - name: Picture
     uniqueID: 1066863137

@@ -8,12 +8,6 @@ public class OnPlatform : MonoBehaviour
     GameObject platform;
     PictureMovement pic;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.collider.CompareTag("Platform"))

@@ -27,6 +27,7 @@ public class PlatformMoving : MonoBehaviour
     void Start()
     {
         thisRigid = GetComponent<Rigidbody2D>();
+        currentPicture = GetComponentInParent<PictureStatus>().gameObject;
         currentPicStatus = currentPicture.GetComponent<PictureStatus>();
     }
 

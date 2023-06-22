@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         speed = 8f;
-        jumpForce = 10f;
+        jumpForce = 8f;
         onMovingPicture = false;
         input = GetComponent<PlayerInput>();
         coll = GetComponent<BoxCollider2D>();
@@ -32,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (input.jumped == 1 && isGrounded())
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce * input.jumped);
         }
     }
 
