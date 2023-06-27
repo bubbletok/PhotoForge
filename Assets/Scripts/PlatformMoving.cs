@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.TextCore.Text;
 using UnityEngine;
 
 public class PlatformMoving : MonoBehaviour

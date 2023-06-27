@@ -4,36 +4,69 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] float speed;
-    [SerializeField] float jumpForce;
-
-    [SerializeField] LayerMask jumpableGround;
-
-    bool onMovingPicture;
     PlayerInput input;
     BoxCollider2D coll;
     Rigidbody2D rb;
+    Animator anim;
+    SpriteRenderer sprite;
+
+    [SerializeField] float speed;
+    [SerializeField] float jumpForce;
+    [SerializeField] LayerMask jumpableGround;
+
+    float dirX;
+    bool onMovingPicture;
+    enum MovementState { idle, running, jumping, falling};
     // Start is called before the first frame update
     void Start()
     {
         speed = 8f;
-        jumpForce = 8f;
+        jumpForce = 6.5f;
         onMovingPicture = false;
+
         input = GetComponent<PlayerInput>();
         coll = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
+
+        anim = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     private void FixedUpdate()
     {
         if (onMovingPicture) return;
-        float dirX = input.horizontal;
+        dirX = input.horizontal;
         rb.velocity = new Vector2(dirX * speed, rb.velocity.y);
-
         if (input.jumped == 1 && isGrounded())
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce * input.jumped);
         }
+
+        UpdateAnimaion();
+    }
+
+    void UpdateAnimaion()
+    {
+        MovementState state;
+        if (dirX > 0f)
+        {
+            state = MovementState.running;
+            sprite.flipX = false;
+        }
+        else if (dirX < 0f)
+        { 
+        state = MovementState.running;
+        sprite.flipX = true;
+        }
+        else
+            state = MovementState.idle;
+
+        if (rb.velocity.y > .001f)
+            state = MovementState.jumping;
+        else if (rb.velocity.y <= -.001f)
+            state = MovementState.falling;
+
+        anim.SetInteger("state", (int)state);
     }
 
     bool isGrounded()
