@@ -9,9 +9,9 @@ TagManager:
   - MovingPlatform
   - Frag
   - EscapeDoor
-  - DeadZone
   - Spike
   - Shrink
+  - LimitArea
   layers:
   - Default
   - TransparentFX

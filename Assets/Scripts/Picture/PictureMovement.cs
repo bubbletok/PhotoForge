@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -7,9 +8,9 @@ public class PictureMovement : MonoBehaviour
 {
     [SerializeField] LayerMask limitArea;
     [SerializeField] float pictureMovementSpeed;
+    [SerializeField] GameObject[] limitAreas;
     //[SerializeField] float pictureMoveSpeed = 5f;
-    Vector3 originPicPos;
-    Vector3 prevMousePos;
+    Vector3 prevPicPos;
     Vector3 mousePos;
     Vector3 diffPicPos;
     Vector3 diifPlayerPos;
@@ -22,38 +23,68 @@ public class PictureMovement : MonoBehaviour
     float dis;
     bool cantMove;
 
-    private void Start()
+    private void Awake()
     {
         pictureMovementSpeed = 8f;
         rb = GetComponent<Rigidbody2D>();
         coll = GetComponent<BoxCollider2D>();
-        originPicPos = transform.position;
+
+        limitAreas = GameObject.FindGameObjectsWithTag("LimitArea");
     }
 
     private void LateUpdate()
     {
-/*        if (!cantMove)
+        checkLimitArea(-20.8f, 20.8f, -11.5f, 11.5f);
+    }
+
+    bool isOverlap(float min, float pos, float max)
+    {
+        return min <= pos && pos <= max;
+    }
+
+    void checkLimitArea(float minX, float maxX, float minY, float maxY)
+    {
+        checkLimitAreaX(minX, maxX); 
+        checkLimitAreaY(minY, maxY);
+    }
+
+    void checkLimitAreaX(float minX, float maxX)
+    {
+        float x = transform.position.x;
+
+        if (x - transform.localScale.x / 2 <= minX)
         {
-            RaycastHit2D[] hits = Physics2D.BoxCastAll(coll.bounds.center, size, 0f, dir, dis, limitArea);
-            foreach (RaycastHit2D hit in hits)
-            {
-                if (hit && hit.collider.gameObject != transform.GetChild(0).gameObject)
-                {
-                    transform.position = originPicPos;
-                    if(player!=null)
-                        player.transform.position = transform.position;
-                    return;
-                }
-            }
-        }*/
+            transform.position += new Vector3(minX - x + (transform.localScale.x / 2) + 0.01f, 0, 0f);
+            rb.velocity = Vector3.zero;
+        }
+        else if (x + transform.localScale.x / 2 >= maxX)
+        {
+            transform.position -= new Vector3(x + (transform.localScale.x / 2) - maxX + 0.01f, 0, 0f);
+            rb.velocity = Vector3.zero;
+        }
+    }
+
+    void checkLimitAreaY(float minY, float maxY)
+    {
+        float y = transform.position.y;
+        if (y - transform.localScale.y / 2 <= minY)
+        {
+            transform.position += new Vector3(0, minY - y + (transform.localScale.y / 2) + 0.01f, 0f);
+            rb.velocity = Vector3.zero;
+        }
+        else if (y + transform.localScale.y / 2 >= maxY)
+        {
+            transform.position -= new Vector3(0, y + (transform.localScale.y / 2) - maxY + 0.01f, 0f);
+            rb.velocity = Vector3.zero;
+        }
     }
 
     private void OnMouseDown()
     {
         cantMove = false;
         //prevMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        prevMousePos = transform.position;
-        diffPicPos = transform.position - prevMousePos;
+        prevPicPos = transform.position;
+        diffPicPos = transform.position - prevPicPos;
         if (player != null)
             diifPlayerPos = player.transform.position - transform.position;
         else
@@ -69,52 +100,51 @@ public class PictureMovement : MonoBehaviour
 
         //속도 변환
         moveWithVelocity();
+        foreach (GameObject limitArea in limitAreas)
+        {
+            if (!limitArea.activeSelf) continue;
+            if (limitArea == transform.GetChild(0).gameObject) continue;
+            float x1 = transform.position.x - transform.localScale.x / 2;
+            float x2 = transform.position.x + transform.localScale.x / 2;
+            float y1 = transform.position.y - transform.localScale.y / 2;
+            float y2 = transform.position.y + transform.localScale.y / 2;
 
-        /*        float x1, y1, x2, y2;
-                x1 = transform.position.x - transform.localScale.x / 2;
-                x2 = transform.position.x + transform.localScale.x / 2;
-                y1 = transform.position.y + transform.localScale.y / 2;
-                y2 = transform.position.y - transform.localScale.y / 2;*/
-        float x = transform.position.x, y = transform.position.y;
-        float newX = transform.position.x, newY = transform.position.y;
-        float minX = -20.8333333333333333f, maxX = 20.8333333333333333f;
-        float minY = -11.5f, maxY = 11.5f;
-        if (x < minX)
-        {
-            newX = minX + transform.localScale.x / 2;
-            cantMove = true;
+            float minX = limitArea.transform.position.x - limitArea.transform.localScale.x / 2;
+            float maxX = limitArea.transform.position.x + limitArea.transform.localScale.x / 2;
+            float minY = limitArea.transform.position.y - limitArea.transform.localScale.y / 2;
+            float maxY = limitArea.transform.position.y + limitArea.transform.localScale.y / 2;
+            if (isOverlap(minX, x1, maxX) && isOverlap(minX, x2, maxX) && isOverlap(minY, y1, maxY) && isOverlap(minY, y2, maxY))
+            {
+                if (isOverlap(minX, x1, maxX))
+                {
+                    //checkLimitAreaX(maxX, minX);
+                    transform.position += new Vector3(maxX - x1 + 0.01f, 0f, 0f);
+                }
+                else if (isOverlap(minX, x2, maxX))
+                {
+                    //checkLimitAreaX(minX, maxX);
+                    transform.position -= new Vector3(x2 - minX + 0.01f, 0f, 0f);
+                }
+
+                if (isOverlap(minY, y1, maxY))
+                {
+                    //checkLimitAreaY(maxY, minY);
+                    transform.position += new Vector3(0f, maxY - y1 + 0.01f, 0f);
+                }
+                else if (isOverlap(minY, y2, maxY))
+                {
+                    //checkLimitAreaY(minY, maxY);
+                    transform.position -= new Vector3(0f, y2 - minY + 0.01f, 0f);
+                }
+            }
         }
-        else if (x > maxX)
-        {
-            newX = maxX - transform.localScale.x / 2;
-            cantMove = true;
-        }
-        else
-        {
-            cantMove = false;
-        }
-        if (y < minY)
-        {
-            newY = minY + transform.localScale.y / 2;
-            cantMove = true;
-        }
-        else if (y > maxY)
-        {
-            newY = maxY - transform.localScale.y / 2;
-            cantMove = true;
-        }
-        else
-        {
-            cantMove = false;
-        }
-        transform.position = new Vector3(newX, newY, 0f);
     }
 
     void moveWithVelocity()
     {
         if (cantMove) return;
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        prevMousePos = transform.position;
+        prevPicPos = transform.position;
         //일정거리 이상 움직이면 좌표 수정
         /*        if ((mousePos - prevMousePos).magnitude > 2f)
                 {
@@ -123,8 +153,8 @@ public class PictureMovement : MonoBehaviour
                 }*/
 
         size = new Vector2(coll.bounds.size.x, coll.bounds.size.y);
-        dir = (mousePos - prevMousePos).normalized;
-        pictureMovementSpeed = Vector3.Distance(mousePos, prevMousePos) * 2f;
+        dir = (mousePos - prevPicPos).normalized;
+        pictureMovementSpeed = Vector3.Distance(mousePos, prevPicPos) * 2f;
         dis = 0.5f;
 
         RaycastHit2D[] hits = Physics2D.BoxCastAll(coll.bounds.center, size, 0f, dir, dis, limitArea);
@@ -151,6 +181,7 @@ public class PictureMovement : MonoBehaviour
                 diifPlayerPos = player.transform.position - transform.position;
             }
             player.GetComponent<PlayerMovement>().setOnPicture(true);
+            player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
             player.transform.position = transform.position + diifPlayerPos;
         }
     }
@@ -161,13 +192,13 @@ public class PictureMovement : MonoBehaviour
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         //일정거리 이상 움직이면 좌표 수정
-        if ((mousePos - prevMousePos).magnitude > 2f)
-            prevMousePos = mousePos;
+        if ((mousePos - prevPicPos).magnitude > 2f)
+            prevPicPos = mousePos;
 
         //마우스 이동 방향으로 움직였을 때 제한 구역에 침범한다면
         //이동 안하기
         size = new Vector2(coll.bounds.size.x, coll.bounds.size.y);
-        dir = (mousePos - prevMousePos).normalized;
+        dir = (mousePos - prevPicPos).normalized;
         dis = 0.5f;
 
         /*        //디버그용

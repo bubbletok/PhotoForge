@@ -8,13 +8,14 @@ using UnityEditor;
 using UnityEditor.TextCore.Text;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 
 public class PlatformMoving : MonoBehaviour
 {
     private readonly int PIC_CAPACITY = 5; // picturestatus code의 piccapicty와 같아야 함. 수동으로 수정 필요 
 
     [SerializeField] public GameObject currentPicture; // 현재 속한 사진의 오브젝트. 부모 관계의 사진으로 set 되어야 함. 
-    private PictureStatus curPicStatusCode; // 현재 속한 사진의 코드 
+    public PictureStatus curPicStatusCode; // 현재 속한 사진의 코드 
     public GameObject[] overLappedPicture; // 현재 속한 사진과 겹친 사진 
 
     // 플랫폼 이동 시 사용하는 변수 
@@ -41,32 +42,66 @@ public class PlatformMoving : MonoBehaviour
         otherPicsRigid = new Rigidbody2D[PIC_CAPACITY];
     }
 
+    bool isOverlap = false;
     void Update()
     {
         for(int i= 0; i < PIC_CAPACITY; i++) 
             overLappedPicture[i] = curPicStatusCode.otherPics[i];
 
+       
+        foreach (GameObject overlapPic in overLappedPicture)
+        {
+            if (overlapPic == null)
+            {
+                isOverlap = false;
+                continue;
+            }
+            else // 겹친 사진이 있는 경우
+            {
+                isOverlap = true;
+                break;
+            }
+        }
+
+        if(isOverlap)
+        {
+            MovingFunction_Overlap(directionChoose);
+        }
+        else
+        {
+            MovingFunction_Alone(directionChoose);
+        }
+
         //Crossing_Regulation();
-        MovingFunction(directionChoose);
 
     }
 
-
-    void MovingFunction(int distinguisher)
+    void MovingFunction_Overlap(int distinguisher)
     {
         bool[] isInsideArea = new bool[PIC_CAPACITY]; // 겹친 사진의 영역에 포함되는지 판별하는 bool
-        var pictureAxis = new(float picCenter, float picHalfWidth)[PIC_CAPACITY];
-
         Transform curPicTrans = currentPicture.transform;
-  
+
+        (float realPicCenter, float realPicHalfWidth) realPicAxis = (0, 0);
+
+        switch (distinguisher)
+        {
+            case 0:
+                realPicAxis = (curPicTrans.position.x, curPicTrans.localScale.x); // halfwidth는 나중에 /2 해줘야 함.
+                break;
+            case 1:
+                realPicAxis = (curPicTrans.position.y, curPicTrans.localScale.y);
+                break;
+        }
+        float PicCount = 1; // 평균을 구하는 용도이기 때문에 초기값은 0이 아닌 1로 설정되어야 함 
+
         float scaleX = transform.localScale.x * curPicTrans.localScale.x;
         float scaleY = transform.localScale.y * curPicTrans.localScale.y;
 
-        for(int i= 0;i < PIC_CAPACITY;i++) 
+        for(int i= 0; i < PIC_CAPACITY;i++) 
         {
+            // 1. isInsideArea 값 도출
             if (overLappedPicture[i] != null) // 겹친 사진이 있는 경우.
             {
-                //overLappedPicture = currentPicStatus.otherPic; 
                 switch (distinguisher)
                 {
                     case 0: // 가로 이동 case
@@ -82,89 +117,86 @@ public class PlatformMoving : MonoBehaviour
                 }
             }
 
-            if (overLappedPicture[i] == null || !isInsideArea[i]) // 겹치지 않는 경우 또는 위에서 판별했을 때 발판이 겹친 사진의 영역 안에 들어가지 않는지 판단. 사진이 겹쳤어도 영역 안에 없으면 이것 실행됨
+            // 2. isInsideArea 조건을 만족하는 사진에 대해 좌표값 도출 
+            if (overLappedPicture[i] != null && isInsideArea[i]) // 사진이 겹치는 경우와 발판이 겹친 사진의 영역 안에 들어가는 조건 다 만족해야 함.
             {
                 switch (distinguisher)
                 {
                     case 0:
-                        pictureAxis[i] = (curPicTrans.position.x, curPicTrans.localScale.x * 0.5f); // 겹친 사진끼리의 중심 좌표 , 원래 있던 사진의 가로길이 절반
+                        realPicAxis.realPicCenter += overLappedPicture[i].transform.position.x;
+                        realPicAxis.realPicHalfWidth += overLappedPicture[i].transform.localScale.x - curPicStatusCode.Calculate_OverlapAreaX()[i];
+                        ++PicCount;
                         break;
                     case 1:
-                        pictureAxis[i] = (curPicTrans.position.y, curPicTrans.localScale.y * 0.5f); 
+                        realPicAxis.realPicCenter += overLappedPicture[i].transform.position.y;
+                        realPicAxis.realPicHalfWidth += overLappedPicture[i].transform.localScale.y - curPicStatusCode.Calculate_OverlapAreaY()[i];
+                        ++PicCount;
                         break;
                 }
-            }
-            else if (overLappedPicture[i] != null && isInsideArea[i]) // 사진이 겹치는 경우와 발판이 겹친 사진의 영역 안에 들어가는 조건 다 만족해야 함.
-            {
-                switch (distinguisher)
-                {
-                    case 0:
-                        pictureAxis[i] = ((curPicTrans.position.x + overLappedPicture[i].transform.position.x) / 2,
-                                          (curPicStatusCode.Calculate_FullLengthX()[i] - curPicStatusCode.Calculate_OverlapAreaX()[i]) / 2);
-                        print(pictureAxis[i].picCenter +" " + pictureAxis[i].picHalfWidth);
-                        break;
-                    case 1:
-                        pictureAxis[i] = ((curPicTrans.position.y + overLappedPicture[i].transform.position.y) / 2,
-                                         (curPicStatusCode.Calculate_FullLengthY()[i] - curPicStatusCode.Calculate_OverlapAreaY()[i]) / 2);
-                        break;
-
-                }
-            }
-
-            bool isoverArea = false;
-            switch (distinguisher) // 사진과 부딪쳤을 때 방향 바꿔주는 구문 
-            {
-                case 0:
-                    if (((transform.position.x + scaleX * 0.5f) >= (pictureAxis[i].picCenter + pictureAxis[i].picHalfWidth)
-                        || (transform.position.x - scaleX * 0.5f) <= (pictureAxis[i].picCenter - pictureAxis[i].picHalfWidth)) && isoverArea)
-                    {
-                        direction *= -1;
-                        isoverArea = true;
-                    }
-
-                    thisRigid.velocity = new Vector2(direction * horizonSpeed, 0);
-                    break;
-
-                case 1:
-                    if ((transform.position.y + scaleY * 0.5f) >= (pictureAxis[i].picCenter + pictureAxis[i].picHalfWidth)
-                        ||(transform.position.y - scaleY * 0.5f) <= (pictureAxis[i].picCenter - pictureAxis[i].picHalfWidth))
-                        direction *= -1;
-
-                    thisRigid.velocity = new Vector2(0, direction * horizonSpeed);
-                    break;
             }
         }
 
+        realPicAxis.realPicCenter /= PicCount; // 좌표 평균 구하기
+        realPicAxis.realPicHalfWidth /= 2; // 실제 발판 이동범위 구하기 
 
+        switch (distinguisher) // 사진과 부딪쳤을 때 방향 바꿔주는 구문 
+        {
+            case 0:
+                if ((transform.position.x + scaleX * 0.5f) >= (realPicAxis.realPicCenter + realPicAxis.realPicHalfWidth))
+                {
+                    direction = -1;
+                }
+                else if ((transform.position.x - scaleX * 0.5f) <= (realPicAxis.realPicCenter - realPicAxis.realPicHalfWidth))
+                {
+                    direction = 1;
+                }
+                thisRigid.velocity = new Vector2(direction * horizonSpeed, 0);
+                break; // 각각에 접근할 것이 아니라, 조건을 만족하는 겹친 사진 '전체'의 평균을 구해야 한다. 
 
-        // if ((transform.position.x + transform.localScale.x * 0.5) <= (pictureX + pictureHalfWidth))
+            case 1:
+                if ((transform.position.y + scaleY * 0.5f) >= (realPicAxis.realPicCenter + realPicAxis.realPicHalfWidth))
+                {
+                    direction = -1;
+                }
+                else if ((transform.position.y - scaleY * 0.5f) <= (realPicAxis.realPicCenter - realPicAxis.realPicHalfWidth))
+                {
+                    direction = 1;
+                }
+                thisRigid.velocity = new Vector2(0, direction * horizonSpeed);
+                break;
+        }
+  
     }
-    
-    void RealMovingFunction()
-    {       
-        // 사진 하나만 있을 때 
-        // currentPicrure의 좌표 판정해서 발판 충돌
 
-
-        // 사진 n개 이상 겹칠 때 
-        // isinsideArea 판정 후, true에 해당하는 사진에 한해서만 엣지 콜라이더 좌표 설정 
-
-        // 각각의 사진에 대해서, transform.position 비교 후 
-
-        bool[] isInsideArea = new bool[PIC_CAPACITY];
+    void MovingFunction_Alone(int distinguisher)
+    {
         Transform curPicTrans = currentPicture.transform;
 
         float scaleX = transform.localScale.x * curPicTrans.localScale.x;
         float scaleY = transform.localScale.y * curPicTrans.localScale.y;
 
-        for(int i=0; i<PIC_CAPACITY; i++) 
+        switch (distinguisher)
         {
-            if (overLappedPicture[i] != null)
-            {
+            case 0:
+                if ((transform.position.x + scaleX * 0.5f) >= (curPicTrans.position.x + curPicTrans.localScale.x * 0.5f))
+                    direction = -1;
+                else if ((transform.position.x - scaleX * 0.5f) <= (curPicTrans.position.x - curPicTrans.localScale.x * 0.5f))
+                    direction = 1;
 
-            }
+                thisRigid.velocity = new Vector2(direction * horizonSpeed, 0);
+                break;
+
+            case 1:
+                if ((transform.position.y + scaleY * 0.5f) >= (curPicTrans.position.y + curPicTrans.localScale.y * 0.5f))
+                    direction = -1;     
+                else if ((transform.position.y - scaleY * 0.5f) <= (curPicTrans.position.y - curPicTrans.localScale.y * 0.5f))
+                    direction = 1;
+
+                thisRigid.velocity = new Vector2(0, direction * horizonSpeed);
+                break;
         }
     }
+
     void Crossing_Regulation() // 두 사진의 경계 사이에서 발판이 지나가는 경우에 대한 예외처리. 사진을 못 움직이게 한다.
     {
 
@@ -184,7 +216,6 @@ public class PlatformMoving : MonoBehaviour
         }
 
     }
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

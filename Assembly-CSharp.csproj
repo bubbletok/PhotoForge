@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\OnPlatform.cs" />
     <Compile Include="Assets\Scripts\Test_SelectMenu.cs" />
     <Compile Include="Assets\Scripts\PlatformMoving.cs" />
+    <Compile Include="Assets\Scripts\SpawnItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,14 +11,21 @@ public class GameSetting : MonoBehaviour
     [SerializeField] GameObject escapePicture;
     [SerializeField] GameObject player;
     [SerializeField] GameObject[] pictures;
-    int numOfPictureFrag;
-    bool isOverlapped;
+    [SerializeField] GameObject curPicture;
+    Vector3[] picturesPos;
+    [SerializeField]int numOfPictureFrag;
+    bool isSafe;
     // Start is called before the first frame update
+
     void Start()
     {
-        isOverlapped = true;
-       escapePicture.SetActive(false);
+       isSafe = true;
        numOfPictureFrag = GameObject.FindGameObjectsWithTag("Frag").Length;
+       foreach (GameObject pic in pictures)
+       {
+           picturesPos.Append(pic.transform.position);
+       }
+       escapePicture.SetActive(false);
     }
 
     // Update is called once per frame
@@ -26,41 +35,69 @@ public class GameSetting : MonoBehaviour
         if (playerStatus.getFragCount() == numOfPictureFrag)
         {
             escapePicture.SetActive(true);
+            for(int i=0; i<pictures.Length; i++)
+            {
+                pictures[i].transform.position = picturesPos[i];
+            }
         }
-        checkPicutreArea();
-        if (!isOverlapped)
+        checkSafeArea();
+        /*        if(curPicture == null)
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                }*/
+        print(isSafe);
+        if (!isSafe)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 
-    void checkPicutreArea()
+    void checkSafeArea()
     {
-        float px1, py1, px2, py2;
+        curPicture = null;
+        float px1, px2, py1, py2;
         px1 = player.transform.position.x - player.GetComponent<BoxCollider2D>().bounds.size.x / 2;
         px2 = player.transform.position.x + player.GetComponent<BoxCollider2D>().bounds.size.x / 2;
-        py1 = player.transform.position.y + player.GetComponent<BoxCollider2D>().bounds.size.y / 2;
-        py2 = player.transform.position.y - player.GetComponent<BoxCollider2D>().bounds.size.y / 2;
-        foreach (GameObject picture in pictures)
+        py1 = player.transform.position.y - player.GetComponent<BoxCollider2D>().bounds.size.y / 2;
+        py2 = player.transform.position.y + player.GetComponent<BoxCollider2D>().bounds.size.y / 2;
+        for(int i=0; i<pictures.Length; i++)
         {
-            if (picture == null) continue;
-            float x1, y1, x2, y2;
-            x1 = picture.transform.position.x - picture.transform.localScale.x/2;
-            x2 = picture.transform.position.x + picture.transform.localScale.x/2;
-            y1 = picture.transform.position.y + picture.transform.localScale.y/2;
-            y2 = picture.transform.position.y - picture.transform.localScale.y/2;
-            /*            if(isOverlap(x1,px1,x2) && isOverlap(x1,px2,x2) && isOverlap(y2,py1,y1) && isOverlap(y2, py2, y1))
+            GameObject picture = pictures[i];
+            //if (picture == null) continue;
+            float x1, x2, y1, y2;
+            x1 = picture.transform.position.x - picture.transform.localScale.x / 2;
+            x2 = picture.transform.position.x + picture.transform.localScale.x / 2;
+            y1 = picture.transform.position.y - picture.transform.localScale.y / 2;
+            y2 = picture.transform.position.y + picture.transform.localScale.y / 2;
+            //print(picture.name);
+            //print(x1 + " " + x2 + " " + y1 + " " + y2);
+            /*            bool overlapX1, overlapX2, overlapY1, overlapY2;
+                        overlapX1 = isOverlap(x1, px1, x2);
+                        overlapX2 = isOverlap(x1, px2, x2);
+                        overlapY1 = isOverlap(y1, py1, y2);
+                        overlapY2 = isOverlap(y1, py2, y2);
+                        //print(picture.name + " " + overlapY1);
+                        if (overlapX1 && overlapX2 && overlapY2 && overlapY1)
                         {
-                            isOverlapped = true;
+                            curPicture = picture;
+                        }
+                        if (curPicture != null && overlapY1)
+                        {
+                            isSafe = true;
                             return;
                         }*/
-            if (isOverlap(y2, py2, y1))
+            /*            else
+                        {
+                            isSafe = false;
+                        }*/
+            if (isOverlap(y1, py1, y2))
             {
-                isOverlapped = true;
+                isSafe = true;
                 return;
             }
         }
-        isOverlapped = false;
+        if(isSafe) return;
+        isSafe = false;
     }
 
     bool isOverlap(float min, float pos, float max)
