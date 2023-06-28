@@ -16,25 +16,15 @@ public class PictureStatus : MonoBehaviour
     private Transform[] otherPicTrans;
     public PictureStatus otherPicCode;
 
-
-    [SerializeField] public LinkedList<GameObject> platformList = new LinkedList<GameObject>();
+    public List<GameObject> platformList = new List<GameObject>();
     public PlatformMoving platformCode;
-    // private LinkedList<PlatformMoving> platformCodeList;
 
-   
+
     void Start()
     {
         otherPics = new GameObject[PIC_CAPACITY];
         otherPicTrans = new Transform[PIC_CAPACITY];
-
-        for(int i=0; i< transform.childCount; i++)
-        {
-            if (transform.GetChild(i).tag == "MovingPlatform")
-            {
-                AddListNoRepeat(platformList, transform.GetChild(i).gameObject);
-                //platformList.AddLast(transform.GetChild(i).gameObject);
-            }
-        }                                                                                                                              
+                                                                                               
 
         for(int i= 0; i < PIC_CAPACITY; i++) // 최대용량만큼 for loop
         {
@@ -43,46 +33,33 @@ public class PictureStatus : MonoBehaviour
             otherPicTrans[i] = null;
         }
 
-       
     }
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Q)) 
-        {
-            // DEBUG AREA
-/*            foreach (GameObject mPlatform in platformList)
-            {
-                print(transform.gameObject.name + ": " + mPlatform);
-            }*/
-        }
-    }
+
     public bool[] Is_Plate_In_OtherPic(GameObject mPlatform) // 발판이 겹쳐진 사진 영역 안에 완전히 들어가면 true 반환하는 함수 
     {
-
         Transform[] overlapPicCenter = new Transform[PIC_CAPACITY];
 
         float[] overlapPicLeftX = new float[PIC_CAPACITY], overlapPicRightX = new float[PIC_CAPACITY],
                 overlapPicTopY = new float[PIC_CAPACITY], overlapPicBottomY = new float[PIC_CAPACITY];
 
-        float[] lCornerPointX = new float[PIC_CAPACITY], rCornerPointX = new float[PIC_CAPACITY],
-                tCornerPointY = new float[PIC_CAPACITY], bCornerPointY = new float[PIC_CAPACITY];
+        float lCornerPointX, rCornerPointX, tCornerPointY, bCornerPointY;
 
         // 발판이 다른 사진 영역 안에 있는 것을 판정해야 함.
         bool[]returnBoolArray = new bool[PIC_CAPACITY];
 
         Transform plateTrans = mPlatform.transform;
 
+        // 발판의 네 꼭짓점 좌표 저장.
+        lCornerPointX = plateTrans.position.x - plateTrans.localScale.x / 2;
+        rCornerPointX = plateTrans.position.x + plateTrans.localScale.x / 2;
+        tCornerPointY = plateTrans.position.y + plateTrans.localScale.y / 2;
+        bCornerPointY = plateTrans.position.y - plateTrans.localScale.y / 2;
+
         for (int i = 0; i < PIC_CAPACITY; ++i) // 각 발판마다 5 size의 bool 배열 가져야 함.
         {
             if (otherPics[i] != null)
             {
                 overlapPicCenter[i] = otherPics[i].transform;
-
-                // 발판의 네 꼭짓점 좌표 저장.
-                lCornerPointX[i] = plateTrans.position.x - plateTrans.localScale.x * otherPics[i].transform.localScale.x / 2;
-                rCornerPointX[i] = plateTrans.position.x + plateTrans.localScale.x * otherPics[i].transform.localScale.x / 2;
-                tCornerPointY[i] = plateTrans.position.y + plateTrans.localScale.y * otherPics[i].transform.localScale.y / 2;
-                bCornerPointY[i] = plateTrans.position.y - plateTrans.localScale.y * otherPics[i].transform.localScale.y / 2;
 
                 // 겹친 사진의 네 좌표 저장.
                 overlapPicLeftX[i] = overlapPicCenter[i].position.x - otherPics[i].transform.localScale.x / 2;
@@ -91,8 +68,8 @@ public class PictureStatus : MonoBehaviour
                 overlapPicBottomY[i] = overlapPicCenter[i].position.y - otherPics[i].transform.localScale.y / 2;
 
 
-                if (lCornerPointX[i] >= overlapPicLeftX[i] && rCornerPointX[i] <= overlapPicRightX[i]
-                    && tCornerPointY[i] <= overlapPicTopY[i] && bCornerPointY[i] >= overlapPicBottomY[i])
+                if (lCornerPointX >= overlapPicLeftX[i] && rCornerPointX <= overlapPicRightX[i]
+                    && tCornerPointY <= overlapPicTopY[i] && bCornerPointY >= overlapPicBottomY[i])
                     returnBoolArray[i] = true;
                 else
                     returnBoolArray[i] = false;
@@ -103,7 +80,9 @@ public class PictureStatus : MonoBehaviour
         return returnBoolArray;
     }
 
-    private void AddListNoRepeat(LinkedList<GameObject> platformList, GameObject platformToPut) // 중복 없이 리스트 추가시키는 함수.
+   
+
+    private void AddListNoRepeat(List<GameObject> platformList, GameObject platformToPut) // 중복 없이 리스트 추가시키는 함수.
     {
         bool isRepeated = false;
          foreach(GameObject mPlatform in platformList)
@@ -118,12 +97,12 @@ public class PictureStatus : MonoBehaviour
         }
 
         if (!isRepeated)
-            platformList.AddLast(platformToPut);
+            platformList.Add(platformToPut);
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.transform.tag == "Picture")
+        if (collision.CompareTag("Picture"))
         {
             for (int i = 0; i < PIC_CAPACITY; i++)
             {
@@ -139,7 +118,7 @@ public class PictureStatus : MonoBehaviour
     }
     void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Picture")
+        if(collision.CompareTag("Picture"))
         {
             for (int i = 0; i < PIC_CAPACITY; i++) // 전체 겹쳐있는 사진에 대해서,
             {
@@ -151,11 +130,11 @@ public class PictureStatus : MonoBehaviour
             }
         }
 
-        if(collision.transform.tag == "MovingPlatform") // movingplatform이 완전히 나갔고, isoverlap 메소드의 각 발판에 대한 배열이 있을 것이다. 
+        if(collision.CompareTag("MovingPlatform")) // movingplatform이 완전히 나갔고, isoverlap 메소드의 각 발판에 대한 배열이 있을 것이다. 
         {
             bool isRemoved = false;
             foreach (GameObject mPlatform in platformList) // 리스트에 저장된 각 발판 불러오기.
-            { 
+            {
                 bool[] isPlateinOtherPic = Is_Plate_In_OtherPic(mPlatform); // 각 발판마다 5개의 배열 불러오기.
                 for (int i = 0; i < PIC_CAPACITY; i++)
                 {
@@ -164,12 +143,12 @@ public class PictureStatus : MonoBehaviour
                         otherPicCode = otherPics[i].GetComponent<PictureStatus>();
                         platformCode = mPlatform.GetComponent<PlatformMoving>();
 
-                        // 플랫폼의 curPic 변경해줘야 함.
+                        // 플랫폼의 curPic 변경해줘야 함. + curPicStatusCode도.
                         platformCode.currentPicture = otherPics[i];
-                        // NEED DEBUGGING
+                        platformCode.curPicStatusCode = otherPicCode;
+                        platformCode.curPicRigid = otherPics[i].GetComponent<Rigidbody2D>();
 
                         // 부모관계 변경 
-                        mPlatform.transform.SetParent(otherPics[i].transform);
                         AddListNoRepeat(otherPicCode.platformList, mPlatform); 
 
                         platformList.Remove(mPlatform); 

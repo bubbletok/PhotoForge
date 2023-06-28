@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Xml.Linq;
 using TreeEditor;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -24,25 +26,26 @@ public class PlatformMoving : MonoBehaviour
     private int direction = 1;
 
     private Rigidbody2D thisRigid;
-    private Rigidbody2D curPicRigid;
+    public Rigidbody2D curPicRigid;
     private Rigidbody2D[] otherPicsRigid;
-   
 
+    private bool isOverlap;
+    public bool[] isCrossing;
 
-    // Start is called before the first frame update
     void Start()
     { 
-
-        currentPicture = GetComponentInParent<PictureStatus>().gameObject;
+        //currentPicture = GetComponentInParent<PictureStatus>().gameObject;
         curPicStatusCode = currentPicture.GetComponent<PictureStatus>();
         overLappedPicture = new GameObject[PIC_CAPACITY];
 
         thisRigid = GetComponent<Rigidbody2D>();
         curPicRigid = currentPicture.GetComponent<Rigidbody2D>();
         otherPicsRigid = new Rigidbody2D[PIC_CAPACITY];
+        isOverlap = false;
+        isCrossing = new bool[PIC_CAPACITY];
     }
 
-    bool isOverlap = false;
+
     void Update()
     {
         for(int i= 0; i < PIC_CAPACITY; i++) 
@@ -72,9 +75,9 @@ public class PlatformMoving : MonoBehaviour
             MovingFunction_Alone(directionChoose);
         }
 
-        //Crossing_Regulation();
-
+        Crossing_Regulation();
     }
+
 
     void MovingFunction_Overlap(int distinguisher)
     {
@@ -94,9 +97,6 @@ public class PlatformMoving : MonoBehaviour
         }
         float PicCount = 1; // 평균을 구하는 용도이기 때문에 초기값은 0이 아닌 1로 설정되어야 함 
 
-        float scaleX = transform.localScale.x * curPicTrans.localScale.x;
-        float scaleY = transform.localScale.y * curPicTrans.localScale.y;
-
         for(int i= 0; i < PIC_CAPACITY;i++) 
         {
             // 1. isInsideArea 값 도출
@@ -105,13 +105,13 @@ public class PlatformMoving : MonoBehaviour
                 switch (distinguisher)
                 {
                     case 0: // 가로 이동 case
-                        isInsideArea[i]= ((transform.position.y + scaleY / 2) <= overLappedPicture[i].transform.position.y + overLappedPicture[i].transform.localScale.y / 2)
-                                    && ((transform.position.y - scaleY / 2) >= overLappedPicture[i].transform.position.y - overLappedPicture[i].transform.localScale.y / 2)
+                        isInsideArea[i]= ((transform.position.y + transform.localScale.y / 2) <= overLappedPicture[i].transform.position.y + overLappedPicture[i].transform.localScale.y / 2)
+                                    && ((transform.position.y - transform.localScale.y / 2) >= overLappedPicture[i].transform.position.y - overLappedPicture[i].transform.localScale.y / 2)
                                     ? true : false; // 가로 이동의 경우 겹친 사진의 세로 영역에 포함되는지 판단.
                         break;
                     case 1: // 세로 이동 case
-                        isInsideArea[i] = ((transform.position.x + scaleX / 2) <= overLappedPicture[i].transform.position.x + overLappedPicture[i].transform.localScale.x / 2)
-                                    && ((transform.position.x - scaleX / 2) >= overLappedPicture[i].transform.position.x - overLappedPicture[i].transform.localScale.x / 2)
+                        isInsideArea[i] = ((transform.position.x + transform.localScale.x / 2) <= overLappedPicture[i].transform.position.x + overLappedPicture[i].transform.localScale.x / 2)
+                                    && ((transform.position.x - transform.localScale.x / 2) >= overLappedPicture[i].transform.position.x - overLappedPicture[i].transform.localScale.x / 2)
                                     ? true : false; // 세로 이동의 경우 겹친 사진의 가로 영역에 포함되는지 판단. 
                         break;
                 }
@@ -139,30 +139,32 @@ public class PlatformMoving : MonoBehaviour
         realPicAxis.realPicCenter /= PicCount; // 좌표 평균 구하기
         realPicAxis.realPicHalfWidth /= 2; // 실제 발판 이동범위 구하기 
 
+        Vector2 curPicvel = currentPicture.GetComponent<Rigidbody2D>().velocity;
+
         switch (distinguisher) // 사진과 부딪쳤을 때 방향 바꿔주는 구문 
         {
             case 0:
-                if ((transform.position.x + scaleX * 0.5f) >= (realPicAxis.realPicCenter + realPicAxis.realPicHalfWidth))
+                if ((transform.position.x + transform.localScale.x * 0.5f) >= (realPicAxis.realPicCenter + realPicAxis.realPicHalfWidth))
                 {
                     direction = -1;
                 }
-                else if ((transform.position.x - scaleX * 0.5f) <= (realPicAxis.realPicCenter - realPicAxis.realPicHalfWidth))
+                else if ((transform.position.x - transform.localScale.x * 0.5f) <= (realPicAxis.realPicCenter - realPicAxis.realPicHalfWidth))
                 {
                     direction = 1;
                 }
-                thisRigid.velocity = new Vector2(direction * horizonSpeed, 0);
+                thisRigid.velocity = new Vector2(curPicvel.x + direction * horizonSpeed, curPicvel.y);
                 break; // 각각에 접근할 것이 아니라, 조건을 만족하는 겹친 사진 '전체'의 평균을 구해야 한다. 
 
             case 1:
-                if ((transform.position.y + scaleY * 0.5f) >= (realPicAxis.realPicCenter + realPicAxis.realPicHalfWidth))
+                if ((transform.position.y + transform.localScale.y * 0.5f) >= (realPicAxis.realPicCenter + realPicAxis.realPicHalfWidth))
                 {
                     direction = -1;
                 }
-                else if ((transform.position.y - scaleY * 0.5f) <= (realPicAxis.realPicCenter - realPicAxis.realPicHalfWidth))
+                else if ((transform.position.y - transform.localScale.y * 0.5f) <= (realPicAxis.realPicCenter - realPicAxis.realPicHalfWidth))
                 {
                     direction = 1;
                 }
-                thisRigid.velocity = new Vector2(0, direction * horizonSpeed);
+                thisRigid.velocity = new Vector2(curPicvel.x , curPicvel.y + direction * horizonSpeed);
                 break;
         }
   
@@ -172,58 +174,106 @@ public class PlatformMoving : MonoBehaviour
     {
         Transform curPicTrans = currentPicture.transform;
 
-        float scaleX = transform.localScale.x * curPicTrans.localScale.x;
-        float scaleY = transform.localScale.y * curPicTrans.localScale.y;
+        Vector2 curPicvel = currentPicture.GetComponent<Rigidbody2D>().velocity;
 
         switch (distinguisher)
         {
             case 0:
-                if ((transform.position.x + scaleX * 0.5f) >= (curPicTrans.position.x + curPicTrans.localScale.x * 0.5f))
+                if ((transform.position.x + transform.localScale.x * 0.5f) >= (curPicTrans.position.x + curPicTrans.localScale.x * 0.5f))
                     direction = -1;
-                else if ((transform.position.x - scaleX * 0.5f) <= (curPicTrans.position.x - curPicTrans.localScale.x * 0.5f))
+                else if ((transform.position.x - transform.localScale.x * 0.5f) <= (curPicTrans.position.x - curPicTrans.localScale.x * 0.5f))
                     direction = 1;
 
-                thisRigid.velocity = new Vector2(direction * horizonSpeed, 0);
+                thisRigid.velocity = new Vector2(curPicvel.x + direction * horizonSpeed , curPicvel.y);
                 break;
 
             case 1:
-                if ((transform.position.y + scaleY * 0.5f) >= (curPicTrans.position.y + curPicTrans.localScale.y * 0.5f))
+                if ((transform.position.y + transform.localScale.y * 0.5f) >= (curPicTrans.position.y + curPicTrans.localScale.y * 0.5f))
                     direction = -1;     
-                else if ((transform.position.y - scaleY * 0.5f) <= (curPicTrans.position.y - curPicTrans.localScale.y * 0.5f))
+                else if ((transform.position.y - transform.localScale.y * 0.5f) <= (curPicTrans.position.y - curPicTrans.localScale.y * 0.5f))
                     direction = 1;
 
-                thisRigid.velocity = new Vector2(0, direction * horizonSpeed);
+                thisRigid.velocity = new Vector2(curPicvel.x, curPicvel.y + direction * horizonSpeed);
                 break;
         }
     }
+    private bool Is_Plate_In_CurPic()
+    {
+        float lCornerPointX, rCornerPointX, tCornerPointY, bCornerPointY;
+        float picLeftX, picRightX, picTopY, picBottomY;
+
+        //Transform platformTrans = mPlatform.transform;
+
+        lCornerPointX = transform.position.x - transform.localScale.x / 2;
+        rCornerPointX = transform.position.x + transform.localScale.x / 2;
+        tCornerPointY = transform.position.y + transform.localScale.y / 2;
+        bCornerPointY = transform.position.y - transform.localScale.y / 2;
+
+        picLeftX = currentPicture.transform.position.x - currentPicture.transform.localScale.x / 2;
+        picRightX = currentPicture.transform.position.x + currentPicture.transform.localScale.x / 2;
+        picTopY = currentPicture.transform.position.y + currentPicture.transform.localScale.y / 2;
+        picBottomY = currentPicture.transform.position.y - currentPicture.transform.localScale.y / 2;
+
+        if (lCornerPointX >= picLeftX && rCornerPointX <= picRightX
+                   && tCornerPointY <= picTopY && bCornerPointY >= picBottomY)
+            return true;
+        else
+            return false;
+
+    }
+
 
     void Crossing_Regulation() // 두 사진의 경계 사이에서 발판이 지나가는 경우에 대한 예외처리. 사진을 못 움직이게 한다.
     {
-
         for(int i=0; i<PIC_CAPACITY; i++)
         {
             if (overLappedPicture[i] != null)
             {
-                otherPicsRigid[i] = overLappedPicture[i].GetComponent<Rigidbody2D>();
+                // 발판이 어느 사진에도 완전히 들어가있지 않은 경우 
 
-                if (!curPicStatusCode.Is_Plate_In_OtherPic(transform.gameObject)[i]) // 사진이 겹쳤지만, 겹친 사진 영역에 다 들어가진 않은 경우
+                if (!Is_Plate_In_CurPic() && isCrossing[i]) 
                 {
+                    otherPicsRigid[i] = overLappedPicture[i].GetComponent<Rigidbody2D>();
                     curPicRigid.velocity = Vector2.zero;
                     otherPicsRigid[i].velocity = Vector2.zero;
                 }
-            }
-          
+            } 
         }
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-  
-        if(collision.transform.tag == "Platform") // 이거 왜 안됨 ★
+        if(collision.CompareTag("Platform")) // 이거 왜 안됨 ★
         {
             direction = -direction;
         }
+
+        if(collision.CompareTag("Picture"))
+        {
+            for(int i=0; i<PIC_CAPACITY; i++)
+            {
+                if (collision.gameObject == overLappedPicture[i])
+                {
+                    isCrossing[i] = true;
+                    break;
+                }
+            }
+        }
     }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Picture"))
+        {
+            for (int i = 0; i < PIC_CAPACITY; i++)
+            {
+                if (collision.gameObject == currentPicture && isCrossing[i])
+                {
+                    isCrossing[i] = false;
+                    break;
+                }
+            }
+        }
+    }
+
 
 }
