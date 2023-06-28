@@ -2816,7 +2816,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50907b95678c7db41ab24d3ee5b4edfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  escapePicture: {fileID: 1556919692}
+  finalObjects:
+  - {fileID: 1556919692}
   player: {fileID: 1927639606}
   pictures:
   - {fileID: 2115784555}
@@ -2825,7 +2826,7 @@ MonoBehaviour:
   - {fileID: 629918903}
   - {fileID: 770745080}
   - {fileID: 1556919692}
-  numOfPictureFrag: 0
+  curPicture: {fileID: 0}
 --- !u!4 &1058383521
 Transform:
   m_ObjectHideFlags: 0
@@ -5272,11 +5273,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8638971406701159031, guid: 5407af24ca59fb24dade2900dcd5cc52, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.36
+      value: 0.362
       objectReference: {fileID: 0}
     - target: {fileID: 8638971406701159031, guid: 5407af24ca59fb24dade2900dcd5cc52, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.277
+      value: -0.254
       objectReference: {fileID: 0}
     - target: {fileID: 8638971406701159031, guid: 5407af24ca59fb24dade2900dcd5cc52, type: 3}
       propertyPath: m_LocalPosition.z

@@ -12,6 +12,7 @@ TagManager:
   - Spike
   - Shrink
   - LimitArea
+  - Star
   layers:
   - Default
   - TransparentFX

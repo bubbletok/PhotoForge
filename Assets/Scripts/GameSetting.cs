@@ -8,24 +8,29 @@ using UnityEngine.SceneManagement;
 
 public class GameSetting : MonoBehaviour
 {
-    [SerializeField] GameObject escapePicture;
+    [SerializeField] GameObject[] finalObjects;
     [SerializeField] GameObject player;
     [SerializeField] GameObject[] pictures;
     [SerializeField] GameObject curPicture;
-    Vector3[] picturesPos;
-    [SerializeField]int numOfPictureFrag;
+    Vector3[] picturesOriginPos;
+    Vector3 playerOriginPos;
+    int numOfPictureFrag;
     bool isSafe;
     // Start is called before the first frame update
-
     void Start()
     {
-       isSafe = true;
-       numOfPictureFrag = GameObject.FindGameObjectsWithTag("Frag").Length;
-       foreach (GameObject pic in pictures)
-       {
-           picturesPos.Append(pic.transform.position);
-       }
-       escapePicture.SetActive(false);
+        isSafe = true;
+        numOfPictureFrag = GameObject.FindGameObjectsWithTag("Frag").Length;
+        picturesOriginPos = new Vector3[pictures.Length];
+        for(int i=0; i<pictures.Length; i++)
+        {
+            picturesOriginPos[i] = pictures[i].transform.position;
+        }
+        playerOriginPos = player.transform.position;
+        for (int i = 0; i < finalObjects.Length; i++)
+        {
+            finalObjects[i].SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -34,18 +39,21 @@ public class GameSetting : MonoBehaviour
         PlayerStatus playerStatus = player.GetComponent<PlayerStatus>();
         if (playerStatus.getFragCount() == numOfPictureFrag)
         {
-            escapePicture.SetActive(true);
-            for(int i=0; i<pictures.Length; i++)
+            foreach (GameObject finalObject in finalObjects)
+                finalObject.SetActive(true);
+            for (int i=0; i<pictures.Length; i++)
             {
-                pictures[i].transform.position = picturesPos[i];
+                pictures[i].transform.position = picturesOriginPos[i];
             }
+            player.transform.position = playerOriginPos;
+            numOfPictureFrag = -1;
         }
         checkSafeArea();
         /*        if(curPicture == null)
                 {
                     SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 }*/
-        print(isSafe);
+        //print(isSafe);
         if (!isSafe)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);

@@ -4,24 +4,22 @@ using UnityEngine;
 
 public class SpawnItem : MonoBehaviour
 {
-    [SerializeField] GameObject item;
+    [SerializeField] GameObject[] items;
     [SerializeField] float spawnTime = 15f;
-
-    bool spawning;
-
     void Update()
     {
-        if (!spawning)
+        foreach (GameObject item in items)
         {
-            StartCoroutine(waitToSpawn(spawnTime));
-            spawning = true;
+            if (!item.activeSelf)
+            {
+                StartCoroutine(waitToSpawn(spawnTime,item));
+            }
         }
     }
 
-    IEnumerator waitToSpawn(float time)
+    IEnumerator waitToSpawn(float time, GameObject item)
     {
         yield return new WaitForSeconds(time);
         item.SetActive(true);
-        spawning = false;
     }
 }
