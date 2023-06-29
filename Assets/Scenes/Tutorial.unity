@@ -929,6 +929,7 @@ MonoBehaviour:
     m_Bits: 64
   pictureMovementSpeed: 0
   limitAreas: []
+  cantMove: 0
 --- !u!61 &629918907
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -990,6 +991,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   otherPics: []
   otherPicCode: {fileID: 0}
+  platformList: []
   platformCode: {fileID: 0}
 --- !u!1001 &902656222
 PrefabInstance:
@@ -1354,7 +1356,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6742174266902410284, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_Name
-      value: Platform3
+      value: 1_Moving1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6742174266902410284, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
+      propertyPath: m_TagString
+      value: MovingPlatform
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410286, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.size
@@ -1374,7 +1380,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410286, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.data[1].y
-      value: 0.33368412
+      value: 0.333684
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410286, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.data[2].x
@@ -1382,7 +1388,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410286, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.data[2].y
-      value: 0.3336548
+      value: 0.3336547
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410286, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.data[3].x
@@ -1398,11 +1404,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410286, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[0].Array.data[0].X
-      value: 17464774
+      value: 17464772
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410286, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[0].Array.data[0].Y
-      value: 3336841
+      value: 3336840
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410286, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[0].Array.data[1].X
@@ -1410,7 +1416,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410286, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[0].Array.data[1].Y
-      value: 3336841
+      value: 3336840
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410286, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[0].Array.data[2].X
@@ -1422,7 +1428,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410286, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[0].Array.data[3].X
-      value: 17464774
+      value: 17464772
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410286, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_ColliderPaths.Array.data[0].Array.data[3].Y
@@ -1434,15 +1440,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410290, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.25
+      value: 0.24999999
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410290, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.2
+      value: 0.19999999
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410290, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.001
+      value: -0.0009999956
       objectReference: {fileID: 0}
     - target: {fileID: 6742174266902410290, guid: fb16542863fc50a4d9024b3424cb776d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1504,11 +1510,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfb0791628923ac4da31da474918f222, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPicture: {fileID: 0}
-  curPicStatusCode: {fileID: 0}
+  currentPicture: {fileID: 629918903}
+  curPicStatusCode: {fileID: 629918909}
   overLappedPicture: []
   directionChoose: 0
   horizonSpeed: 5
+  curPicRigid: {fileID: 0}
+  isCrossing: 
 --- !u!1 &1058383519
 GameObject:
   m_ObjectHideFlags: 0
@@ -2647,6 +2655,7 @@ MonoBehaviour:
     m_Bits: 64
   pictureMovementSpeed: 0
   limitAreas: []
+  cantMove: 0
 --- !u!61 &2115784558
 BoxCollider2D:
   m_ObjectHideFlags: 0

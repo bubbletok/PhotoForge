@@ -20,6 +20,7 @@ public class PlatformMoving : MonoBehaviour
     public PictureStatus curPicStatusCode; // 현재 속한 사진의 코드 
     public GameObject[] overLappedPicture; // 현재 속한 사진과 겹친 사진 
 
+
     // 플랫폼 이동 시 사용하는 변수 
     [SerializeField] public int directionChoose = 0;
     [SerializeField] private float horizonSpeed = 5f;
@@ -231,23 +232,28 @@ public class PlatformMoving : MonoBehaviour
             {
                 // 발판이 어느 사진에도 완전히 들어가있지 않은 경우 
 
-                if (!Is_Plate_In_CurPic() && isCrossing[i]) 
-                {
-                    otherPicsRigid[i] = overLappedPicture[i].GetComponent<Rigidbody2D>();
-                    curPicRigid.velocity = Vector2.zero;
-                    otherPicsRigid[i].velocity = Vector2.zero;
+                if (!Is_Plate_In_CurPic() && isCrossing[i])
+                { 
+                    currentPicture.GetComponent<PictureMovement>().cantMove = true;
+                    overLappedPicture[i].GetComponent<PictureMovement>().cantMove = true;
                 }
             } 
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.CompareTag("Platform")) // 이거 왜 안됨 ★
+        print("fudk");
+        if (collision.transform.tag == "Platform" || collision.transform.tag == "MovingPlatform")
         {
+            print("Good to go");
             direction = -direction;
         }
+    }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        print("Trigger");
         if(collision.CompareTag("Picture"))
         {
             for(int i=0; i<PIC_CAPACITY; i++)

@@ -21,7 +21,7 @@ public class PictureMovement : MonoBehaviour
     Vector2 size;
     Vector2 dir;
     float dis;
-    bool cantMove;
+    public bool cantMove;
 
     private void Awake()
     {
