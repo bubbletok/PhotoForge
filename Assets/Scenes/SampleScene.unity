@@ -527,7 +527,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 424961670}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.76, y: 2.436, z: 0}
+  m_LocalPosition: {x: -4.54, y: 2.436, z: 0}
   m_LocalScale: {x: 4.1, y: 0.49999988, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -592,7 +592,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &424961676
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1586,7 +1586,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1548231871}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -1598,7 +1598,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!251 &1548231877
 PlatformEffector2D:
   m_ObjectHideFlags: 0
@@ -1649,7 +1649,6 @@ GameObject:
   - component: {fileID: 1621945030}
   - component: {fileID: 1621945029}
   - component: {fileID: 1621945028}
-  - component: {fileID: 1621945027}
   - component: {fileID: 1621945026}
   m_Layer: 3
   m_Name: 1_Static
@@ -1677,42 +1676,6 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
---- !u!66 &1621945027
-CompositeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1621945024}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 1
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
-  m_GenerationType: 0
-  m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 1621945029}
-    m_ColliderPaths:
-    - - X: 14499999
-        Y: 2499999
-      - X: -14499999
-        Y: 2499999
-      - X: -14499999
-        Y: -2499999
-      - X: 14499999
-        Y: -2499999
-  m_CompositePaths:
-    m_Paths:
-    - - {x: 1.4499706, y: -0.2499999}
-      - {x: 1.4499706, y: 0.2499999}
-      - {x: -1.4499999, y: 0.2499706}
-      - {x: -1.4499706, y: -0.2499999}
-  m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
 --- !u!50 &1621945028
 Rigidbody2D:
   serializedVersion: 4
@@ -1721,7 +1684,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1621945024}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -1733,7 +1696,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &1621945029
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1745,8 +1708,8 @@ BoxCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 1
+  m_UsedByEffector: 1
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}

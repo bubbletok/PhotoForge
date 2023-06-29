@@ -50,10 +50,10 @@ public class PictureStatus : MonoBehaviour
         Transform plateTrans = mPlatform.transform;
 
         // 발판의 네 꼭짓점 좌표 저장.
-        lCornerPointX = plateTrans.position.x - plateTrans.localScale.x / 2;
-        rCornerPointX = plateTrans.position.x + plateTrans.localScale.x / 2;
-        tCornerPointY = plateTrans.position.y + plateTrans.localScale.y / 2;
-        bCornerPointY = plateTrans.position.y - plateTrans.localScale.y / 2;
+        lCornerPointX = plateTrans.position.x - plateTrans.localScale.x * 2 / 2;
+        rCornerPointX = plateTrans.position.x + plateTrans.localScale.x * 2/ 2;
+        tCornerPointY = plateTrans.position.y + plateTrans.localScale.y / 2 / 2;
+        bCornerPointY = plateTrans.position.y - plateTrans.localScale.y / 2 / 2;
 
         for (int i = 0; i < PIC_CAPACITY; ++i) // 각 발판마다 5 size의 bool 배열 가져야 함.
         {
@@ -62,8 +62,8 @@ public class PictureStatus : MonoBehaviour
                 overlapPicCenter[i] = otherPics[i].transform;
 
                 // 겹친 사진의 네 좌표 저장.
-                overlapPicLeftX[i] = overlapPicCenter[i].position.x - otherPics[i].transform.localScale.x / 2;
-                overlapPicRightX[i] = overlapPicCenter[i].position.x + otherPics[i].transform.localScale.x / 2;
+                overlapPicLeftX[i] = overlapPicCenter[i].position.x - otherPics[i].transform.localScale.x * 1.81f / 2;
+                overlapPicRightX[i] = overlapPicCenter[i].position.x + otherPics[i].transform.localScale.x * 1.81f/ 2;
                 overlapPicTopY[i] = overlapPicCenter[i].position.y + otherPics[i].transform.localScale.y / 2;
                 overlapPicBottomY[i] = overlapPicCenter[i].position.y - otherPics[i].transform.localScale.y / 2;
 
