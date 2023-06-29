@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Test_SelectMenu.cs" />
     <Compile Include="Assets\Scripts\PlatformMoving.cs" />
     <Compile Include="Assets\Scripts\StarInteraction.cs" />
+    <Compile Include="Assets\Scripts\FlashUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
