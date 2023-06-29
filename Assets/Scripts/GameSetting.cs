@@ -11,7 +11,6 @@ public class GameSetting : MonoBehaviour
     [SerializeField] GameObject[] finalObjects;
     [SerializeField] GameObject player;
     [SerializeField] GameObject[] pictures;
-    [SerializeField] GameObject curPicture;
     Vector3[] picturesOriginPos;
     Vector3 playerOriginPos;
     int numOfPictureFrag;
@@ -49,11 +48,6 @@ public class GameSetting : MonoBehaviour
             numOfPictureFrag = -1;
         }
         checkSafeArea();
-        /*        if(curPicture == null)
-                {
-                    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                }*/
-        //print(isSafe);
         if (!isSafe)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -62,49 +56,49 @@ public class GameSetting : MonoBehaviour
 
     void checkSafeArea()
     {
-        curPicture = null;
+        float padding = 1f;
         float px1, px2, py1, py2;
+        bool overlapX1, overlapX2, overlapY1, overlapY2;
         px1 = player.transform.position.x - player.GetComponent<BoxCollider2D>().bounds.size.x / 2;
         px2 = player.transform.position.x + player.GetComponent<BoxCollider2D>().bounds.size.x / 2;
         py1 = player.transform.position.y - player.GetComponent<BoxCollider2D>().bounds.size.y / 2;
         py2 = player.transform.position.y + player.GetComponent<BoxCollider2D>().bounds.size.y / 2;
-        for(int i=0; i<pictures.Length; i++)
+        GameObject picture = null;
+        List<GameObject> curPictures = new List<GameObject>();
+        for (int i = 0; i < pictures.Length; i++)
         {
-            GameObject picture = pictures[i];
-            //if (picture == null) continue;
+            picture = pictures[i];
             float x1, x2, y1, y2;
-            x1 = picture.transform.position.x - picture.transform.localScale.x / 2;
-            x2 = picture.transform.position.x + picture.transform.localScale.x / 2;
-            y1 = picture.transform.position.y - picture.transform.localScale.y / 2;
-            y2 = picture.transform.position.y + picture.transform.localScale.y / 2;
-            //print(picture.name);
-            //print(x1 + " " + x2 + " " + y1 + " " + y2);
-            /*            bool overlapX1, overlapX2, overlapY1, overlapY2;
-                        overlapX1 = isOverlap(x1, px1, x2);
-                        overlapX2 = isOverlap(x1, px2, x2);
-                        overlapY1 = isOverlap(y1, py1, y2);
-                        overlapY2 = isOverlap(y1, py2, y2);
-                        //print(picture.name + " " + overlapY1);
-                        if (overlapX1 && overlapX2 && overlapY2 && overlapY1)
-                        {
-                            curPicture = picture;
-                        }
-                        if (curPicture != null && overlapY1)
-                        {
-                            isSafe = true;
-                            return;
-                        }*/
-            /*            else
-                        {
-                            isSafe = false;
-                        }*/
+            x1 = picture.transform.position.x - picture.transform.localScale.x * 1.81f / 2 - padding;
+            x2 = picture.transform.position.x + picture.transform.localScale.x * 1.81f / 2 + padding;
+            y1 = picture.transform.position.y - picture.transform.localScale.y / 2 - padding;
+            y2 = picture.transform.position.y + picture.transform.localScale.y / 2 + padding;
+            overlapX1 = isOverlap(x1, px1, x2);
+            overlapX2 = isOverlap(x1, px2, x2);
+            overlapY1 = isOverlap(y1, py1, y2);
+            overlapY2 = isOverlap(y1, py2, y2);
+            if ((overlapX1 && overlapX2) && (overlapY1 && overlapY2))
+            {
+                curPictures.Add(picture);
+                //break;
+            }
+            else
+            {
+                picture = null;
+            }
+        }
+        foreach (GameObject curPicture in curPictures)
+        {
+            if (curPicture == null) continue;
+            float y1, y2;
+            y1 = curPicture.transform.position.y - curPicture.transform.localScale.y / 2;
+            y2 = curPicture.transform.position.y + curPicture.transform.localScale.y / 2;
             if (isOverlap(y1, py1, y2))
             {
                 isSafe = true;
                 return;
             }
         }
-        if(isSafe) return;
         isSafe = false;
     }
 

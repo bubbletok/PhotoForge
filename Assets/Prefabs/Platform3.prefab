@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 9182579778771734004}
   - component: {fileID: 9182579778771733963}
   - component: {fileID: 9182579778771733962}
-  - component: {fileID: 9182579778771733961}
   - component: {fileID: 9182579778771733960}
   m_Layer: 3
   m_Name: Platform3
@@ -99,8 +98,8 @@ BoxCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 1
+  m_UsedByEffector: 1
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -135,42 +134,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!66 &9182579778771733961
-CompositeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9182579778771733967}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 1
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
-  m_GenerationType: 0
-  m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 9182579778771733963}
-    m_ColliderPaths:
-    - - X: 2500000
-        Y: 500000
-      - X: -2500000
-        Y: 500000
-      - X: -2500000
-        Y: -500000
-      - X: 2500000
-        Y: -500000
-  m_CompositePaths:
-    m_Paths:
-    - - {x: 0.2499707, y: -0.05}
-      - {x: 0.2499707, y: 0.05}
-      - {x: -0.25, y: 0.0499707}
-      - {x: -0.2499707, y: -0.05}
-  m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
 --- !u!251 &9182579778771733960
 PlatformEffector2D:
   m_ObjectHideFlags: 0

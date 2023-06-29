@@ -8,10 +8,16 @@ public class Test_SelectMenu : MonoBehaviour
     {
         SceneManager.LoadScene("Tutorial");
     }
-    public void stage1()
+    public void normal()
     {
-        SceneManager.LoadScene("Normal1");
+        SceneManager.LoadScene("Normal");
     }
+
+    public void hard()
+    {
+        SceneManager.LoadScene("Hard");
+    }
+
     public void back()
     {
         SceneManager.LoadScene("Stages_test");
