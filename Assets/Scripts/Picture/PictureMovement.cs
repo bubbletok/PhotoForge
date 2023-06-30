@@ -34,7 +34,29 @@ public class PictureMovement : MonoBehaviour
 
     private void LateUpdate()
     {
-        checkLimitArea(-20.8f, 20.8f, -11.5f, 11.5f);
+        checkLimitArea(-21.8f, 21.8f, -12.5f, 12.5f);
+        if (cantMove)
+        {
+            rb.velocity = Vector2.zero;
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.tag != "LimitArea") return;
+        GameObject limitArea = collision.gameObject;
+        float x1 = transform.position.x - transform.localScale.x * 1.81f / 2;
+        float x2 = transform.position.x + transform.localScale.x * 1.81f / 2;
+        float y1 = transform.position.y - transform.localScale.y / 2;
+        float y2 = transform.position.y + transform.localScale.y / 2;
+
+        float minX = limitArea.transform.position.x - limitArea.transform.localScale.x / 2;
+        float maxX = limitArea.transform.position.x + limitArea.transform.localScale.x / 2;
+        float minY = limitArea.transform.position.y - limitArea.transform.localScale.y / 2;
+        float maxY = limitArea.transform.position.y + limitArea.transform.localScale.y / 2;
+        print("Crash!!!!!!!!!!!!!!!!");
+        //transform.position += (transform.position - limitArea.transform.position) * 0.2f;
+        //transform.position += (Vector3)rb.velocity * -1 * 5f;
     }
 
     bool isOverlap(float min, float pos, float max)
@@ -52,14 +74,16 @@ public class PictureMovement : MonoBehaviour
     {
         float x = transform.position.x;
 
-        if (x - transform.localScale.x / 2 <= minX)
+        if (x - transform.localScale.x * 1.81f / 2 <= minX)
         {
-            transform.position += new Vector3(minX - x + (transform.localScale.x / 2) + 0.01f, 0, 0f);
+            transform.position += new Vector3(minX - x + (transform.localScale.x * 1.81f / 2) + 1f, 0, 0f);
+            cantMove = true;
             rb.velocity = Vector3.zero;
         }
-        else if (x + transform.localScale.x / 2 >= maxX)
+        else if (x + transform.localScale.x * 1.81f / 2 >= maxX)
         {
-            transform.position -= new Vector3(x + (transform.localScale.x / 2) - maxX + 0.01f, 0, 0f);
+            transform.position -= new Vector3(x + (transform.localScale.x * 1.81f / 2) - maxX + 1f, 0, 0f);
+            cantMove = true;
             rb.velocity = Vector3.zero;
         }
     }
@@ -69,12 +93,14 @@ public class PictureMovement : MonoBehaviour
         float y = transform.position.y;
         if (y - transform.localScale.y / 2 <= minY)
         {
-            transform.position += new Vector3(0, minY - y + (transform.localScale.y / 2) + 0.01f, 0f);
+            transform.position += new Vector3(0, minY - y + (transform.localScale.y / 2) + 1f, 0f);
+            cantMove = true;
             rb.velocity = Vector3.zero;
         }
         else if (y + transform.localScale.y / 2 >= maxY)
         {
-            transform.position -= new Vector3(0, y + (transform.localScale.y / 2) - maxY + 0.01f, 0f);
+            transform.position -= new Vector3(0, y + (transform.localScale.y / 2) - maxY + 1f, 0f);
+            cantMove = true;
             rb.velocity = Vector3.zero;
         }
     }
@@ -91,21 +117,14 @@ public class PictureMovement : MonoBehaviour
             diifPlayerPos = new Vector3(0, 0, 0);
     }
 
-    private void OnMouseDrag()
+    public void getAwayFromLimitArea()
     {
-        if (cantMove) return;
-
-        //À§Ä¡ º¯È¯
-        //moveWithPosition();
-
-        //¼Óµµ º¯È¯
-        moveWithVelocity();
         foreach (GameObject limitArea in limitAreas)
         {
             if (!limitArea.activeSelf) continue;
             if (limitArea == transform.GetChild(0).gameObject) continue;
-            float x1 = transform.position.x - transform.localScale.x / 2;
-            float x2 = transform.position.x + transform.localScale.x / 2;
+            float x1 = transform.position.x - transform.localScale.x * 1.81f / 2;
+            float x2 = transform.position.x + transform.localScale.x * 1.81f / 2;
             float y1 = transform.position.y - transform.localScale.y / 2;
             float y2 = transform.position.y + transform.localScale.y / 2;
 
@@ -115,6 +134,7 @@ public class PictureMovement : MonoBehaviour
             float maxY = limitArea.transform.position.y + limitArea.transform.localScale.y / 2;
             if (isOverlap(minX, x1, maxX) && isOverlap(minX, x2, maxX) && isOverlap(minY, y1, maxY) && isOverlap(minY, y2, maxY))
             {
+                transform.position += (transform.position - limitArea.transform.position) * 0.2f;
                 if (isOverlap(minX, x1, maxX))
                 {
                     //checkLimitAreaX(maxX, minX);
@@ -140,12 +160,24 @@ public class PictureMovement : MonoBehaviour
         }
     }
 
+    private void OnMouseDrag()
+    {
+        if (cantMove) return;
+
+        //ï¿½ï¿½Ä¡ ï¿½ï¿½È¯
+        //moveWithPosition();
+
+        //ï¿½Óµï¿½ ï¿½ï¿½È¯
+        moveWithVelocity();
+        getAwayFromLimitArea();
+    }
+
     void moveWithVelocity()
     {
         if (cantMove) return;
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         prevPicPos = transform.position;
-        //ÀÏÁ¤°Å¸® ÀÌ»ó ¿òÁ÷ÀÌ¸é ÁÂÇ¥ ¼öÁ¤
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½
         /*        if ((mousePos - prevMousePos).magnitude > 2f)
                 {
                     prevMousePos = transform.position;
@@ -162,7 +194,8 @@ public class PictureMovement : MonoBehaviour
         {
             if (hit && hit.collider.gameObject != transform.GetChild(0).gameObject)
             {
-                transform.position += (Vector3)dir * -1f;
+                transform.position += (Vector3)dir * -1 * 2f;
+                getAwayFromLimitArea();
                 rb.velocity = Vector3.zero;
                 cantMove = true;
                 //print(hit.collider.name);
@@ -188,20 +221,20 @@ public class PictureMovement : MonoBehaviour
 
     void moveWithPosition()
     {
-        //¸¶¿ì½º Å¬¸¯ ¹æÇâÀ¸·Î ¿òÁ÷ÀÌ±â
+        //ï¿½ï¿½ï¿½ì½º Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì±ï¿½
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        //ÀÏÁ¤°Å¸® ÀÌ»ó ¿òÁ÷ÀÌ¸é ÁÂÇ¥ ¼öÁ¤
+        //ï¿½ï¿½ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½
         if ((mousePos - prevPicPos).magnitude > 2f)
             prevPicPos = mousePos;
 
-        //¸¶¿ì½º ÀÌµ¿ ¹æÇâÀ¸·Î ¿òÁ÷¿´À» ¶§ Á¦ÇÑ ±¸¿ª¿¡ Ä§¹üÇÑ´Ù¸é
-        //ÀÌµ¿ ¾ÈÇÏ±â
+        //ï¿½ï¿½ï¿½ì½º ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä§ï¿½ï¿½ï¿½Ñ´Ù¸ï¿½
+        //ï¿½Ìµï¿½ ï¿½ï¿½ï¿½Ï±ï¿½
         size = new Vector2(coll.bounds.size.x, coll.bounds.size.y);
         dir = (mousePos - prevPicPos).normalized;
         dis = 0.5f;
 
-        /*        //µð¹ö±×¿ë
+        /*        //ï¿½ï¿½ï¿½ï¿½×¿ï¿½
                 Vector2 origin = transform.position;
                 Vector2 topLeft = new Vector2(origin.x - size.x / 2, origin.y + size.y / 2) + dir * dis;
                 Vector2 topRight = origin + size / 2 + dir * dis;
@@ -214,13 +247,13 @@ public class PictureMovement : MonoBehaviour
                 Debug.DrawLine(bottomLeft, topLeft, Color.red);
                 //*/
 
-        //Ä§¹ü Çß´ÂÁö && Ä§¹üÇÑ ±¸¿ªÀÌ ÀÚ±â ÀÚ½ÄÀÇ ±¸¿ªÀÌ ¾Æ´ÑÁö ÆÇº°
-        //µû¶ó¼­ »çÁøÀÇ LimitArea ¿ÀºêÁ§Æ®´Â Ç×»ó 0¹øÂ° ÀÎµ¦½º¿¡ ÀÖ¾î¾ßÇÔ
-        //-> ÇÏÀÌ¾î¶óÅ°¿¡¼­ º¯°æ ±ÝÁö
+        //Ä§ï¿½ï¿½ ï¿½ß´ï¿½ï¿½ï¿½ && Ä§ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú±ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ï¿½ï¿½ ï¿½Çºï¿½
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ LimitArea ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½×»ï¿½ 0ï¿½ï¿½Â° ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½
+        //-> ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½Å°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         StartCoroutine(waitToCollisionCheck());
         
 
-        //ÇÃ·¹ÀÌ¾î°¡ Á¸ÀçÇÏ¸é °°ÀÌ ¿òÁ÷ÀÌ±â
+        //ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì±ï¿½
         if (player != null)
         {
             if (diifPlayerPos == new Vector3(0, 0, 0))
@@ -280,7 +313,7 @@ public class PictureMovement : MonoBehaviour
             player.GetComponent<PlayerMovement>().setOnPicture(false);
         }
         cantMove = false;
-        //moveWithVelocity »ç¿ëÇÏ´Â °æ¿ì
+        //moveWithVelocity ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½
         rb.velocity = Vector3.zero;
     }
 }

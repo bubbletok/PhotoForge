@@ -61,6 +61,7 @@
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\SpawnItem.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerInput.cs" />
+    <Compile Include="Assets\Scripts\FlashUI.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerStatus.cs" />
     <Compile Include="Assets\Scripts\Picture\PictureStatus.cs" />
     <Compile Include="Assets\Scripts\Player\InteractObject.cs" />
@@ -70,7 +71,6 @@
     <Compile Include="Assets\Scripts\Test_SelectMenu.cs" />
     <Compile Include="Assets\Scripts\PlatformMoving.cs" />
     <Compile Include="Assets\Scripts\StarInteraction.cs" />
-    <Compile Include="Assets\Scripts\FlashUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

@@ -33,6 +33,8 @@ public class PlatformMoving : MonoBehaviour
     private bool isOverlap;
     public bool[] isCrossing;
 
+    public float distWithPic;
+
     void Start()
     { 
         //currentPicture = GetComponentInParent<PictureStatus>().gameObject;
@@ -44,6 +46,25 @@ public class PlatformMoving : MonoBehaviour
         otherPicsRigid = new Rigidbody2D[PIC_CAPACITY];
         isOverlap = false;
         isCrossing = new bool[PIC_CAPACITY];
+        
+        switch (directionChoose)
+        {
+            case 0:
+                bool isUp = transform.position.y >= currentPicture.transform.position.y ? true : false;
+                if (isUp)
+                    distWithPic = transform.position.y - currentPicture.transform.position.y;
+                else
+                    distWithPic = currentPicture.transform.position.y - transform.position.y;
+                break;
+
+            case 1:
+                bool isRight = transform.position.x >= currentPicture.transform.position.x ? true : false;
+                if (isRight)
+                    distWithPic = transform.position.x - currentPicture.transform.position.x;
+                else
+                    distWithPic = currentPicture.transform.position.x - transform.position.x;
+                break;
+        }
     }
 
 
@@ -76,6 +97,8 @@ public class PlatformMoving : MonoBehaviour
             MovingFunction_Alone(directionChoose);
         }
         Crossing_Regulation();
+
+        ErrorPlate_Return();
     }
 
 
@@ -156,7 +179,7 @@ public class PlatformMoving : MonoBehaviour
 
         switch (distinguisher) // 사진과 부딪쳤을 때 방향 바꿔주는 구문 
         {
-            case 0: // 문제: isinsidearea가 모두 false여도 이 범위로 되므로 당연히 오류 남 시팔 
+            case 0: 
                 if ((transform.position.x + transform.localScale.x * 2 * 0.5f) >= (realPicAxis.realPicCenter + realPicAxis.realPicHalfWidth))
                 {
                     direction = -1;
@@ -227,10 +250,10 @@ public class PlatformMoving : MonoBehaviour
         tCornerPointY = transform.position.y + transform.localScale.y / 2 / 2;
         bCornerPointY = transform.position.y - transform.localScale.y / 2 / 2;
 
-        picLeftX = currentPicture.transform.position.x - currentPicture.transform.localScale.x * 1.81f / 2;
-        picRightX = currentPicture.transform.position.x + currentPicture.transform.localScale.x * 1.81f / 2;
-        picTopY = currentPicture.transform.position.y + currentPicture.transform.localScale.y / 2;
-        picBottomY = currentPicture.transform.position.y - currentPicture.transform.localScale.y / 2;
+        picLeftX = currentPicture.transform.position.x - currentPicture.transform.localScale.x * 1.83f / 2; // 원래 1.81
+        picRightX = currentPicture.transform.position.x + currentPicture.transform.localScale.x * 1.83f / 2;
+        picTopY = currentPicture.transform.position.y + currentPicture.transform.localScale.y * 1.03f/ 2; // 원래 1 
+        picBottomY = currentPicture.transform.position.y - currentPicture.transform.localScale.y * 1.03f / 2;
 
         if (lCornerPointX >= picLeftX && rCornerPointX <= picRightX
                    && tCornerPointY <= picTopY && bCornerPointY >= picBottomY)
@@ -239,7 +262,6 @@ public class PlatformMoving : MonoBehaviour
             return false;
 
     }
-
 
     void Crossing_Regulation() // 두 사진의 경계 사이에서 발판이 지나가는 경우에 대한 예외처리. 사진을 못 움직이게 한다.
     {
@@ -258,12 +280,74 @@ public class PlatformMoving : MonoBehaviour
         }
     }
 
+    void ErrorPlate_Return()
+    {
+        bool[] isPlateinOther = curPicStatusCode.Is_Plate_In_OtherPic(transform.gameObject);
+        bool inOtherPic = false;
+
+        for(int i=0; i<PIC_CAPACITY; i++)
+        {
+            if (isPlateinOther[i])
+            {
+                inOtherPic = true;
+                break;
+            }
+            else
+                continue;
+        }
+
+        if(Is_Plate_In_CurPic())
+        {
+            switch (directionChoose)
+            {
+                case 0:
+                    bool isUp = transform.position.y >= currentPicture.transform.position.y ? true : false;
+                    if (isUp && (transform.position.y - currentPicture.transform.position.y) != distWithPic)
+                        transform.position = new Vector2(transform.position.x, currentPicture.transform.position.y + distWithPic);
+
+                    else if (!isUp && (currentPicture.transform.position.y - transform.position.y) != distWithPic)
+                        transform.position = new Vector2(transform.position.x, currentPicture.transform.position.y + distWithPic);
+
+                    break;
+
+                case 1:
+                    bool isRight = transform.position.x >= currentPicture.transform.position.x ? true : false;
+                    if (isRight && (transform.position.x - currentPicture.transform.position.x) != distWithPic)
+                        transform.position = new Vector2(currentPicture.transform.position.x + distWithPic, transform.position.y);
+
+                    else if (!isRight && (currentPicture.transform.position.x - transform.position.x) != distWithPic)
+                        transform.position = new Vector2(currentPicture.transform.position.x + distWithPic, transform.position.y);
+
+                    break;
+            }
+
+
+        }
+
+        // 현재 발판에도 업속, 다른 사진에도 없고, 발판이 건너가는 중도 아닌 경우 
+        if (!Is_Plate_In_CurPic() && !inOtherPic && !isCrossing[0] && !isCrossing[1] && !isCrossing[2] && !isCrossing[3] && !isCrossing[4] )
+        {
+           switch(directionChoose)
+           {
+                case 0:
+                    transform.position = new Vector2(transform.position.x, currentPicture.transform.position.y + distWithPic);
+                    break;
+
+                case 1:
+                    transform.position = new Vector2(currentPicture.transform.position.x + distWithPic, transform.position.y);
+                    break;
+            }
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.transform.tag == "Platform" || collision.transform.tag == "MovingPlatform")
         {
             direction = -direction;
         }
+
+     
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

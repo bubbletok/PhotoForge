@@ -9,7 +9,7 @@ public class FlashUI : MonoBehaviour
     public Image panel;
 
     float elapsedTime = 0;
-    public float toTheFlashTime = 2;
+    public float toTheFlashTime = 5;
     public float outTheFlashTime = 5;
 
     private void Start()
@@ -30,6 +30,7 @@ public class FlashUI : MonoBehaviour
         panel.gameObject.SetActive(true);
          
         Color alpha = panel.color;
+
         while(alpha.a < 1f)
         { 
             elapsedTime += Time.deltaTime / toTheFlashTime;
@@ -47,7 +48,7 @@ public class FlashUI : MonoBehaviour
             panel.color = alpha;
             yield return null;
         }
-
+        alpha.a = 0;
         yield return null;
     }
 }

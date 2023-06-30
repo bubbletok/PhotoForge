@@ -1763,7 +1763,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &791375938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2375,7 +2375,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &839093640
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2447,6 +2447,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 0}
+  toTheFlashTime: 2
+  outTheFlashTime: 5
 --- !u!1001 &907236881
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2580,7 +2582,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3006230990314003820, guid: d44630b6628e39a4c94c0d244d1c776b, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3006230990314003820, guid: d44630b6628e39a4c94c0d244d1c776b, type: 3}
       propertyPath: m_LocalScale.x
@@ -2756,7 +2758,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4114264992007016123, guid: 4b91de37c426c2e4a983fd46c31a8f17, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4114264992007016123, guid: 4b91de37c426c2e4a983fd46c31a8f17, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3173,7 +3175,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3006230990314003820, guid: d44630b6628e39a4c94c0d244d1c776b, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3006230990314003820, guid: d44630b6628e39a4c94c0d244d1c776b, type: 3}
       propertyPath: m_LocalScale.x
@@ -3645,6 +3647,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2115784560}
     m_Modifications:
+    - target: {fileID: 1054230965203291165, guid: 86dd6f1a6af67a845975f5a3a4a63649, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1054230965203291166, guid: 86dd6f1a6af67a845975f5a3a4a63649, type: 3}
       propertyPath: m_Name
       value: LimitArea
@@ -3745,7 +3751,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3006230990314003820, guid: d44630b6628e39a4c94c0d244d1c776b, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3006230990314003820, guid: d44630b6628e39a4c94c0d244d1c776b, type: 3}
       propertyPath: m_LocalScale.x
@@ -4324,7 +4330,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4114264992007016123, guid: 4b91de37c426c2e4a983fd46c31a8f17, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4114264992007016123, guid: 4b91de37c426c2e4a983fd46c31a8f17, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4987,7 +4993,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3006230990314003820, guid: d44630b6628e39a4c94c0d244d1c776b, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3006230990314003820, guid: d44630b6628e39a4c94c0d244d1c776b, type: 3}
       propertyPath: m_LocalScale.x
