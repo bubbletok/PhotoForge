@@ -7,14 +7,16 @@ using UnityEngine.UI;
 public class FlashUI : MonoBehaviour
 {
     public Image panel;
+    public AudioSource flashSound;
 
     float elapsedTime = 0;
-    public float toTheFlashTime = 5;
-    public float outTheFlashTime = 5;
+    public float toTheFlashTime = 1;
+    public float outTheFlashTime = 1;
 
     private void Start()
     {
-        panel = GetComponent<Image>();
+        flashSound = GetComponent<AudioSource>();
+        panel.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -30,7 +32,9 @@ public class FlashUI : MonoBehaviour
         panel.gameObject.SetActive(true);
          
         Color alpha = panel.color;
+        alpha.a = 0;
 
+        elapsedTime = 0;
         while(alpha.a < 1f)
         { 
             elapsedTime += Time.deltaTime / toTheFlashTime;
@@ -40,7 +44,7 @@ public class FlashUI : MonoBehaviour
         }
 
         elapsedTime = 0;
-        
+        flashSound.Play();
         while (alpha.a > 0f)
         {
             elapsedTime += Time.deltaTime / outTheFlashTime;
@@ -48,7 +52,10 @@ public class FlashUI : MonoBehaviour
             panel.color = alpha;
             yield return null;
         }
-        alpha.a = 0;
+
+        if(alpha.a == 0f)
+            panel.gameObject.SetActive(false);
+
         yield return null;
     }
 }

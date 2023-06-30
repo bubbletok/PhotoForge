@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 97
+  controlID: 17
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -94,7 +94,7 @@ MonoBehaviour:
     x: 0
     y: 0
     width: 288
-    height: 374.4
+    height: 373.6
   m_MinSize: {x: 201, y: 221}
   m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 18}
@@ -118,9 +118,9 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 374.4
+    y: 373.6
     width: 1228.8
-    height: 356.4
+    height: 357.19998
   m_MinSize: {x: 101, y: 121}
   m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 20}
@@ -224,7 +224,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 49
+  controlID: 18
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -245,11 +245,11 @@ MonoBehaviour:
     x: 0
     y: 0
     width: 1228.8
-    height: 374.4
+    height: 373.6
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 50
+  controlID: 19
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -268,7 +268,7 @@ MonoBehaviour:
     x: 288
     y: 0
     width: 940.80005
-    height: 374.4
+    height: 373.6
   m_MinSize: {x: 202, y: 221}
   m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 19}
@@ -311,7 +311,7 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 27036
+  m_LastSelectedObjectID: 27064
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -456,9 +456,9 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 2560
-    y: 813
+    y: 812.2
     width: 1227.8
-    height: 335.4
+    height: 336.19998
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -477,21 +477,21 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts
+    - Assets/Sound
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Scripts
+  - Assets/Sound
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\82107\Documents\GitHub\PhotoForge
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: ce6b0000
-    m_LastClickedID: 27598
+    m_SelectedIDs: 6c6d0000
+    m_LastClickedID: 28012
     m_ExpandedIDs: 00000000cc6b0000ce6b0000d06b000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -545,8 +545,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 420d0000
-    m_LastClickedInstanceID: 3394
+    m_SelectedInstanceIDs: b8690000
+    m_LastClickedInstanceID: 27064
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000f6be00005ea20000d8690000e2ae0000ee6900005a7b00005c890000
     m_RenameOverlay:
@@ -612,7 +612,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 0
+  m_LastVerticalScrollValue: 313.6001
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:
@@ -641,7 +641,7 @@ MonoBehaviour:
     x: 2560
     y: 438.6
     width: 287
-    height: 353.4
+    height: 352.6
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -649,10 +649,10 @@ MonoBehaviour:
     m_OverlaysVisible: 1
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 64}
-      m_SelectedIDs: 9c690000
-      m_LastClickedID: 27036
-      m_ExpandedIDs: 28fbffffb8690000c8690000566a0000866a0000
+      scrollPos: {x: 0, y: 0}
+      m_SelectedIDs: b8690000
+      m_LastClickedID: 27064
+      m_ExpandedIDs: 28fbffffb8690000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -699,7 +699,7 @@ MonoBehaviour:
     x: 2848
     y: 438.6
     width: 938.80005
-    height: 353.4
+    height: 352.6
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -957,9 +957,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 3.7277734, y: 2.4868789, z: -0.28933132}
+    m_Target: {x: -6.4195566, y: -0.17097843, z: -0.014191602}
     speed: 2
-    m_Value: {x: 4.636652, y: 2.5160995, z: -0.2839621}
+    m_Value: {x: -6.4195566, y: -0.17097843, z: -0.014191602}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1010,9 +1010,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 12.468623
+    m_Target: 8.812646
     speed: 2
-    m_Value: 11.931697
+    m_Value: 8.812646
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -1058,9 +1058,9 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 2560
-    y: 813
+    y: 812.2
     width: 1227.8
-    height: 335.4
+    height: 336.19998
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -1089,7 +1089,7 @@ MonoBehaviour:
     x: 2848
     y: 438.6
     width: 938.80005
-    height: 353.4
+    height: 352.6
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -1140,22 +1140,22 @@ MonoBehaviour:
       x: 0
       y: 21
       width: 938.80005
-      height: 332.4
-    m_Scale: {x: 0.3847222, y: 0.3847222}
-    m_Translation: {x: 469.40002, y: 166.2}
+      height: 331.6
+    m_Scale: {x: 0.58559704, y: 0.58559704}
+    m_Translation: {x: 469.40002, y: 165.8}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -1220.1012
-      y: -432
-      width: 2440.2024
-      height: 864
+      x: -801.57513
+      y: -283.12985
+      width: 1603.1503
+      height: 566.2597
     m_MinimalGUI: 1
-  m_defaultScale: 0.3847222
-  m_LastWindowPixelSize: {x: 1173.5, y: 441.75}
+  m_defaultScale: 0.3837963
+  m_LastWindowPixelSize: {x: 1173.5, y: 440.75}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 00000000000000000000
