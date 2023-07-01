@@ -13,12 +13,11 @@ public class PlatformMoving : MonoBehaviour
 
     // 플랫폼 이동 시 사용하는 변수 
     [SerializeField] public int directionChoose = 0;
-    [SerializeField] private float horizonSpeed = 5f;
+    [SerializeField] private float platformSpeed = 5f;
     private int direction = 1;
 
     private Rigidbody2D thisRigid;
     public Rigidbody2D curPicRigid;
-    private Rigidbody2D[] otherPicsRigid;
 
     private bool isOverlap;
     public bool[] isCrossing;
@@ -33,26 +32,29 @@ public class PlatformMoving : MonoBehaviour
 
         thisRigid = GetComponent<Rigidbody2D>();
         curPicRigid = currentPicture.GetComponent<Rigidbody2D>();
-        otherPicsRigid = new Rigidbody2D[PIC_CAPACITY];
         isOverlap = false;
         isCrossing = new bool[PIC_CAPACITY];
         
         switch (directionChoose)
         {
             case 0:
-                bool isUp = transform.position.y >= currentPicture.transform.position.y ? true : false;
+/*                bool isUp = transform.position.y >= currentPicture.transform.position.y ? true : false;
                 if (isUp)
                     distWithPic = transform.position.y - currentPicture.transform.position.y;
                 else
                     distWithPic = currentPicture.transform.position.y - transform.position.y;
+                distWithPic = Mathf.Abs(distWithPic);*/
+                distWithPic = transform.position.y - currentPicture.transform.position.y; // 걍 이렇게하면 양 음수 둘다 처리 가능 
                 break;
 
             case 1:
-                bool isRight = transform.position.x >= currentPicture.transform.position.x ? true : false;
+/*                bool isRight = transform.position.x >= currentPicture.transform.position.x ? true : false;
                 if (isRight)
                     distWithPic = transform.position.x - currentPicture.transform.position.x;
                 else
                     distWithPic = currentPicture.transform.position.x - transform.position.x;
+                distWithPic = Mathf.Abs(distWithPic);*/
+                distWithPic = transform.position.x - currentPicture.transform.position.x; // 걍 이렇게하면 양 음수 둘다 처리 가능 
                 break;
         }
     }
@@ -178,7 +180,7 @@ public class PlatformMoving : MonoBehaviour
                 {
                     direction = 1;
                 }
-                thisRigid.velocity = new Vector2(curPicvel.x + direction * horizonSpeed, curPicvel.y);
+                thisRigid.velocity = new Vector2(curPicvel.x + direction * platformSpeed, curPicvel.y);
                 break; // 각각에 접근할 것이 아니라, 조건을 만족하는 겹친 사진 '전체'의 평균을 구해야 한다. 
 
             case 1:
@@ -190,7 +192,7 @@ public class PlatformMoving : MonoBehaviour
                 {
                     direction = 1;
                 }
-                thisRigid.velocity = new Vector2(curPicvel.x, curPicvel.y + direction * horizonSpeed);
+                thisRigid.velocity = new Vector2(curPicvel.x, curPicvel.y + direction * platformSpeed);
                 break;
         }
 
@@ -215,7 +217,7 @@ public class PlatformMoving : MonoBehaviour
                     direction = 1;
                 }
 
-                thisRigid.velocity = new Vector2(curPicvel.x + direction * horizonSpeed , curPicvel.y);
+                thisRigid.velocity = new Vector2(curPicvel.x + direction * platformSpeed , curPicvel.y);
                 break;
 
             case 1:
@@ -224,7 +226,7 @@ public class PlatformMoving : MonoBehaviour
                 else if ((transform.position.y - transform.localScale.y * 0.5f * 0.5f) <= (curPicTrans.position.y - curPicTrans.localScale.y * 0.5f))
                     direction = 1;
 
-                thisRigid.velocity = new Vector2(curPicvel.x, curPicvel.y + direction * horizonSpeed);
+                thisRigid.velocity = new Vector2(curPicvel.x, curPicvel.y + direction * platformSpeed);
                 break;
         }
     }
@@ -273,8 +275,8 @@ public class PlatformMoving : MonoBehaviour
     void ErrorPlate_Return()
     {
         bool[] isPlateinOther = curPicStatusCode.Is_Plate_In_OtherPic(transform.gameObject);
-        bool inOtherPic = false;
 
+        bool inOtherPic = false;
         for(int i=0; i<PIC_CAPACITY; i++)
         {
             if (isPlateinOther[i])
@@ -286,36 +288,41 @@ public class PlatformMoving : MonoBehaviour
                 continue;
         }
 
-        if(Is_Plate_In_CurPic())
+
+        switch (directionChoose)
         {
-            switch (directionChoose)
-            {
-                case 0:
-                    bool isUp = transform.position.y >= currentPicture.transform.position.y ? true : false;
-                    if (isUp && (transform.position.y - currentPicture.transform.position.y) != distWithPic)
-                        transform.position = new Vector2(transform.position.x, currentPicture.transform.position.y + distWithPic);
+            case 0:
+                /*                    bool isUp = transform.position.y >= currentPicture.transform.position.y ? true : false;
+                                    if (isUp && Mathf.Abs(transform.position.y - currentPicture.transform.position.y) != distWithPic)
+                                    {
+                                        transform.position = new Vector2(transform.position.x, currentPicture.transform.position.y + distWithPic);
+                                        print("Ok");
+                                    }
+                                    else if (!isUp && Mathf.Abs(currentPicture.transform.position.y - transform.position.y) != distWithPic)
+                                    {
+                                        transform.position = new Vector2(transform.position.x, currentPicture.transform.position.y - distWithPic);
+                                        //print(currentPicture.transform.position.y + " - " + distWithPic + " = " + (currentPicture.transform.position.y - distWithPic) + " ?? " +(currentPicture.transform.position.y - transform.position.y) );
+                                    }*/
+                transform.position = new Vector2(transform.position.x, currentPicture.transform.position.y + distWithPic); // 발판y < 사진 y라면 distwithpic은 알아서 음수가 될 것.
+                break;
 
-                    else if (!isUp && (currentPicture.transform.position.y - transform.position.y) != distWithPic)
-                        transform.position = new Vector2(transform.position.x, currentPicture.transform.position.y + distWithPic);
+            case 1:
+/*                    bool isRight = transform.position.x >= currentPicture.transform.position.x ? true : false;
+                if (isRight && Mathf.Abs(transform.position.x - currentPicture.transform.position.x) != distWithPic)
+                    transform.position = new Vector2(currentPicture.transform.position.x + distWithPic, transform.position.y);
 
-                    break;
-
-                case 1:
-                    bool isRight = transform.position.x >= currentPicture.transform.position.x ? true : false;
-                    if (isRight && (transform.position.x - currentPicture.transform.position.x) != distWithPic)
-                        transform.position = new Vector2(currentPicture.transform.position.x + distWithPic, transform.position.y);
-
-                    else if (!isRight && (currentPicture.transform.position.x - transform.position.x) != distWithPic)
-                        transform.position = new Vector2(currentPicture.transform.position.x + distWithPic, transform.position.y);
-
-                    break;
-            }
-
-
+                else if (!isRight && Mathf.Abs(currentPicture.transform.position.x - transform.position.x) != distWithPic)
+                    transform.position = new Vector2(currentPicture.transform.position.x - distWithPic, transform.position.y);
+*/                  
+                transform.position = new Vector2(currentPicture.transform.position.x + distWithPic, transform.position.y); 
+                break;
         }
 
+
+
+
         // 현재 발판에도 업속, 다른 사진에도 없고, 발판이 건너가는 중도 아닌 경우 
-        if (!Is_Plate_In_CurPic() && !inOtherPic && !isCrossing[0] && !isCrossing[1] && !isCrossing[2] && !isCrossing[3] && !isCrossing[4] )
+/*        if (!Is_Plate_In_CurPic() && !inOtherPic && !isCrossing[0] && !isCrossing[1] && !isCrossing[2] && !isCrossing[3] && !isCrossing[4] )
         {
            switch(directionChoose)
            {
@@ -327,7 +334,7 @@ public class PlatformMoving : MonoBehaviour
                     transform.position = new Vector2(currentPicture.transform.position.x + distWithPic, transform.position.y);
                     break;
             }
-        }
+        }*/
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

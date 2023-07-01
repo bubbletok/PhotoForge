@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.InputManagerEntry;
 
 public class FlashUI : MonoBehaviour
 {
@@ -13,17 +14,25 @@ public class FlashUI : MonoBehaviour
     public float toTheFlashTime = 1;
     public float outTheFlashTime = 1;
 
+    private int playerCount;
+    bool isFlashedShowed;
+
+
     private void Start()
     {
         flashSound = GetComponent<AudioSource>();
         panel.gameObject.SetActive(false);
+        isFlashedShowed = false;
     }
-
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Q)) 
+
+        GameObject player = GameObject.FindWithTag("Player");
+
+        if (player.GetComponent<PlayerStatus>().playerFragCount == GameObject.FindGameObjectsWithTag("Frag").Length && !isFlashedShowed)  
         {
             StartCoroutine(Flash());
+            isFlashedShowed = true;
         }
     }
 

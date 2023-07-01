@@ -7,7 +7,7 @@ public class PlayerStatus : MonoBehaviour
 {
     //Frag 상호작용 코드 -> InteractObject로 옮김
 
-    int playerFragCount;
+    public int playerFragCount;
     bool isSmall = false;
 
     private void Start()
