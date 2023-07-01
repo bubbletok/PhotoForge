@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 4698939430105896624}
   - component: {fileID: 4698939430105896631}
   - component: {fileID: 4698939430105896625}
-  - component: {fileID: 4698939430105896626}
   - component: {fileID: 5846888817672959122}
   - component: {fileID: 1927639616}
+  - component: {fileID: 4947918833665829002}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -166,8 +166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be5e013e098e1fa4b88679ecbd1453b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  jumpForce: 1
+  speed: 8
+  jumpForce: 6
   jumpableGround:
     serializedVersion: 2
     m_Bits: 8
@@ -181,18 +181,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: effc655e4f3fd96438a8a2292eb154c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4698939430105896626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4698939430105896634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a276d07e6dd88f54bab466a6a4f9025a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &5846888817672959122
@@ -228,3 +216,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4947918833665829002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4698939430105896634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3064aab9a0ecb0247af2f39cff612aeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

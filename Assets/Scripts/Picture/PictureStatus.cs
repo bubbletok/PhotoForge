@@ -1,12 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using TreeEditor;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.Rendering.FilterWindow;
 
 public class PictureStatus : MonoBehaviour
 {

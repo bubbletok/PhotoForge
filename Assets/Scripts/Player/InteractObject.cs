@@ -27,7 +27,7 @@ public class InteractObject : MonoBehaviour
             if (other.GetComponent<EscapeDoorSetting>().getSmallDoor() && !player.getSmallPlayer())
                 return;
 
-            SceneManager.LoadScene("Stages_test");
+            SceneManager.LoadScene("Stages");
         }
         if(other.transform.tag == "Spike")
         {

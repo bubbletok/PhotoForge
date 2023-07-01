@@ -6,20 +6,29 @@ public class SpawnItem : MonoBehaviour
 {
     [SerializeField] GameObject[] items;
     [SerializeField] float spawnTime = 15f;
+    bool[] spawnings;
+
+    private void Start()
+    {
+        spawnings = new bool[items.Length];
+    }
     void Update()
     {
-        foreach (GameObject item in items)
+        for(int i=0; i<items.Length;i++)
         {
-            if (!item.activeSelf)
+            GameObject item = items[i];
+            if (!item.activeSelf && !spawnings[i])
             {
-                StartCoroutine(waitToSpawn(spawnTime,item));
+                spawnings[i] = true;
+                StartCoroutine(waitToSpawn(spawnTime, item, spawnings[i]));
             }
         }
     }
 
-    IEnumerator waitToSpawn(float time, GameObject item)
+    IEnumerator waitToSpawn(float time, GameObject item, bool spawning)
     {
         yield return new WaitForSeconds(time);
         item.SetActive(true);
+        spawning = false;
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -20,8 +21,8 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        speed = 8f;
-        jumpForce = 6.5f;
+        //speed = 8f;
+        //jumpForce = 6.5f;
         onMovingPicture = false;
 
         input = GetComponent<PlayerInput>();
@@ -42,7 +43,26 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce * input.jumped);
         }
 
+        print(jumpForce);
         UpdateAnimaion();
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Platform" || collision.collider.tag == "MovingPlatform")
+        {
+            print("Enter Platform");
+            if (collision.transform.position.y + collision.transform.localScale.y /2 >= transform.position.y - transform.localScale.y * 1.957911 / 2)
+                jumpForce = -1f;
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Platform" || collision.collider.tag == "MovingPlatform")
+        {
+            print("Exit Platform");
+            jumpForce = 6.5f;
+        }
     }
 
     void UpdateAnimaion()

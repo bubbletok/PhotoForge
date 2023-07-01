@@ -1,16 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Xml.Linq;
-using TreeEditor;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditor.TextCore.Text;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
 
 public class PlatformMoving : MonoBehaviour
 {

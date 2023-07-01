@@ -9,9 +9,13 @@ using UnityEngine.SceneManagement;
 public class GameSetting : MonoBehaviour
 {
     [SerializeField] GameObject[] finalObjects;
-    [SerializeField] GameObject player;
     [SerializeField] GameObject[] pictures;
+    [SerializeField] GameObject[] platforms; 
+    [SerializeField] GameObject player;
+    [SerializeField] public int stage;
+
     Vector3[] picturesOriginPos;
+    Vector3[] platformsOriginPos;
     Vector3 playerOriginPos;
     int numOfPictureFrag;
     bool isSafe;
@@ -21,9 +25,14 @@ public class GameSetting : MonoBehaviour
         isSafe = true;
         numOfPictureFrag = GameObject.FindGameObjectsWithTag("Frag").Length;
         picturesOriginPos = new Vector3[pictures.Length];
-        for(int i=0; i<pictures.Length; i++)
+        platformsOriginPos = new Vector3[platforms.Length];
+        for (int i=0; i<pictures.Length; i++)
         {
             picturesOriginPos[i] = pictures[i].transform.position;
+        }
+        for (int i = 0; i < platforms.Length; i++)
+        {
+            platformsOriginPos[i] = platforms[i].transform.position;
         }
         playerOriginPos = player.transform.position;
         for (int i = 0; i < finalObjects.Length; i++)
@@ -43,6 +52,10 @@ public class GameSetting : MonoBehaviour
             for (int i=0; i<pictures.Length; i++)
             {
                 pictures[i].transform.position = picturesOriginPos[i];
+            }
+            for (int i = 0; i < platforms.Length; i++)
+            {
+                platforms[i].transform.position = platformsOriginPos[i];
             }
             player.transform.position = playerOriginPos;
             numOfPictureFrag = -1;

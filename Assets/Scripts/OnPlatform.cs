@@ -12,7 +12,8 @@ public class OnPlatform : MonoBehaviour
         if (collision.collider.CompareTag("Platform"))
         {
             pic = collision.gameObject.GetComponentInParent<PictureMovement>();
-            pic.setPlayer(gameObject);
+            if (pic != null) 
+                pic.setPlayer(gameObject);
         }
     }
 
@@ -21,7 +22,8 @@ public class OnPlatform : MonoBehaviour
         if (collision.collider.CompareTag("Platform"))
         {
             pic = collision.gameObject.GetComponentInParent<PictureMovement>();
-            pic.setPlayer(null);
+            if (pic != null)
+                pic.setPlayer(null);
         }
     }
 }
