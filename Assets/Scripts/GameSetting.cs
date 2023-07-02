@@ -69,7 +69,8 @@ public class GameSetting : MonoBehaviour
 
     void checkSafeArea()
     {
-        float padding = 1f;
+        float paddingY = 1.25f;
+        float paddingX = 0.6f;
         float px1, px2, py1, py2;
         bool overlapX1, overlapX2, overlapY1, overlapY2;
         px1 = player.transform.position.x - player.GetComponent<BoxCollider2D>().bounds.size.x / 2;
@@ -82,10 +83,10 @@ public class GameSetting : MonoBehaviour
         {
             picture = pictures[i];
             float x1, x2, y1, y2;
-            x1 = picture.transform.position.x - picture.transform.localScale.x * 1.81f / 2 - padding;
-            x2 = picture.transform.position.x + picture.transform.localScale.x * 1.81f / 2 + padding;
-            y1 = picture.transform.position.y - picture.transform.localScale.y / 2 - padding;
-            y2 = picture.transform.position.y + picture.transform.localScale.y / 2 + padding;
+            x1 = picture.transform.position.x - picture.transform.localScale.x * 1.81f / 2 - paddingX;
+            x2 = picture.transform.position.x + picture.transform.localScale.x * 1.81f / 2 + paddingX;
+            y1 = picture.transform.position.y - picture.transform.localScale.y / 2 - paddingY;
+            y2 = picture.transform.position.y + picture.transform.localScale.y / 2 + paddingY;
             overlapX1 = isOverlap(x1, px1, x2);
             overlapX2 = isOverlap(x1, px2, x2);
             overlapY1 = isOverlap(y1, py1, y2);

@@ -275,7 +275,7 @@ public class PlatformMoving : MonoBehaviour
     void ErrorPlate_Return()
     {
         bool[] isPlateinOther = curPicStatusCode.Is_Plate_In_OtherPic(transform.gameObject);
-
+/*
         bool inOtherPic = false;
         for(int i=0; i<PIC_CAPACITY; i++)
         {
@@ -286,7 +286,7 @@ public class PlatformMoving : MonoBehaviour
             }
             else
                 continue;
-        }
+        }*/
 
 
         switch (directionChoose)
@@ -318,9 +318,6 @@ public class PlatformMoving : MonoBehaviour
                 break;
         }
 
-
-
-
         // 현재 발판에도 업속, 다른 사진에도 없고, 발판이 건너가는 중도 아닌 경우 
 /*        if (!Is_Plate_In_CurPic() && !inOtherPic && !isCrossing[0] && !isCrossing[1] && !isCrossing[2] && !isCrossing[3] && !isCrossing[4] )
         {
@@ -339,11 +336,25 @@ public class PlatformMoving : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.tag == "Platform" || collision.transform.tag == "MovingPlatform")
+        if (collision.transform.tag == "Platform")
         {
             direction = -direction;
         }
 
+        if(collision.transform.tag == "MovingPlatform")
+        {
+            switch(directionChoose)
+            {
+                case 0:
+                    if(collision.gameObject.GetComponent<PlatformMoving>().directionChoose == 0)
+                        direction = -direction;
+                    break;
+
+                case 1:
+                    direction = -direction;
+                    break;
+            }
+        }
      
     }
 
@@ -359,6 +370,11 @@ public class PlatformMoving : MonoBehaviour
                     break;
                 }
             }
+        }
+
+        if (collision.transform.tag == "Spike")
+        {
+            direction = -direction;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

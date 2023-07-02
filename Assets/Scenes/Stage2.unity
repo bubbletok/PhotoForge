@@ -2131,7 +2131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 839093641}
   flashSound: {fileID: 0}
-  toTheFlashTime: 0.1
+  toTheFlashTime: 0
   outTheFlashTime: 1.5
 --- !u!82 &791375943
 AudioSource:
@@ -2550,6 +2550,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2743235405079378699, guid: d44630b6628e39a4c94c0d244d1c776b, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3006230990314003820, guid: d44630b6628e39a4c94c0d244d1c776b, type: 3}
       propertyPath: m_RootOrder
       value: 6

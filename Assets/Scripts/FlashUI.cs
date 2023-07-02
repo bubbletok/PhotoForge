@@ -17,7 +17,6 @@ public class FlashUI : MonoBehaviour
     private int playerCount;
     bool isFlashedShowed;
 
-
     private void Start()
     {
         flashSound = GetComponent<AudioSource>();
@@ -27,13 +26,12 @@ public class FlashUI : MonoBehaviour
     private void Update()
     {
 
-        GameObject player = GameObject.FindWithTag("Player");
-
-        if (player.GetComponent<PlayerStatus>().playerFragCount == GameObject.FindGameObjectsWithTag("Frag").Length && !isFlashedShowed)  
+        if (GameObject.FindGameObjectsWithTag("Frag").Length == 0 && !isFlashedShowed)
         {
             StartCoroutine(Flash());
             isFlashedShowed = true;
         }
+
     }
 
     IEnumerator Flash()

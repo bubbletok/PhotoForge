@@ -47,16 +47,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.tag == "Platform" || collision.collider.tag == "MovingPlatform")
+        if (collision.collider.tag == "Platform")
         {
             print("Enter Platform");
-            if (collision.transform.position.y + collision.transform.localScale.y /2 >= transform.position.y - transform.localScale.y * 1.957911 / 2)
+            if (collision.transform.position.y + collision.transform.localScale.y / 2 >= transform.position.y - transform.localScale.y * 1.957911 / 2)
                 jumpForce = -1f;
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.collider.tag == "Platform" || collision.collider.tag == "MovingPlatform")
+        if (collision.collider.tag == "Platform")
         {
             print("Exit Platform");
             jumpForce = 6.5f;
@@ -89,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
 
     bool isGrounded()
     {
-        return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .01f, jumpableGround);
+        return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableGround);
     }
 
     public void setOnPicture(bool state)
