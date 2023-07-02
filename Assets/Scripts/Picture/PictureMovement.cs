@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PictureMovement : MonoBehaviour
 {
     [SerializeField] LayerMask limitArea;
     [SerializeField] float pictureMovementSpeed;
     [SerializeField] GameObject[] limitAreas;
+    [SerializeField] GameObject flash;
     //[SerializeField] float pictureMoveSpeed = 5f;
     Vector3 prevPicPos;
     Vector3 mousePos;
@@ -34,7 +36,7 @@ public class PictureMovement : MonoBehaviour
 
     private void LateUpdate()
     {
-        checkLimitArea(-21.8f, 21.8f, -12.5f, 12.5f);
+        checkLimitArea(-21.3f, 21.3f, -12.2f, 12.2f);
         if (cantMove)
         {
             rb.velocity = Vector2.zero;
@@ -134,6 +136,7 @@ public class PictureMovement : MonoBehaviour
             float maxY = limitArea.transform.position.y + limitArea.transform.localScale.y / 2;
             if (isOverlap(minX, x1, maxX) && isOverlap(minX, x2, maxX) && isOverlap(minY, y1, maxY) && isOverlap(minY, y2, maxY))
             {
+                flashWithCollisiion();
                 transform.position += (transform.position - limitArea.transform.position) * 0.2f;
                 if (isOverlap(minX, x1, maxX))
                 {
@@ -195,6 +198,7 @@ public class PictureMovement : MonoBehaviour
             if (hit && hit.collider.gameObject != transform.GetChild(0).gameObject)
             {
                 transform.position += (Vector3)dir * -1 * 2f;
+                StartCoroutine(flashWithCollisiion());
                 getAwayFromLimitArea();
                 rb.velocity = Vector3.zero;
                 cantMove = true;
@@ -217,6 +221,35 @@ public class PictureMovement : MonoBehaviour
             player.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
             player.transform.position = transform.position + diifPlayerPos;
         }
+    }
+
+    IEnumerator flashWithCollisiion()
+    {
+        SpriteRenderer sprite = flash.GetComponent<SpriteRenderer>();
+        float elapsedTime = 0;
+        float toTheFlashTime = 0.1f;
+        float outTheFlashTime = 0.1f;
+        //print(sprite.name + sprite.color.a + "FUCK");
+        while (sprite.color.a < 1f)
+        {
+            elapsedTime += Time.deltaTime / toTheFlashTime;
+            Color alpha = sprite.color;
+            alpha.a = Mathf.Lerp(0, 1, elapsedTime);
+            sprite.color = alpha;
+            yield return null;
+        }
+
+        elapsedTime = 0;
+        //flashSound.Play();
+        while (sprite.color.a > 0f)
+        {
+            elapsedTime += Time.deltaTime / outTheFlashTime;
+            Color alpha = sprite.color;
+            alpha.a = Mathf.Lerp(1, 0, elapsedTime);
+            sprite.color = alpha;
+            yield return null;
+        }
+        yield return null;
     }
 
     void moveWithPosition()

@@ -23,7 +23,6 @@ public class TransparentPlatform : MonoBehaviour
         {
             if (coll2d && coll2d.gameObject.GetComponent<TransparentPlatform>() != null && coll2d.gameObject != gameObject)
             {
-                print(coll2d.gameObject.name);
                 collWithTransparent = true;
                 break;
             }
@@ -32,39 +31,24 @@ public class TransparentPlatform : MonoBehaviour
         {
             UnityEngine.Color myColor = GetComponent<SpriteRenderer>().color;
             myColor.a = 1f;
-            GetComponent<BoxCollider2D>().isTrigger = false;
+            GetComponent<SpriteRenderer>().color = myColor;
         }
         else
         {
             UnityEngine.Color myColor = GetComponent<SpriteRenderer>().color;
             myColor.a = .5f;
-            GetComponent<BoxCollider2D>().isTrigger = true;
+            GetComponent<SpriteRenderer>().color = myColor;
+            
         }
     }
 
-/*    private void OnCollisionEnter2D(Collision2D collision)
+    void calcArea()
     {
-        if (collision.gameObject.GetComponent<TransparentPlatform>() != null)
-        {
-            Color myColor = GetComponent<SpriteRenderer>().color;
-            myColor.a = 1f;
-            GetComponent<BoxCollider2D>().enabled = true;
-            Color otherColor = collision.gameObject.GetComponent<SpriteRenderer>().color;
-            otherColor.a = 1f;
-            collision.gameObject.GetComponent<BoxCollider2D>().enabled = true;
-        }
+
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    bool isOverlap(float min, float pos, float max)
     {
-        if (collision.gameObject.GetComponent<TransparentPlatform>() != null)
-        {
-            Color myColor = GetComponent<SpriteRenderer>().color;
-            myColor.a = .5f;
-            GetComponent<BoxCollider2D>().enabled = false;
-            Color otherColor = collision.gameObject.GetComponent<SpriteRenderer>().color;
-            otherColor.a = .5f;
-            collision.gameObject.GetComponent<BoxCollider2D>().enabled = false;
-        }
-    }*/
+        return min <= pos && pos <= max;
+    }
 }
