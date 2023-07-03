@@ -8,7 +8,7 @@ public class PlayerStatus : MonoBehaviour
     //Frag 상호작용 코드 -> InteractObject로 옮김
 
     public int playerFragCount;
-    bool isSmall = false;
+    [SerializeField] bool isSmall = false;
 
     private void Start()
     {

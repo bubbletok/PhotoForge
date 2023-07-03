@@ -5,7 +5,7 @@ using UnityEngine;
 public class SpawnItem : MonoBehaviour
 {
     [SerializeField] GameObject[] items;
-    [SerializeField] float spawnTime = 15f;
+    [SerializeField] float spawnTime = 10f;
     bool[] spawnings;
 
     private void Start()

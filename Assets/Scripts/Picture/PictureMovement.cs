@@ -78,13 +78,17 @@ public class PictureMovement : MonoBehaviour
 
         if (x - transform.localScale.x * 1.81f / 2 <= minX)
         {
-            transform.position += new Vector3(minX - x + (transform.localScale.x * 1.81f / 2) + 1f, 0, 0f);
+            Vector3 padding = new Vector3(minX - x + (transform.localScale.x * 1.81f / 2) + 1f, 0, 0f);
+            transform.position += padding;
+            player.transform.position += padding;
             cantMove = true;
             rb.velocity = Vector3.zero;
         }
         else if (x + transform.localScale.x * 1.81f / 2 >= maxX)
         {
-            transform.position -= new Vector3(x + (transform.localScale.x * 1.81f / 2) - maxX + 1f, 0, 0f);
+            Vector3 padding = new Vector3(x + (transform.localScale.x * 1.81f / 2) - maxX + 1f, 0, 0f);
+            transform.position -= padding;
+            player.transform.position -= padding;
             cantMove = true;
             rb.velocity = Vector3.zero;
         }
@@ -95,13 +99,17 @@ public class PictureMovement : MonoBehaviour
         float y = transform.position.y;
         if (y - transform.localScale.y / 2 <= minY)
         {
-            transform.position += new Vector3(0, minY - y + (transform.localScale.y / 2) + 1f, 0f);
+            Vector3 padding = new Vector3(0, minY - y + (transform.localScale.y / 2) + 1f, 0f);
+            transform.position += padding;
+            player.transform.position += padding;
             cantMove = true;
             rb.velocity = Vector3.zero;
         }
         else if (y + transform.localScale.y / 2 >= maxY)
         {
-            transform.position -= new Vector3(0, y + (transform.localScale.y / 2) - maxY + 1f, 0f);
+            Vector3 padding = new Vector3(0, y + (transform.localScale.y / 2) - maxY + 1f, 0f);
+            transform.position -= padding;
+            player.transform.position -= padding;
             cantMove = true;
             rb.velocity = Vector3.zero;
         }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4114264992007016123}
   - component: {fileID: 4114264992007016116}
   - component: {fileID: 4114264992007016117}
+  - component: {fileID: -4515910866550431050}
   m_Layer: 0
   m_Name: Frag
   m_TagString: Frag
@@ -111,3 +112,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.8055141, y: 1.1486703}
   m_EdgeRadius: 0
+--- !u!114 &-4515910866550431050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4114264992007016122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8692286dcf8572843a8572b60e2c592b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  picture: {fileID: 0}

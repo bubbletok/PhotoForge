@@ -64,6 +64,7 @@
     <Compile Include="Assets\Scripts\OnPlatform.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerInput.cs" />
     <Compile Include="Assets\Scripts\FlashUI.cs" />
+    <Compile Include="Assets\Scripts\FragSetting.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerStatus.cs" />
     <Compile Include="Assets\Scripts\Picture\PictureStatus.cs" />

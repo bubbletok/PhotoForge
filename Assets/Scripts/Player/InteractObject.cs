@@ -40,15 +40,35 @@ public class InteractObject : MonoBehaviour
             gameObject.transform.localScale = new Vector3(0.35f, 0.35f, 1f);
             //먹을 때 잠깐 위로 뜨게해서 점프 안되는거 방지
             gameObject.GetComponent<Rigidbody2D>().velocity += Vector2.up;
+            player.setSizeSmall(true);
             other.gameObject.SetActive(false);
             StartCoroutine(waitToExpand());
         }
     }
+
+/*    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "MovingPlatform")
+        {
+            print("AAAAAAAAAAAA");
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            //rb.velocity = new Vector2(rb.velocity.x, 0);
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "MovingPlatform")
+        {
+            GetComponent<PlayerMovement>().jumpForce = 2f;
+        }
+    }*/
 
     IEnumerator waitToExpand()
     {
         //10초 후 다시 원래 크기로
         yield return new WaitForSeconds(10f);
         gameObject.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
+        player.setSizeSmall(false);
     }
 }
