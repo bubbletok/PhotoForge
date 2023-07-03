@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FragSetting : MonoBehaviour
+public class AlongWithPicture : MonoBehaviour
 {
     [SerializeField] GameObject picture;
     Vector3 distance;

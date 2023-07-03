@@ -148,11 +148,11 @@ public class PlatformMoving : MonoBehaviour
 
         Vector2 curPicvel = currentPicture.GetComponent<Rigidbody2D>().velocity;
 
-        if (isInsideAtleast && distinguisher == 0)
+        if (isInsideAtleast && distinguisher == 0) // 한개라도 겹친 사진이 있는 경우 
         {
             realPicAxis.realPicHalfWidth *= 1.3f;
         }
-        else if (!isInsideAtleast && distinguisher == 0)
+        else if (!isInsideAtleast && distinguisher == 0) // 사진 한개만 독립적으로 있는 경우 
         {
             realPicAxis.realPicHalfWidth *= 1.81f;
         }
@@ -160,6 +160,7 @@ public class PlatformMoving : MonoBehaviour
         switch (distinguisher) // 사진과 부딪쳤을 때 방향 바꿔주는 구문 
         {
             case 0:
+                print(realPicAxis.realPicCenter + " " + realPicAxis.realPicHalfWidth);
                 if ((transform.position.x + transform.localScale.x * 2 * 0.5f) >= (realPicAxis.realPicCenter + realPicAxis.realPicHalfWidth))
                 {
                     direction = -1;
@@ -184,6 +185,29 @@ public class PlatformMoving : MonoBehaviour
                 break;
         }
 
+        switch (distinguisher)
+        {
+            case 0:
+                if(transform.position.x < realPicAxis.realPicCenter - realPicAxis.realPicHalfWidth)
+                { 
+                    direction = 1;
+                }
+                else if (transform.position.x > realPicAxis.realPicCenter + realPicAxis.realPicHalfWidth)
+                {
+                    direction = -1;
+                }
+                break;
+            case 1:
+                if (transform.position.y < realPicAxis.realPicCenter - realPicAxis.realPicHalfWidth)
+                {
+                    direction = 1;
+                }
+                else if (transform.position.y > realPicAxis.realPicCenter + realPicAxis.realPicHalfWidth)
+                {
+                    direction = -1;
+                }
+                break;
+        }
 
     }
 
@@ -302,6 +326,8 @@ public class PlatformMoving : MonoBehaviour
                             break;
                     }
                 }*/
+
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

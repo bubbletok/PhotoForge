@@ -80,7 +80,8 @@ public class PictureMovement : MonoBehaviour
         {
             Vector3 padding = new Vector3(minX - x + (transform.localScale.x * 1.81f / 2) + 1f, 0, 0f);
             transform.position += padding;
-            player.transform.position += padding;
+            if(player != null)
+                player.transform.position += padding;
             cantMove = true;
             rb.velocity = Vector3.zero;
         }
@@ -88,7 +89,8 @@ public class PictureMovement : MonoBehaviour
         {
             Vector3 padding = new Vector3(x + (transform.localScale.x * 1.81f / 2) - maxX + 1f, 0, 0f);
             transform.position -= padding;
-            player.transform.position -= padding;
+            if(player != null)
+                player.transform.position -= padding;
             cantMove = true;
             rb.velocity = Vector3.zero;
         }
@@ -101,7 +103,8 @@ public class PictureMovement : MonoBehaviour
         {
             Vector3 padding = new Vector3(0, minY - y + (transform.localScale.y / 2) + 1f, 0f);
             transform.position += padding;
-            player.transform.position += padding;
+            if(player != null) 
+                player.transform.position += padding;
             cantMove = true;
             rb.velocity = Vector3.zero;
         }
@@ -109,7 +112,8 @@ public class PictureMovement : MonoBehaviour
         {
             Vector3 padding = new Vector3(0, y + (transform.localScale.y / 2) - maxY + 1f, 0f);
             transform.position -= padding;
-            player.transform.position -= padding;
+            if(player != null)
+                player.transform.position -= padding;
             cantMove = true;
             rb.velocity = Vector3.zero;
         }
