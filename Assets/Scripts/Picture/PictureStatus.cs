@@ -134,7 +134,8 @@ public class PictureStatus : MonoBehaviour
                 {
                     if ((collision.gameObject == mPlatform) && isPlateinOtherPic[i]) // i번째 사진에 발판이 들어간 경우. + 그 발판이 현재 사진에 저장된 발판인 경우
                     {
-                        otherPicCode = otherPics[i].GetComponent<PictureStatus>();
+                        if (otherPics[i].GetComponent<PictureStatus>() != null)
+                            otherPicCode = otherPics[i].GetComponent<PictureStatus>();
                         platformCode = mPlatform.GetComponent<PlatformMoving>();
 
                         // 플랫폼의 curPic 변경해줘야 함. + curPicStatusCode도.

@@ -277,8 +277,11 @@ public class PlatformMoving : MonoBehaviour
 
                 if (!Is_Plate_In_CurPic() && isCrossing[i])
                 {
-                    currentPicture.GetComponent<PictureMovement>().cantMove = true;
-                    overLappedPicture[i].GetComponent<PictureMovement>().cantMove = true;
+                    if (currentPicture.GetComponent<PictureMovement>() != null)
+                        currentPicture.GetComponent<PictureMovement>().cantMove = true;
+
+                    if (overLappedPicture[i].GetComponent<PictureMovement>() != null)
+                        overLappedPicture[i].GetComponent<PictureMovement>().cantMove = true;
                 }
             }
         }
@@ -311,22 +314,6 @@ public class PlatformMoving : MonoBehaviour
                 transform.position = new Vector2(currentPicture.transform.position.x + distWithPic, transform.position.y);
                 break;
         }
-
-        // 현재 발판에도 업속, 다른 사진에도 없고, 발판이 건너가는 중도 아닌 경우 
-        /*        if (!Is_Plate_In_CurPic() && !inOtherPic && !isCrossing[0] && !isCrossing[1] && !isCrossing[2] && !isCrossing[3] && !isCrossing[4] )
-                {
-                   switch(directionChoose)
-                   {
-                        case 0:
-                            transform.position = new Vector2(transform.position.x, currentPicture.transform.position.y + distWithPic);
-                            break;
-
-                        case 1:
-                            transform.position = new Vector2(currentPicture.transform.position.x + distWithPic, transform.position.y);
-                            break;
-                    }
-                }*/
-
 
     }
 

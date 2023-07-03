@@ -17,6 +17,9 @@ public class GameSetting : MonoBehaviour
     Vector3[] picturesOriginPos;
     Vector3[] platformsOriginPos;
     Vector3 playerOriginPos;
+    float[] platformOriginDist;
+    GameObject[] platformOriginPic;
+
     int numOfPictureFrag;
     bool isSafe;
     // Start is called before the first frame update
@@ -26,6 +29,9 @@ public class GameSetting : MonoBehaviour
         numOfPictureFrag = GameObject.FindGameObjectsWithTag("Frag").Length;
         picturesOriginPos = new Vector3[pictures.Length];
         platformsOriginPos = new Vector3[platforms.Length];
+        platformOriginDist = new float[platforms.Length];
+        platformOriginPic = new GameObject[platforms.Length];
+
         for (int i=0; i<pictures.Length; i++)
         {
             picturesOriginPos[i] = pictures[i].transform.position;
@@ -33,6 +39,8 @@ public class GameSetting : MonoBehaviour
         for (int i = 0; i < platforms.Length; i++)
         {
             platformsOriginPos[i] = platforms[i].transform.position;
+            platformOriginDist[i] = platforms[i].GetComponent<PlatformMoving>().distWithPic;
+            platformOriginPic[i] = platforms[i].GetComponent<PlatformMoving>().currentPicture;
         }
         playerOriginPos = player.transform.position;
         for (int i = 0; i < finalObjects.Length; i++)
@@ -56,6 +64,8 @@ public class GameSetting : MonoBehaviour
             for (int i = 0; i < platforms.Length; i++)
             {
                 platforms[i].transform.position = platformsOriginPos[i];
+                platforms[i].GetComponent<PlatformMoving>().distWithPic = platformOriginDist[i];
+                platforms[i].GetComponent<PlatformMoving>().currentPicture = platformOriginPic[i];
             }
             player.transform.position = playerOriginPos;
             numOfPictureFrag = -1;

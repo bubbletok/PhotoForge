@@ -7,8 +7,11 @@ using UnityEngine;
 
 public class TransparentPlatform : MonoBehaviour
 {
-    GameObject[] otherTransPlatforms;
+    [SerializeField] GameObject[] otherTransPlatforms;
+    [SerializeField] GameObject[] newColl;
     public readonly int PLATE_CAPACITY = 5;
+
+    Vector2 newCollTransform;
 
     BoxCollider2D myPlatformColl;
     Collider2D[] otherPlatformColls;
@@ -17,11 +20,13 @@ public class TransparentPlatform : MonoBehaviour
     private void Start()
     {
         otherTransPlatforms = new GameObject[PLATE_CAPACITY];
+        newColl = new GameObject[PLATE_CAPACITY];
         myPlatformColl = GetComponent<BoxCollider2D>();
     }
     private void Update()
     {
         Calculate_OverlapAreaX_Transparent();
+        Calculate_OverlapAreaY_Transparent();
         //print(Calculate_FullLengthX_Transparent()[0]);
         //print(Calculate_OverlapAreaX_Transparent()[0] + " " + Calculate_OverlapAreaY_TransParent()[0]);
     }
@@ -33,7 +38,7 @@ public class TransparentPlatform : MonoBehaviour
             for (int i = 0; i < PLATE_CAPACITY; i++)
             {
                 if (otherTransPlatforms[i] == null) // 비어있는 컨테이너에 대해, ontriggerenter에서 인식된 사진을 추가시킨다.
-                { 
+                {
                     otherTransPlatforms[i] = collision.gameObject;
                     break;
                 }
@@ -64,13 +69,13 @@ public class TransparentPlatform : MonoBehaviour
             if (otherTransPlatforms[i] != null)
             {
                 if (otherTransPlatforms[i].GetComponent<Rigidbody2D>().velocity == Vector2.zero)
-                    fullLength[i] = transform.localScale.x + otherTransPlatforms[i].transform.localScale.x * 7;
+                    fullLength[i] = transform.localScale.x * 2 + otherTransPlatforms[i].transform.localScale.x * 2 * 7;
 
-                else if(gameObject.GetComponent<Rigidbody2D>().velocity == Vector2.zero)
-                    fullLength[i] = transform.localScale.x * 7 + otherTransPlatforms[i].transform.localScale.x;
+                else if (gameObject.GetComponent<Rigidbody2D>().velocity == Vector2.zero)
+                    fullLength[i] = transform.localScale.x * 2 * 7 + otherTransPlatforms[i].transform.localScale.x * 2;
 
                 else
-                    fullLength[i] = transform.localScale.x + otherTransPlatforms[i].transform.localScale.x;
+                    fullLength[i] = transform.localScale.x * 2 + otherTransPlatforms[i].transform.localScale.x * 2;
             }
             else // 겹쳐있지 않은 경우 
                 continue; // pass
@@ -87,13 +92,13 @@ public class TransparentPlatform : MonoBehaviour
             if (otherTransPlatforms[i] != null)
             {
                 if (otherTransPlatforms[i].GetComponent<Rigidbody2D>().velocity == Vector2.zero)
-                    fullLength[i] = transform.localScale.y + otherTransPlatforms[i].transform.localScale.y * 7;
+                    fullLength[i] = transform.localScale.y / 2 + otherTransPlatforms[i].transform.localScale.y / 2 * 7;
 
                 else if (gameObject.GetComponent<Rigidbody2D>().velocity == Vector2.zero)
-                    fullLength[i] = transform.localScale.y * 7 + otherTransPlatforms[i].transform.localScale.y;
+                    fullLength[i] = transform.localScale.y / 2 * 7 + otherTransPlatforms[i].transform.localScale.y / 2;
 
                 else
-                    fullLength[i] = transform.localScale.y + otherTransPlatforms[i].transform.localScale.y;
+                    fullLength[i] = transform.localScale.y / 2 + otherTransPlatforms[i].transform.localScale.y / 2;
             }
             else
                 continue;
@@ -111,7 +116,7 @@ public class TransparentPlatform : MonoBehaviour
         float[] realLengthX = new float[PLATE_CAPACITY];
         float[] overlapSizeX = new float[PLATE_CAPACITY];
 
-        
+
         for (int i = 0; i < PLATE_CAPACITY; i++)
         {
             if (otherTransPlatforms[i] != null)
@@ -125,34 +130,37 @@ public class TransparentPlatform : MonoBehaviour
                     myPlateLocalScale = new Vector2(transform.localScale.x * 7, transform.localScale.y * 7);
 
 
-                float otherPlateRightX = otherTransPlatforms[i].transform.position.x + otherPlatesLocalScale[i].x / 2;
-                float otherPlateLeftX = otherTransPlatforms[i].transform.position.x - otherPlatesLocalScale[i].x / 2;
-                float thisPlateRightX = transform.position.x + myPlateLocalScale.x / 2;
-                float thisPlateLeftX = transform.position.x - myPlateLocalScale.x / 2;
-
-                if(otherPlateLeftX <= thisPlateRightX && otherPlateLeftX >= thisPlateLeftX && otherPlateRightX > thisPlateRightX) 
+                float otherPlateRightX = otherTransPlatforms[i].transform.position.x + otherPlatesLocalScale[i].x * 2 / 2;
+                float otherPlateLeftX = otherTransPlatforms[i].transform.position.x - otherPlatesLocalScale[i].x * 2 / 2;
+                float thisPlateRightX = transform.position.x + myPlateLocalScale.x * 2 / 2;
+                float thisPlateLeftX = transform.position.x - myPlateLocalScale.x * 2 / 2;
+                //print(this.name + " " + transform.localScale.x + " " + transform.position.x + " " + thisPlateLeftX + " " + thisPlateRightX);
+                if (otherPlateLeftX <= thisPlateRightX && otherPlateLeftX >= thisPlateLeftX && otherPlateRightX > thisPlateRightX)
                 {
-                    print(gameObject.name + "  " + "Case1");
+                    //print(gameObject.name + "  " + "Case1");
                     //realLengthX[i] = (otherTransPlatforms[i].transform.position.x + otherPlatesLocalScale[i].x / 2) - (transform.position.x - myPlateLocalScale.x / 2);
                     overlapSizeX[i] = Mathf.Abs(thisPlateRightX - otherPlateLeftX);
+
+                    //?
+
                 }
-                else if(otherPlateRightX >= thisPlateLeftX && otherPlateRightX <= thisPlateRightX && otherPlateLeftX < thisPlateLeftX)
+                else if (otherPlateRightX >= thisPlateLeftX && otherPlateRightX <= thisPlateRightX && otherPlateLeftX < thisPlateLeftX)
                 {
-                    print(gameObject.name + "  " + "Case2");
+                    //print(gameObject.name + "  " + "Case2");
 
                     //realLengthX[i] = (transform.position.x + myPlateLocalScale.x / 2) - (otherTransPlatforms[i].transform.position.x - otherPlatesLocalScale[i].x / 2);
                     overlapSizeX[i] = Mathf.Abs(otherPlateRightX - thisPlateLeftX);
                 }
-                else if(otherPlateLeftX >= thisPlateLeftX && otherPlateRightX <= thisPlateRightX)
+                else if (otherPlateLeftX >= thisPlateLeftX && otherPlateRightX <= thisPlateRightX)
                 {
-                    print(gameObject.name + "  " + "Case3");
+                    //print(gameObject.name + "  " + "Case3");
 
                     //realLengthX[i] = otherPlatesLocalScale[i].x;
                     overlapSizeX[i] = otherPlatesLocalScale[i].x;
                 }
-                else if(otherPlateLeftX <= thisPlateLeftX && otherPlateRightX >= thisPlateRightX)
+                else if (otherPlateLeftX <= thisPlateLeftX && otherPlateRightX >= thisPlateRightX)
                 {
-                    print(gameObject.name + "  " + "Case4");
+                    //print(gameObject.name + "  " + "Case4");
 
                     //realLengthX[i] = myPlateLocalScale.x;
                     overlapSizeX[i] = myPlateLocalScale.x;
@@ -164,9 +172,9 @@ public class TransparentPlatform : MonoBehaviour
     }
 
 
-    public float[] Calculate_OverlapAreaY_TransParent() // 사진이 겹치는 경우 겹치는 Y범위 계산  이거 이따가 수정 필요 
+    public float[] Calculate_OverlapAreaY_Transparent() // 사진이 겹치는 경우 겹치는 Y범위 계산  이거 이따가 수정 필요 
     {
-        Transform[] otherPlatesTrans = new Transform[PLATE_CAPACITY];
+        Vector2[] otherPlatesLocalScale = new Vector2[PLATE_CAPACITY];
         Vector2 myPlateLocalScale = transform.localScale;
 
         float[] fullLengthY = Calculate_FullLengthY_TransParent();
@@ -177,27 +185,48 @@ public class TransparentPlatform : MonoBehaviour
         {
             if (otherTransPlatforms[i] != null)
             {
-                otherPlatesTrans[i] = otherTransPlatforms[i].transform;
-
                 if (otherTransPlatforms[i].GetComponent<Rigidbody2D>().velocity == Vector2.zero)
-                    otherPlatesTrans[i].localScale = new Vector2(otherPlatesTrans[i].localScale.x * 7, otherPlatesTrans[i].localScale.y * 7);
+                    otherPlatesLocalScale[i] = new Vector2(otherTransPlatforms[i].transform.localScale.x * 7, otherTransPlatforms[i].transform.localScale.y * 7);
 
-                else if (gameObject.GetComponent<Rigidbody2D>().velocity == Vector2.zero)
+                if (gameObject.GetComponent<Rigidbody2D>().velocity == Vector2.zero)
                     myPlateLocalScale = new Vector2(transform.localScale.x * 7, transform.localScale.y * 7);
 
 
-                if (transform.position.y < otherPlatesTrans[i].position.y)
+                float otherPlayerUpY = otherTransPlatforms[i].transform.position.y + otherPlatesLocalScale[i].y / 2 / 2;
+                float otherPlayerDownY = otherTransPlatforms[i].transform.position.y - otherPlatesLocalScale[i].y / 2 / 2;
+                float thisPlateUpY = transform.position.y + myPlateLocalScale.y / 2 / 2;
+                float thisPlateDownY = transform.position.y - myPlateLocalScale.y / 2 / 2;
+                //print(this.name + " " + transform.localScale.y + " " + transform.position.y + " " + thisPlateDownY + " " + thisPlateUpY);
+                print(this.name);
+                print(otherPlayerDownY + " " + thisPlateUpY + " " + thisPlateDownY + " " + otherPlayerUpY);
+                if (otherPlayerDownY <= thisPlateUpY && otherPlayerDownY >= thisPlateDownY && otherPlayerUpY > thisPlateUpY)
                 {
-                    realLengthY[i] = (otherPlatesTrans[i].position.y + otherPlatesTrans[i].localScale.y / 2) -
-                                    (transform.position.y - myPlateLocalScale.y / 2);
+                    //print(gameObject.name + "  " + "Case1");
+                    //realLengthX[i] = (otherTransPlatforms[i].transform.position.x + otherPlatesLocalScale[i].x / 2) - (transform.position.x - myPlateLocalScale.x / 2);
+                    overlapSizeY[i] = Mathf.Abs(thisPlateUpY - otherPlayerDownY);
                 }
-                else
+                else if (otherPlayerUpY >= thisPlateDownY && otherPlayerUpY <= thisPlateUpY && otherPlayerDownY < thisPlateDownY)
                 {
-                    realLengthY[i] = (transform.position.y + myPlateLocalScale.y / 2) -
-                                    (otherPlatesTrans[i].position.y - otherPlatesTrans[i].localScale.y / 2);
+                    //print(gameObject.name + "  " + "Case2");
+
+                    //realLengthX[i] = (transform.position.x + myPlateLocalScale.x / 2) - (otherTransPlatforms[i].transform.position.x - otherPlatesLocalScale[i].x / 2);
+                    overlapSizeY[i] = Mathf.Abs(otherPlayerUpY - thisPlateDownY);
+                }
+                else if (otherPlayerDownY >= thisPlateDownY && otherPlayerUpY <= thisPlateUpY)
+                {
+                    //print(gameObject.name + "  " + "Case3");
+
+                    //realLengthX[i] = otherPlatesLocalScale[i].x;
+                    overlapSizeY[i] = otherPlatesLocalScale[i].y;
+                }
+                else if (otherPlayerDownY <= thisPlateDownY && otherPlayerUpY >= thisPlateUpY)
+                {
+                    //print(gameObject.name + "  " + "Case4");
+
+                    //realLengthX[i] = myPlateLocalScale.x;
+                    overlapSizeY[i] = myPlateLocalScale.y;
                 }
             }
-            overlapSizeY[i] = fullLengthY[i] - realLengthY[i];
         }
 
 
