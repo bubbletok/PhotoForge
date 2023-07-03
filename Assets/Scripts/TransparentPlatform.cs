@@ -8,25 +8,45 @@ using UnityEngine;
 public class TransparentPlatform : MonoBehaviour
 {
     [SerializeField] GameObject[] otherTransPlatforms;
+    [SerializeField] GameObject newCollObject;
     [SerializeField] GameObject[] newColl;
     public readonly int PLATE_CAPACITY = 5;
 
-    Vector2 newCollTransform;
-
     BoxCollider2D myPlatformColl;
     Collider2D[] otherPlatformColls;
+    [SerializeField] bool[] isOverlappedByX, isOverlappedByY;
 
+    bool atLeastOne;
 
     private void Start()
     {
         otherTransPlatforms = new GameObject[PLATE_CAPACITY];
         newColl = new GameObject[PLATE_CAPACITY];
+        isOverlappedByX = new bool[PLATE_CAPACITY];
+        isOverlappedByY = new bool[PLATE_CAPACITY];
         myPlatformColl = GetComponent<BoxCollider2D>();
+
+        for(int i=0; i<PLATE_CAPACITY; i++)
+        {
+            newColl[i] = Instantiate(newCollObject, transform.position, Quaternion.identity);
+            if(newColl[i]!=null)
+                newColl[i].SetActive(false);
+        }
+
     }
     private void Update()
     {
         Calculate_OverlapAreaX_Transparent();
         Calculate_OverlapAreaY_Transparent();
+        for (int i = 0; i < PLATE_CAPACITY; i++)
+        {
+            if (otherTransPlatforms[i] == null)
+            {
+                newColl[i].transform.localScale = Vector2.zero;
+                newColl[i].SetActive(false);
+            }
+        }
+
         //print(Calculate_FullLengthX_Transparent()[0]);
         //print(Calculate_OverlapAreaX_Transparent()[0] + " " + Calculate_OverlapAreaY_TransParent()[0]);
     }
@@ -116,11 +136,12 @@ public class TransparentPlatform : MonoBehaviour
         float[] realLengthX = new float[PLATE_CAPACITY];
         float[] overlapSizeX = new float[PLATE_CAPACITY];
 
-
         for (int i = 0; i < PLATE_CAPACITY; i++)
         {
             if (otherTransPlatforms[i] != null)
             {
+                float newCollLeftX = 0f;
+                float newCollRIghtX = 0f;
                 otherPlatesLocalScale[i] = otherTransPlatforms[i].transform.localScale; // 크기 저장.
 
                 if (otherTransPlatforms[i].GetComponent<Rigidbody2D>().velocity == Vector2.zero)
@@ -140,8 +161,9 @@ public class TransparentPlatform : MonoBehaviour
                     //print(gameObject.name + "  " + "Case1");
                     //realLengthX[i] = (otherTransPlatforms[i].transform.position.x + otherPlatesLocalScale[i].x / 2) - (transform.position.x - myPlateLocalScale.x / 2);
                     overlapSizeX[i] = Mathf.Abs(thisPlateRightX - otherPlateLeftX);
-
-                    //?
+                    newCollLeftX = otherPlateLeftX;
+                    newCollRIghtX = thisPlateRightX;
+                    isOverlappedByX[i] = true;
 
                 }
                 else if (otherPlateRightX >= thisPlateLeftX && otherPlateRightX <= thisPlateRightX && otherPlateLeftX < thisPlateLeftX)
@@ -150,6 +172,9 @@ public class TransparentPlatform : MonoBehaviour
 
                     //realLengthX[i] = (transform.position.x + myPlateLocalScale.x / 2) - (otherTransPlatforms[i].transform.position.x - otherPlatesLocalScale[i].x / 2);
                     overlapSizeX[i] = Mathf.Abs(otherPlateRightX - thisPlateLeftX);
+                    newCollLeftX = thisPlateLeftX;
+                    newCollRIghtX = otherPlateRightX;
+                    isOverlappedByX[i] = true;
                 }
                 else if (otherPlateLeftX >= thisPlateLeftX && otherPlateRightX <= thisPlateRightX)
                 {
@@ -157,6 +182,9 @@ public class TransparentPlatform : MonoBehaviour
 
                     //realLengthX[i] = otherPlatesLocalScale[i].x;
                     overlapSizeX[i] = otherPlatesLocalScale[i].x;
+                    newCollLeftX = otherPlateLeftX;
+                    newCollRIghtX = otherPlateRightX;
+                    isOverlappedByX[i] = true;
                 }
                 else if (otherPlateLeftX <= thisPlateLeftX && otherPlateRightX >= thisPlateRightX)
                 {
@@ -164,7 +192,27 @@ public class TransparentPlatform : MonoBehaviour
 
                     //realLengthX[i] = myPlateLocalScale.x;
                     overlapSizeX[i] = myPlateLocalScale.x;
+                    newCollLeftX = thisPlateLeftX;
+                    newCollRIghtX = thisPlateRightX;
+                    isOverlappedByX[i] = true;
                 }
+                else
+                {
+                    isOverlappedByX[i] = false;
+                }
+                //print(isOverlappedByX[i]);
+                //print(this.name + " " + i);
+                if (isOverlappedByX[i] && newColl[i] != null)
+                {
+                    newColl[i].transform.position = new Vector2((newCollLeftX + newCollRIghtX) / 2, newColl[i].transform.position.y);
+                    newColl[i].transform.localScale = new Vector2((newCollRIghtX - newCollLeftX), newColl[i].transform.localScale.y);
+                    newColl[i].SetActive(true);
+                }
+                else
+                {
+                    newColl[i].SetActive(false);
+                }
+
             }
         }
 
@@ -185,6 +233,9 @@ public class TransparentPlatform : MonoBehaviour
         {
             if (otherTransPlatforms[i] != null)
             {
+                float newCollDownY = 0f;
+                float newCollUpY = 0f;
+
                 if (otherTransPlatforms[i].GetComponent<Rigidbody2D>().velocity == Vector2.zero)
                     otherPlatesLocalScale[i] = new Vector2(otherTransPlatforms[i].transform.localScale.x * 7, otherTransPlatforms[i].transform.localScale.y * 7);
 
@@ -197,13 +248,16 @@ public class TransparentPlatform : MonoBehaviour
                 float thisPlateUpY = transform.position.y + myPlateLocalScale.y / 2 / 2;
                 float thisPlateDownY = transform.position.y - myPlateLocalScale.y / 2 / 2;
                 //print(this.name + " " + transform.localScale.y + " " + transform.position.y + " " + thisPlateDownY + " " + thisPlateUpY);
-                print(this.name);
-                print(otherPlayerDownY + " " + thisPlateUpY + " " + thisPlateDownY + " " + otherPlayerUpY);
+                //print(this.name);
+                //print(otherPlayerDownY + " " + thisPlateUpY + " " + thisPlateDownY + " " + otherPlayerUpY);
                 if (otherPlayerDownY <= thisPlateUpY && otherPlayerDownY >= thisPlateDownY && otherPlayerUpY > thisPlateUpY)
                 {
                     //print(gameObject.name + "  " + "Case1");
                     //realLengthX[i] = (otherTransPlatforms[i].transform.position.x + otherPlatesLocalScale[i].x / 2) - (transform.position.x - myPlateLocalScale.x / 2);
                     overlapSizeY[i] = Mathf.Abs(thisPlateUpY - otherPlayerDownY);
+                    newCollDownY = otherPlayerDownY;
+                    newCollUpY = thisPlateUpY;
+                    isOverlappedByY[i] = true;
                 }
                 else if (otherPlayerUpY >= thisPlateDownY && otherPlayerUpY <= thisPlateUpY && otherPlayerDownY < thisPlateDownY)
                 {
@@ -211,6 +265,9 @@ public class TransparentPlatform : MonoBehaviour
 
                     //realLengthX[i] = (transform.position.x + myPlateLocalScale.x / 2) - (otherTransPlatforms[i].transform.position.x - otherPlatesLocalScale[i].x / 2);
                     overlapSizeY[i] = Mathf.Abs(otherPlayerUpY - thisPlateDownY);
+                    newCollDownY = thisPlateDownY;
+                    newCollUpY = otherPlayerUpY;
+                    isOverlappedByY[i] = true;
                 }
                 else if (otherPlayerDownY >= thisPlateDownY && otherPlayerUpY <= thisPlateUpY)
                 {
@@ -218,6 +275,9 @@ public class TransparentPlatform : MonoBehaviour
 
                     //realLengthX[i] = otherPlatesLocalScale[i].x;
                     overlapSizeY[i] = otherPlatesLocalScale[i].y;
+                    newCollDownY = otherPlayerDownY;
+                    newCollUpY = otherPlayerUpY;
+                    isOverlappedByY[i] = true;
                 }
                 else if (otherPlayerDownY <= thisPlateDownY && otherPlayerUpY >= thisPlateUpY)
                 {
@@ -225,6 +285,23 @@ public class TransparentPlatform : MonoBehaviour
 
                     //realLengthX[i] = myPlateLocalScale.x;
                     overlapSizeY[i] = myPlateLocalScale.y;
+                    newCollDownY = thisPlateDownY;
+                    newCollUpY = thisPlateUpY;
+                    isOverlappedByY[i] = true;
+                }
+                else
+                {
+                    isOverlappedByY[i] = false;
+                }
+                if (isOverlappedByY[i] && newColl[i] != null)
+                {
+                    newColl[i].transform.position = new Vector2(newColl[i].transform.position.x, (newCollDownY + newCollUpY) / 2);
+                    newColl[i].transform.localScale = new Vector2(newColl[i].transform.localScale.x, (newCollUpY - newCollDownY));
+                    newColl[i].SetActive(true);
+                }
+                else
+                {
+                    newColl[i].SetActive(false);
                 }
             }
         }
