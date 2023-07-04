@@ -36,8 +36,8 @@ Shader "Custom/TransparentShader" {
                 fixed4 frag(v2f i) : SV_Target {
                     fixed4 col = tex2D(_MainTex, i.uv);
                     float waveOffset = sin(_Time.y * 10.0 + i.uv.y) * _WaveAmplitude;
-                    col.rgb = float3(0, 0, 1.5 + waveOffset);
-                    col.a *= .85;
+                    col.rgb = float3(0, 0, 2.5 + waveOffset);
+                    col.a *= .35;
                     return col;
                 }
                 ENDCG

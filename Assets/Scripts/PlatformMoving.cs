@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlatformMoving : MonoBehaviour
@@ -9,7 +10,6 @@ public class PlatformMoving : MonoBehaviour
     [SerializeField] public GameObject currentPicture; // 현재 속한 사진의 오브젝트. 부모 관계의 사진으로 set 되어야 함. 
     public PictureStatus curPicStatusCode; // 현재 속한 사진의 코드 
     public GameObject[] overLappedPicture; // 현재 속한 사진과 겹친 사진 
-
 
     // 플랫폼 이동 시 사용하는 변수 
     [SerializeField] public int directionChoose = 0;
@@ -29,7 +29,6 @@ public class PlatformMoving : MonoBehaviour
         //currentPicture = GetComponentInParent<PictureStatus>().gameObject;
         curPicStatusCode = currentPicture.GetComponent<PictureStatus>();
         overLappedPicture = new GameObject[PIC_CAPACITY];
-
         thisRigid = GetComponent<Rigidbody2D>();
         curPicRigid = currentPicture.GetComponent<Rigidbody2D>();
         isOverlap = false;
@@ -279,23 +278,39 @@ public class PlatformMoving : MonoBehaviour
                 {
                     if (currentPicture.GetComponent<PictureMovement>() != null)
                     {
+                        print(currentPicture.name);
                         currentPicture.GetComponent<PictureMovement>().cantMove = true;
                         currentPicture.GetComponent<PictureMovement>().alertOutline.SetActive(true);
                     }
 
                     if (overLappedPicture[i].GetComponent<PictureMovement>() != null)
                     {
+                        print(i + " " + overLappedPicture[i].name);
                         overLappedPicture[i].GetComponent<PictureMovement>().cantMove = true;
                         overLappedPicture[i].GetComponent<PictureMovement>().alertOutline.SetActive(true);
                     }
                 }
                 else
                 {
-                    currentPicture.GetComponent<PictureMovement>().alertOutline.SetActive(false);
-                    overLappedPicture[i].GetComponent<PictureMovement>().alertOutline.SetActive(false);
+                    if (overLappedPicture[i].GetComponent<PictureMovement>() != null)
+                        overLappedPicture[i].GetComponent<PictureMovement>().alertOutline.SetActive(false);
+                    checkAtLeastOneCrossing();
                 }
             }
         }
+    }
+
+    void checkAtLeastOneCrossing()
+    {
+        for (int i = 0; i < PIC_CAPACITY; i++)
+        {
+            if (isCrossing[i])
+            {
+                return;
+            }
+        }
+        if (currentPicture.GetComponent<PictureMovement>() != null)
+            currentPicture.GetComponent<PictureMovement>().alertOutline.SetActive(false);
     }
 
     void ErrorPlate_Return()
@@ -349,7 +364,6 @@ public class PlatformMoving : MonoBehaviour
                     break;
             }
         }
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -363,6 +377,26 @@ public class PlatformMoving : MonoBehaviour
                     isCrossing[i] = true;
                     break;
                 }
+            }
+        }
+
+        if (collision.transform.tag == "Platform" && collision.GetComponent<TransparentPlatform>()==null)
+        {
+            direction = -direction;
+        }
+
+        if (collision.transform.tag == "MovingPlatform" && collision.GetComponent<TransparentPlatform>() == null)
+        {
+            switch (directionChoose)
+            {
+                case 0:
+                    if (collision.gameObject.GetComponent<PlatformMoving>().directionChoose == 0)
+                        direction = -direction;
+                    break;
+
+                case 1:
+                    direction = -direction;
+                    break;
             }
         }
 

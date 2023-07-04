@@ -57,22 +57,22 @@ public class TransparentPlatform : MonoBehaviour
         {
             for (int i = 0; i < PLATE_CAPACITY; i++)
             {
-                if (otherTransPlatforms[i] == null) // 비어있는 컨테이너에 대해, ontriggerenter에서 인식된 사진을 추가시킨다.
+                if (otherTransPlatforms[i] == null)
                 {
                     otherTransPlatforms[i] = collision.gameObject;
                     break;
                 }
             }
-        } // 이거 지금 flag랑도 부딪쳐도 실행됨. 수정해야 함 
+        }  
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<TransparentPlatform>() != null)
         {
-            for (int i = 0; i < PLATE_CAPACITY; i++) // 전체 겹쳐있는 사진에 대해서,
+            for (int i = 0; i < PLATE_CAPACITY; i++)
             {
-                if ((otherTransPlatforms[i] != null) && (collision.gameObject == otherTransPlatforms[i].gameObject)) // 겹쳤다가 빠져나온 사진 이름이 i번째 컨테이너에 저장된 사진 이름과 같은지 판별.
+                if ((otherTransPlatforms[i] != null) && (collision.gameObject == otherTransPlatforms[i].gameObject))
                 {
                     otherTransPlatforms[i] = null;
                     break;
@@ -204,6 +204,7 @@ public class TransparentPlatform : MonoBehaviour
                 //print(this.name + " " + i);
                 if (isOverlappedByX[i] && newColl[i] != null)
                 {
+                    //print("X: " + newCollLeftX + " " + newCollRIghtX);
                     newColl[i].transform.position = new Vector2((newCollLeftX + newCollRIghtX) / 2, newColl[i].transform.position.y);
                     newColl[i].transform.localScale = new Vector2((newCollRIghtX - newCollLeftX), newColl[i].transform.localScale.y);
                     newColl[i].SetActive(true);
@@ -235,6 +236,7 @@ public class TransparentPlatform : MonoBehaviour
             {
                 float newCollDownY = 0f;
                 float newCollUpY = 0f;
+                otherPlatesLocalScale[i] = otherTransPlatforms[i].transform.localScale;
 
                 if (otherTransPlatforms[i].GetComponent<Rigidbody2D>().velocity == Vector2.zero)
                     otherPlatesLocalScale[i] = new Vector2(otherTransPlatforms[i].transform.localScale.x * 7, otherTransPlatforms[i].transform.localScale.y * 7);
@@ -250,7 +252,8 @@ public class TransparentPlatform : MonoBehaviour
                 //print(this.name + " " + transform.localScale.y + " " + transform.position.y + " " + thisPlateDownY + " " + thisPlateUpY);
                 //print(this.name);
                 //print(otherPlayerDownY + " " + thisPlateUpY + " " + thisPlateDownY + " " + otherPlayerUpY);
-                if (otherPlayerDownY <= thisPlateUpY && otherPlayerDownY >= thisPlateDownY && otherPlayerUpY > thisPlateUpY)
+                if ((otherPlayerDownY <= thisPlateUpY && thisPlateUpY <= otherPlayerUpY)
+                    && (thisPlateDownY <= otherPlayerDownY && otherPlayerDownY <= thisPlateUpY))//otherPlayerDownY <= thisPlateUpY && otherPlayerDownY >= thisPlateDownY && otherPlayerUpY > thisPlateUpY)
                 {
                     //print(gameObject.name + "  " + "Case1");
                     //realLengthX[i] = (otherTransPlatforms[i].transform.position.x + otherPlatesLocalScale[i].x / 2) - (transform.position.x - myPlateLocalScale.x / 2);
@@ -295,6 +298,7 @@ public class TransparentPlatform : MonoBehaviour
                 }
                 if (isOverlappedByY[i] && newColl[i] != null)
                 {
+                    //print("Y: " + newCollDownY + " " + newCollUpY);
                     newColl[i].transform.position = new Vector2(newColl[i].transform.position.x, (newCollDownY + newCollUpY) / 2);
                     newColl[i].transform.localScale = new Vector2(newColl[i].transform.localScale.x, (newCollUpY - newCollDownY));
                     newColl[i].SetActive(true);

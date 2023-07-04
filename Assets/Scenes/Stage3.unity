@@ -560,6 +560,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9182579778771733963, guid: 2c745485caff64d44b47211e49408687, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9182579778771733967, guid: 2c745485caff64d44b47211e49408687, type: 3}
       propertyPath: m_Name
       value: TransparentPlatform
@@ -616,7 +620,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9182579778771733960, guid: 2c745485caff64d44b47211e49408687, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2c745485caff64d44b47211e49408687, type: 3}
 --- !u!4 &163357987 stripped
 Transform:
@@ -1549,6 +1554,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9182579778771733963, guid: 2c745485caff64d44b47211e49408687, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9182579778771733967, guid: 2c745485caff64d44b47211e49408687, type: 3}
       propertyPath: m_Name
       value: TransparentPlatform
@@ -1605,7 +1614,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9182579778771733960, guid: 2c745485caff64d44b47211e49408687, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2c745485caff64d44b47211e49408687, type: 3}
 --- !u!4 &564994171 stripped
 Transform:
@@ -4405,6 +4415,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9182579778771733963, guid: 2c745485caff64d44b47211e49408687, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9182579778771733967, guid: 2c745485caff64d44b47211e49408687, type: 3}
       propertyPath: m_Name
       value: TransparentPlatform_1
@@ -4465,7 +4479,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 270
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9182579778771733960, guid: 2c745485caff64d44b47211e49408687, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2c745485caff64d44b47211e49408687, type: 3}
 --- !u!4 &1397350073 stripped
 Transform:
@@ -5597,6 +5612,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9182579778771733963, guid: 2c745485caff64d44b47211e49408687, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9182579778771733967, guid: 2c745485caff64d44b47211e49408687, type: 3}
       propertyPath: m_Name
       value: TransparentPlatform_2
@@ -5657,7 +5676,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9182579778771733960, guid: 2c745485caff64d44b47211e49408687, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2c745485caff64d44b47211e49408687, type: 3}
 --- !u!4 &1708727708 stripped
 Transform:
@@ -6279,6 +6299,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9182579778771733963, guid: 2c745485caff64d44b47211e49408687, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9182579778771733967, guid: 2c745485caff64d44b47211e49408687, type: 3}
       propertyPath: m_Name
       value: TransparentMovingPlatform_2
@@ -6343,7 +6367,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9182579778771733960, guid: 2c745485caff64d44b47211e49408687, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2c745485caff64d44b47211e49408687, type: 3}
 --- !u!1 &1793901904 stripped
 GameObject:
@@ -6470,6 +6495,10 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9182579778771733963, guid: 2c745485caff64d44b47211e49408687, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9182579778771733967, guid: 2c745485caff64d44b47211e49408687, type: 3}
       propertyPath: m_Name
       value: TransparentMovingPlatform_1
@@ -6534,7 +6563,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 9182579778771733960, guid: 2c745485caff64d44b47211e49408687, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2c745485caff64d44b47211e49408687, type: 3}
 --- !u!1 &1873198286 stripped
 GameObject:

@@ -47,7 +47,7 @@ public class PictureMovement : MonoBehaviour
         }
         else
         {
-            //alertOutline.SetActive(false);
+            alertOutline.SetActive(false);
         }
     }
 
