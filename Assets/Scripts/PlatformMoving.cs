@@ -11,6 +11,8 @@ public class PlatformMoving : MonoBehaviour
     public PictureStatus curPicStatusCode; // 현재 속한 사진의 코드 
     public GameObject[] overLappedPicture; // 현재 속한 사진과 겹친 사진 
 
+    public GameObject[] overLappedPictureWithPlatform;
+
     // 플랫폼 이동 시 사용하는 변수 
     [SerializeField] public int directionChoose = 0;
     [SerializeField] private float platformSpeed = 5f;
@@ -29,6 +31,7 @@ public class PlatformMoving : MonoBehaviour
         //currentPicture = GetComponentInParent<PictureStatus>().gameObject;
         curPicStatusCode = currentPicture.GetComponent<PictureStatus>();
         overLappedPicture = new GameObject[PIC_CAPACITY];
+        overLappedPictureWithPlatform = new GameObject[PIC_CAPACITY];
         thisRigid = GetComponent<Rigidbody2D>();
         curPicRigid = currentPicture.GetComponent<Rigidbody2D>();
         isOverlap = false;
@@ -278,39 +281,51 @@ public class PlatformMoving : MonoBehaviour
                 {
                     if (currentPicture.GetComponent<PictureMovement>() != null)
                     {
-                        print(currentPicture.name);
+                        //print(currentPicture.name);
                         currentPicture.GetComponent<PictureMovement>().cantMove = true;
                         currentPicture.GetComponent<PictureMovement>().alertOutline.SetActive(true);
                     }
 
                     if (overLappedPicture[i].GetComponent<PictureMovement>() != null)
                     {
-                        print(i + " " + overLappedPicture[i].name);
+                        //print(i + " " + overLappedPicture[i].name);
                         overLappedPicture[i].GetComponent<PictureMovement>().cantMove = true;
                         overLappedPicture[i].GetComponent<PictureMovement>().alertOutline.SetActive(true);
                     }
                 }
                 else
                 {
-                    if (overLappedPicture[i].GetComponent<PictureMovement>() != null)
-                        overLappedPicture[i].GetComponent<PictureMovement>().alertOutline.SetActive(false);
-                    checkAtLeastOneCrossing();
+                    overLappedPicture[i].GetComponent<PictureMovement>().alertOutline.SetActive(false);
+                    //checkAtLeastOneCrossing();
+                    int count = 0;
+                    for(int j=0; j<overLappedPictureWithPlatform.Length; j++)
+                    {
+                        if (overLappedPictureWithPlatform[j] != null) count++;
+                    }
+                    if (currentPicture.GetComponent<PictureMovement>() != null)
+                    {
+                        if (/*!checkAtLeastOneCrossing() ||
+                            */(count == 1 && overLappedPictureWithPlatform.Contains(currentPicture)))
+                        {
+                            print("Alone!!!");
+                            currentPicture.GetComponent<PictureMovement>().alertOutline.SetActive(false);
+                        }
+                    }
                 }
             }
         }
     }
 
-    void checkAtLeastOneCrossing()
+    bool checkAtLeastOneCrossing()
     {
         for (int i = 0; i < PIC_CAPACITY; i++)
         {
             if (isCrossing[i])
             {
-                return;
+                return true;
             }
         }
-        if (currentPicture.GetComponent<PictureMovement>() != null)
-            currentPicture.GetComponent<PictureMovement>().alertOutline.SetActive(false);
+        return false;
     }
 
     void ErrorPlate_Return()
@@ -370,6 +385,18 @@ public class PlatformMoving : MonoBehaviour
     {
         if (collision.CompareTag("Picture"))
         {
+            if (!overLappedPictureWithPlatform.Contains(collision.gameObject))
+            {
+                for (int i = 0; i < PIC_CAPACITY; i++)
+                {
+                    if (overLappedPictureWithPlatform[i] == null)
+                    {
+                        overLappedPictureWithPlatform[i] = collision.gameObject;
+                        break;
+                    }
+                }
+            }
+
             for (int i = 0; i < PIC_CAPACITY; i++)
             {
                 if (collision.gameObject == overLappedPicture[i])
@@ -378,7 +405,7 @@ public class PlatformMoving : MonoBehaviour
                     break;
                 }
             }
-        }
+        }  
 
         if (collision.transform.tag == "Platform" && collision.GetComponent<TransparentPlatform>()==null)
         {
@@ -411,9 +438,24 @@ public class PlatformMoving : MonoBehaviour
         {
             for (int i = 0; i < PIC_CAPACITY; i++)
             {
+                if (overLappedPictureWithPlatform[i] == collision.gameObject)
+                {
+                    overLappedPictureWithPlatform[i] = null;
+                    break;
+                }
+            }
+            for (int i = 0; i < PIC_CAPACITY; i++)
+            {
                 if (collision.gameObject == currentPicture && isCrossing[i])
                 {
                     isCrossing[i] = false;
+                    for(int j=0; j<PIC_CAPACITY; j++)
+                    {
+                        if (overLappedPicture[i] != null)
+                        {
+                            overLappedPicture[i].GetComponent<PictureMovement>().alertOutline.SetActive(false);
+                        }
+                    }
                     break;
                 }
             }

@@ -38,16 +38,19 @@ public class PlayerMovement : MonoBehaviour
         if (onMovingPicture) return;
         dirX = input.horizontal;
         rb.velocity = new Vector2(dirX * speed, rb.velocity.y);
-        RaycastHit2D isGround = isGrounded();
-        if (input.jumped == 1 && isGround && isGround.transform.GetComponent<BoxCollider2D>().isTrigger == false)
+        RaycastHit2D[] isGrounds = isGrounded();
+        foreach (RaycastHit2D isGround in isGrounds)
         {
-            if (isGround.transform.tag == "MovingPlatform" && isGround.transform.GetComponent<PlatformMoving>().directionChoose == 1)
+            if (input.jumped == 1 && isGround && isGround.transform.GetComponent<BoxCollider2D>().isTrigger == false)
             {
-                rb.velocity = new Vector2(rb.velocity.x, 0);
-                rb.AddForce(Vector2.up * jumpForce * 80);
+                if (isGround.transform.tag == "MovingPlatform" && isGround.transform.GetComponent<PlatformMoving>().directionChoose == 1)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, 0);
+                    rb.AddForce(Vector2.up * jumpForce * 80);
+                }
+                else
+                    rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             }
-            else
-                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
         UpdateAnimaion();
     }
@@ -95,9 +98,9 @@ public class PlayerMovement : MonoBehaviour
         }
         anim.SetInteger("state", (int)state);
     }
-    RaycastHit2D isGrounded()
+    RaycastHit2D[] isGrounded()
     {
-        return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .01f, jumpableGround);
+        return Physics2D.BoxCastAll(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .01f, jumpableGround);
     }
     public void setOnPicture(bool state)
     {
