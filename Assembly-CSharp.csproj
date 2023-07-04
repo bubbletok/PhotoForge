@@ -77,6 +77,10 @@
     <Compile Include="Assets\Scripts\StarInteraction.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Shader\AlertOutlineShader.shader" />
+    <None Include="Assets\Shader\TransparentShader.shader" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="UnityEngine">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.26f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

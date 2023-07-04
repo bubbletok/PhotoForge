@@ -160,7 +160,7 @@ public class PlatformMoving : MonoBehaviour
         switch (distinguisher) // »çÁø°ú ºÎµúÃÆÀ» ¶§ ¹æÇâ ¹Ù²ãÁÖ´Â ±¸¹® 
         {
             case 0:
-                print(realPicAxis.realPicCenter + " " + realPicAxis.realPicHalfWidth);
+                //print(realPicAxis.realPicCenter + " " + realPicAxis.realPicHalfWidth);
                 if ((transform.position.x + transform.localScale.x * 2 * 0.5f) >= (realPicAxis.realPicCenter + realPicAxis.realPicHalfWidth))
                 {
                     direction = -1;
@@ -278,10 +278,21 @@ public class PlatformMoving : MonoBehaviour
                 if (!Is_Plate_In_CurPic() && isCrossing[i])
                 {
                     if (currentPicture.GetComponent<PictureMovement>() != null)
+                    {
                         currentPicture.GetComponent<PictureMovement>().cantMove = true;
+                        currentPicture.GetComponent<PictureMovement>().alertOutline.SetActive(true);
+                    }
 
                     if (overLappedPicture[i].GetComponent<PictureMovement>() != null)
+                    {
                         overLappedPicture[i].GetComponent<PictureMovement>().cantMove = true;
+                        overLappedPicture[i].GetComponent<PictureMovement>().alertOutline.SetActive(true);
+                    }
+                }
+                else
+                {
+                    currentPicture.GetComponent<PictureMovement>().alertOutline.SetActive(false);
+                    overLappedPicture[i].GetComponent<PictureMovement>().alertOutline.SetActive(false);
                 }
             }
         }

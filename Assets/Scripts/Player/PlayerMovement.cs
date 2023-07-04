@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
         dirX = input.horizontal;
         rb.velocity = new Vector2(dirX * speed, rb.velocity.y);
         RaycastHit2D isGround = isGrounded();
-        if (input.jumped == 1 && isGround)
+        if (input.jumped == 1 && isGround && isGround.transform.GetComponent<BoxCollider2D>().isTrigger == false)
         {
             if (isGround.transform.tag == "MovingPlatform" && isGround.transform.GetComponent<PlatformMoving>().directionChoose == 1)
             {
@@ -97,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
     }
     RaycastHit2D isGrounded()
     {
-        return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .2f, jumpableGround);
+        return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .01f, jumpableGround);
     }
     public void setOnPicture(bool state)
     {

@@ -11,7 +11,9 @@ public class PictureMovement : MonoBehaviour
     [SerializeField] float pictureMovementSpeed;
     [SerializeField] GameObject[] limitAreas;
     [SerializeField] GameObject flash;
-    //[SerializeField] float pictureMoveSpeed = 5f;
+    public GameObject alertOutline;
+    public bool cantMove;
+
     Vector3 prevPicPos;
     Vector3 mousePos;
     Vector3 diffPicPos;
@@ -23,7 +25,7 @@ public class PictureMovement : MonoBehaviour
     Vector2 size;
     Vector2 dir;
     float dis;
-    public bool cantMove;
+
 
     private void Awake()
     {
@@ -40,6 +42,12 @@ public class PictureMovement : MonoBehaviour
         if (cantMove)
         {
             rb.velocity = Vector2.zero;
+            //alertOutline.SetActive(true);
+            //StartCoroutine(flashWithCollisiion());
+        }
+        else
+        {
+            //alertOutline.SetActive(false);
         }
     }
 
@@ -78,7 +86,7 @@ public class PictureMovement : MonoBehaviour
 
         if (x - transform.localScale.x * 1.81f / 2 <= minX)
         {
-            Vector3 padding = new Vector3(minX - x + (transform.localScale.x * 1.81f / 2) + 1f, 0, 0f);
+            Vector3 padding = new Vector3(minX - x + (transform.localScale.x * 1.81f / 2) + .01f, 0, 0f);
             transform.position += padding;
             if(player != null)
                 player.transform.position += padding;
@@ -87,7 +95,7 @@ public class PictureMovement : MonoBehaviour
         }
         else if (x + transform.localScale.x * 1.81f / 2 >= maxX)
         {
-            Vector3 padding = new Vector3(x + (transform.localScale.x * 1.81f / 2) - maxX + 1f, 0, 0f);
+            Vector3 padding = new Vector3(x + (transform.localScale.x * 1.81f / 2) - maxX + .01f, 0, 0f);
             transform.position -= padding;
             if(player != null)
                 player.transform.position -= padding;
@@ -101,7 +109,7 @@ public class PictureMovement : MonoBehaviour
         float y = transform.position.y;
         if (y - transform.localScale.y / 2 <= minY)
         {
-            Vector3 padding = new Vector3(0, minY - y + (transform.localScale.y / 2) + 1f, 0f);
+            Vector3 padding = new Vector3(0, minY - y + (transform.localScale.y / 2) + .01f, 0f);
             transform.position += padding;
             if(player != null) 
                 player.transform.position += padding;
@@ -110,7 +118,7 @@ public class PictureMovement : MonoBehaviour
         }
         else if (y + transform.localScale.y / 2 >= maxY)
         {
-            Vector3 padding = new Vector3(0, y + (transform.localScale.y / 2) - maxY + 1f, 0f);
+            Vector3 padding = new Vector3(0, y + (transform.localScale.y / 2) - maxY + .01f, 0f);
             transform.position -= padding;
             if(player != null)
                 player.transform.position -= padding;
@@ -148,7 +156,7 @@ public class PictureMovement : MonoBehaviour
             float maxY = limitArea.transform.position.y + limitArea.transform.localScale.y / 2;
             if (isOverlap(minX, x1, maxX) && isOverlap(minX, x2, maxX) && isOverlap(minY, y1, maxY) && isOverlap(minY, y2, maxY))
             {
-                flashWithCollisiion();
+                //flashWithCollisiion();
                 transform.position += (transform.position - limitArea.transform.position) * 0.2f;
                 if (isOverlap(minX, x1, maxX))
                 {
