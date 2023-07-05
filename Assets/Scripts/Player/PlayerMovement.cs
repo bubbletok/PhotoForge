@@ -41,9 +41,10 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit2D[] isGrounds = isGrounded();
         foreach (RaycastHit2D isGround in isGrounds)
         {
-            if (isGround)
+            if (isGround && isGround.transform.GetComponent<BoxCollider2D>().isTrigger == false)
             {
                 transform.position += new Vector3(0, 0.0001f, 0);
+                rb.velocity = new Vector2(rb.velocity.x, 0);
             }
             if (input.jumped == 1 && isGround && isGround.transform.GetComponent<BoxCollider2D>().isTrigger == false)
             {
@@ -93,9 +94,9 @@ public class PlayerMovement : MonoBehaviour
         else
             state = MovementState.idle;
 
-        if (rb.velocity.y > .001f)
+        if (rb.velocity.y > .1f)
             state = MovementState.jumping;
-        else if (rb.velocity.y <= -.001f)
+        else if (rb.velocity.y <= -.1f)
             state = MovementState.falling;
 
         anim.SetInteger("state", (int)state);

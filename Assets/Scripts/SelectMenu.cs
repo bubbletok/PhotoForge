@@ -31,4 +31,9 @@ public class SelectMenu : MonoBehaviour
         SceneManager.LoadScene("Stages");
         Time.timeScale = 1f;
     }
+    
+    public void exit()
+    {
+        Application.Quit();
+    }
 }
