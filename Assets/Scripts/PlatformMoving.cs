@@ -402,6 +402,11 @@ public class PlatformMoving : MonoBehaviour
                     break;
             }
         }
+
+        if (collision.transform.tag == "Player")
+        {
+            diffDisY = collision.transform.position.y - transform.position.y;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -462,7 +467,7 @@ public class PlatformMoving : MonoBehaviour
             if (collision.gameObject.GetComponent<PlayerInput>().jumped != 1)
             {
                 collision.transform.position = new Vector2(collision.transform.position.x, diffDisY + transform.position.y);
-                //collision.transform.GetComponent<Rigidbody2D>().velocity = new Vector2(collision.transform.GetComponent<Rigidbody2D>().velocity.x, 0);
+                collision.transform.GetComponent<Rigidbody2D>().velocity = new Vector2(collision.transform.GetComponent<Rigidbody2D>().velocity.x, 0);
             }
         }
     }

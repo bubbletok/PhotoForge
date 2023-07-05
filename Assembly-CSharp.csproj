@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\SelectMenu.cs" />
     <Compile Include="Assets\Scripts\Picture\PictureMovement.cs" />
+    <Compile Include="Assets\Scripts\MadeByPlatform.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\SpawnItem.cs" />
     <Compile Include="Assets\Scripts\UISetting.cs" />
@@ -75,7 +76,6 @@
     <Compile Include="Assets\Scripts\GameSetting.cs" />
     <Compile Include="Assets\Scripts\PlatformMoving.cs" />
     <Compile Include="Assets\Scripts\StarInteraction.cs" />
-    <Compile Include="Assets\Scripts\MadeByPlatform.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shader\EscapeOutlineShader.shader" />
