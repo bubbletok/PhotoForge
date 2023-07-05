@@ -408,6 +408,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AlertOutline
       objectReference: {fileID: 0}
+    - target: {fileID: 5650769647622097613, guid: 931dba315501eef4f9d971c7c5210b61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7df45609cae09f848ae55cad347f22be, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 931dba315501eef4f9d971c7c5210b61, type: 3}
 --- !u!4 &287099032 stripped
@@ -1871,6 +1875,7 @@ MonoBehaviour:
   currentPicture: {fileID: 629918903}
   curPicStatusCode: {fileID: 0}
   overLappedPicture: []
+  overLappedPictureWithPlatform: []
   directionChoose: 0
   platformSpeed: 5
   curPicRigid: {fileID: 0}
@@ -4164,8 +4169,8 @@ Transform:
   - {fileID: 1471714600}
   - {fileID: 1423752369}
   - {fileID: 1105031393}
-  - {fileID: 486284339}
   - {fileID: 933972159}
+  - {fileID: 486284339}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

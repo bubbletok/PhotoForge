@@ -150,11 +150,13 @@ public class TransparentPlatform : MonoBehaviour
                 if (gameObject.GetComponent<Rigidbody2D>().velocity == Vector2.zero)
                     myPlateLocalScale = new Vector2(transform.localScale.x * 7, transform.localScale.y * 7);
 
+                float thisDiffX = GetComponent<BoxCollider2D>().size.x;
+                float otherDiffX = otherTransPlatforms[i].GetComponent<BoxCollider2D>().size.x;
 
-                float otherPlateRightX = otherTransPlatforms[i].transform.position.x + otherPlatesLocalScale[i].x * 2 / 2;
-                float otherPlateLeftX = otherTransPlatforms[i].transform.position.x - otherPlatesLocalScale[i].x * 2 / 2;
-                float thisPlateRightX = transform.position.x + myPlateLocalScale.x * 2 / 2;
-                float thisPlateLeftX = transform.position.x - myPlateLocalScale.x * 2 / 2;
+                float otherPlateRightX = otherTransPlatforms[i].transform.position.x + otherPlatesLocalScale[i].x * otherDiffX / 2;
+                float otherPlateLeftX = otherTransPlatforms[i].transform.position.x - otherPlatesLocalScale[i].x * otherDiffX / 2;
+                float thisPlateRightX = transform.position.x + myPlateLocalScale.x * thisDiffX / 2;
+                float thisPlateLeftX = transform.position.x - myPlateLocalScale.x * thisDiffX / 2;
                 //print(this.name + " " + transform.localScale.x + " " + transform.position.x + " " + thisPlateLeftX + " " + thisPlateRightX);
                 if (otherPlateLeftX <= thisPlateRightX && otherPlateLeftX >= thisPlateLeftX && otherPlateRightX > thisPlateRightX)
                 {
@@ -244,11 +246,13 @@ public class TransparentPlatform : MonoBehaviour
                 if (gameObject.GetComponent<Rigidbody2D>().velocity == Vector2.zero)
                     myPlateLocalScale = new Vector2(transform.localScale.x * 7, transform.localScale.y * 7);
 
+                float thisDiffY = GetComponent<BoxCollider2D>().size.y;
+                float otherDiffY = otherTransPlatforms[i].GetComponent<BoxCollider2D>().size.y;
 
-                float otherPlayerUpY = otherTransPlatforms[i].transform.position.y + otherPlatesLocalScale[i].y / 2 / 2;
-                float otherPlayerDownY = otherTransPlatforms[i].transform.position.y - otherPlatesLocalScale[i].y / 2 / 2;
-                float thisPlateUpY = transform.position.y + myPlateLocalScale.y / 2 / 2;
-                float thisPlateDownY = transform.position.y - myPlateLocalScale.y / 2 / 2;
+                float otherPlayerUpY = otherTransPlatforms[i].transform.position.y + otherPlatesLocalScale[i].y * otherDiffY / 2;
+                float otherPlayerDownY = otherTransPlatforms[i].transform.position.y - otherPlatesLocalScale[i].y * otherDiffY / 2;
+                float thisPlateUpY = transform.position.y + myPlateLocalScale.y * thisDiffY / 2;
+                float thisPlateDownY = transform.position.y - myPlateLocalScale.y * thisDiffY / 2;
                 //print(this.name + " " + transform.localScale.y + " " + transform.position.y + " " + thisPlateDownY + " " + thisPlateUpY);
                 //print(this.name);
                 //print(otherPlayerDownY + " " + thisPlateUpY + " " + thisPlateDownY + " " + otherPlayerUpY);

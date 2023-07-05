@@ -773,6 +773,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AlertOutline
       objectReference: {fileID: 0}
+    - target: {fileID: 5650769647622097613, guid: 931dba315501eef4f9d971c7c5210b61, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7df45609cae09f848ae55cad347f22be, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 931dba315501eef4f9d971c7c5210b61, type: 3}
 --- !u!4 &295190208 stripped
@@ -1346,6 +1350,7 @@ MonoBehaviour:
   currentPicture: {fileID: 1606208218}
   curPicStatusCode: {fileID: 0}
   overLappedPicture: []
+  overLappedPictureWithPlatform: []
   directionChoose: 0
   platformSpeed: 5
   curPicRigid: {fileID: 0}
@@ -3163,6 +3168,7 @@ MonoBehaviour:
   currentPicture: {fileID: 770745080}
   curPicStatusCode: {fileID: 0}
   overLappedPicture: []
+  overLappedPictureWithPlatform: []
   directionChoose: 1
   platformSpeed: 5
   curPicRigid: {fileID: 0}
@@ -5620,6 +5626,7 @@ GameObject:
   - component: {fileID: 1556919696}
   - component: {fileID: 1556919695}
   - component: {fileID: 1556919693}
+  - component: {fileID: 1556919698}
   m_Layer: 0
   m_Name: EscapePicture
   m_TagString: Picture
@@ -5745,6 +5752,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1556919698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556919692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e4fe29cefedc8744ada695a6df3c750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  otherPics: []
+  otherPicCode: {fileID: 0}
+  platformList: []
+  platformCode: {fileID: 0}
 --- !u!61 &1567914979 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: -2743235405079378699, guid: d44630b6628e39a4c94c0d244d1c776b, type: 3}
@@ -5994,8 +6017,8 @@ Transform:
   m_Children:
   - {fileID: 1646433684}
   - {fileID: 274018305}
-  - {fileID: 348256227}
   - {fileID: 1249157257}
+  - {fileID: 348256227}
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7198,9 +7221,9 @@ Transform:
   - {fileID: 1505224930}
   - {fileID: 1997938089}
   - {fileID: 1371218325}
+  - {fileID: 1996636443}
   - {fileID: 956818739}
   - {fileID: 1769070796}
-  - {fileID: 1996636443}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AlertOutlineMaterial
-  m_Shader: {fileID: 4800000, guid: 48dc4d32f85ca9e4eb99697febeafd13, type: 3}
+  m_Name: EscapeOutlineMaterial
+  m_Shader: {fileID: 4800000, guid: 044af88b8dca9c44296dc9616236713a, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -41,7 +41,6 @@ Material:
     - _EnableExternalAlpha: 0
     - _Glossiness: 0.5
     - _Metallic: 0
-    - _WaveAmplitude: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}

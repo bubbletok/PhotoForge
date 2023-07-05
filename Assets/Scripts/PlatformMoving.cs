@@ -53,7 +53,9 @@ public class PlatformMoving : MonoBehaviour
     void Update()
     {
         for (int i = 0; i < PIC_CAPACITY; i++)
+        {
             overLappedPicture[i] = curPicStatusCode.otherPics[i];
+        }
 
 
         foreach (GameObject overlapPic in overLappedPicture)
@@ -295,7 +297,8 @@ public class PlatformMoving : MonoBehaviour
                 }
                 else
                 {
-                    overLappedPicture[i].GetComponent<PictureMovement>().alertOutline.SetActive(false);
+                    if (overLappedPicture[i].GetComponent<PictureMovement>() != null)
+                        overLappedPicture[i].GetComponent<PictureMovement>().alertOutline.SetActive(false);
                     //checkAtLeastOneCrossing();
                     int count = 0;
                     for(int j=0; j<overLappedPictureWithPlatform.Length; j++)
@@ -307,7 +310,7 @@ public class PlatformMoving : MonoBehaviour
                         if (/*!checkAtLeastOneCrossing() ||
                             */(count == 1 && overLappedPictureWithPlatform.Contains(currentPicture)))
                         {
-                            print("Alone!!!");
+                            //print("Alone!!!");
                             currentPicture.GetComponent<PictureMovement>().alertOutline.SetActive(false);
                         }
                     }
@@ -451,7 +454,7 @@ public class PlatformMoving : MonoBehaviour
                     isCrossing[i] = false;
                     for(int j=0; j<PIC_CAPACITY; j++)
                     {
-                        if (overLappedPicture[i] != null)
+                        if (overLappedPicture[i] != null && overLappedPicture[i].GetComponent<PictureMovement>() != null)
                         {
                             overLappedPicture[i].GetComponent<PictureMovement>().alertOutline.SetActive(false);
                         }
