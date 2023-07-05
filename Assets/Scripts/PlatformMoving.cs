@@ -26,6 +26,7 @@ public class PlatformMoving : MonoBehaviour
 
     public float distWithPic;
 
+    float diffDisY;
     void Start()
     {
         //currentPicture = GetComponentInParent<PictureStatus>().gameObject;
@@ -192,22 +193,26 @@ public class PlatformMoving : MonoBehaviour
         switch (distinguisher)
         {
             case 0:
-                if(transform.position.x < realPicAxis.realPicCenter - realPicAxis.realPicHalfWidth)
-                { 
+                if (transform.position.x < realPicAxis.realPicCenter - realPicAxis.realPicHalfWidth)
+                {
+                    transform.position = new Vector2((realPicAxis.realPicCenter - realPicAxis.realPicHalfWidth) + transform.localScale.x * 2 * 0.5f, transform.position.y);
                     direction = 1;
                 }
                 else if (transform.position.x > realPicAxis.realPicCenter + realPicAxis.realPicHalfWidth)
                 {
+                    transform.position = new Vector2((realPicAxis.realPicCenter + realPicAxis.realPicHalfWidth) - transform.localScale.x * 2 * 0.5f, transform.position.y);
                     direction = -1;
                 }
                 break;
             case 1:
                 if (transform.position.y < realPicAxis.realPicCenter - realPicAxis.realPicHalfWidth)
                 {
+                    transform.position = new Vector2(transform.position.x, (realPicAxis.realPicCenter - realPicAxis.realPicHalfWidth) + transform.localScale.y * 0.5f * 0.5f);
                     direction = 1;
                 }
                 else if (transform.position.y > realPicAxis.realPicCenter + realPicAxis.realPicHalfWidth)
                 {
+                    transform.position = new Vector2(transform.position.x, (realPicAxis.realPicCenter + realPicAxis.realPicHalfWidth) - transform.localScale.y * 0.5f * 0.5f);
                     direction = -1;
                 }
                 break;
@@ -226,10 +231,16 @@ public class PlatformMoving : MonoBehaviour
             case 0:
                 if ((transform.position.x + transform.localScale.x * 2 * 0.5f) >= (curPicTrans.position.x + curPicTrans.localScale.x * 1.81f * 0.5f))
                 {
+                    if (transform.position.x > (curPicTrans.position.x + curPicTrans.localScale.x * 1.81f * 0.5f))
+                        transform.position = new Vector2(curPicTrans.position.x + curPicTrans.localScale.x * 1.81f * 0.5f - transform.localScale.x * 2 * 0.5f, transform.position.y);
+
                     direction = -1;
                 }
                 else if ((transform.position.x - transform.localScale.x * 2 * 0.5f) <= (curPicTrans.position.x - curPicTrans.localScale.x * 1.81f * 0.5f))
                 {
+                    if (transform.position.x < (curPicTrans.position.x - curPicTrans.localScale.x * 1.81f * 0.5f))
+                        transform.position = new Vector2(curPicTrans.position.x - curPicTrans.localScale.x * 1.81f * 0.5f + transform.localScale.x * 2 * 0.5f, transform.position.y);
+
                     direction = 1;
                 }
 
@@ -238,13 +249,25 @@ public class PlatformMoving : MonoBehaviour
 
             case 1:
                 if ((transform.position.y + transform.localScale.y * 0.5f * 0.5f) >= (curPicTrans.position.y + curPicTrans.localScale.y * 0.5f))
+                {
+                    if (transform.position.y > (curPicTrans.position.y + curPicTrans.localScale.y * 0.5f))
+                        transform.position = new Vector2(transform.position.x, curPicTrans.position.y + curPicTrans.localScale.y * 0.5f - transform.localScale.y * 0.5f * 0.5f);
+
                     direction = -1;
+                }
                 else if ((transform.position.y - transform.localScale.y * 0.5f * 0.5f) <= (curPicTrans.position.y - curPicTrans.localScale.y * 0.5f))
+                {
+                    if (transform.position.y < (curPicTrans.position.y - curPicTrans.localScale.y * 0.5f))
+                        transform.position = new Vector2(transform.position.x, curPicTrans.position.y - curPicTrans.localScale.y * 0.5f + transform.localScale.y * 0.5f * 0.5f);
+
                     direction = 1;
+                }
 
                 thisRigid.velocity = new Vector2(curPicvel.x, curPicvel.y + direction * platformSpeed);
                 break;
         }
+
+
     }
     private bool Is_Plate_In_CurPic()
     {
@@ -278,19 +301,16 @@ public class PlatformMoving : MonoBehaviour
             if (overLappedPicture[i] != null)
             {
                 // 발판이 어느 사진에도 완전히 들어가있지 않은 경우 
-
                 if (!Is_Plate_In_CurPic() && isCrossing[i])
                 {
                     if (currentPicture.GetComponent<PictureMovement>() != null)
                     {
-                        //print(currentPicture.name);
                         currentPicture.GetComponent<PictureMovement>().cantMove = true;
                         currentPicture.GetComponent<PictureMovement>().alertOutline.SetActive(true);
                     }
 
                     if (overLappedPicture[i].GetComponent<PictureMovement>() != null)
                     {
-                        //print(i + " " + overLappedPicture[i].name);
                         overLappedPicture[i].GetComponent<PictureMovement>().cantMove = true;
                         overLappedPicture[i].GetComponent<PictureMovement>().alertOutline.SetActive(true);
                     }
@@ -301,7 +321,7 @@ public class PlatformMoving : MonoBehaviour
                         overLappedPicture[i].GetComponent<PictureMovement>().alertOutline.SetActive(false);
                     //checkAtLeastOneCrossing();
                     int count = 0;
-                    for(int j=0; j<overLappedPictureWithPlatform.Length; j++)
+                    for (int j = 0; j < overLappedPictureWithPlatform.Length; j++)
                     {
                         if (overLappedPictureWithPlatform[j] != null) count++;
                     }
@@ -408,9 +428,9 @@ public class PlatformMoving : MonoBehaviour
                     break;
                 }
             }
-        }  
+        }
 
-        if (collision.transform.tag == "Platform" && collision.GetComponent<TransparentPlatform>()==null)
+        if (collision.transform.tag == "Platform" && collision.GetComponent<TransparentPlatform>() == null)
         {
             direction = -direction;
         }
@@ -435,6 +455,17 @@ public class PlatformMoving : MonoBehaviour
             direction = -direction;
         }
     }
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "Player" && directionChoose == 1)
+        {
+            if (collision.gameObject.GetComponent<PlayerInput>().jumped != 1)
+            {
+                collision.transform.position = new Vector2(collision.transform.position.x, diffDisY + transform.position.y);
+                //collision.transform.GetComponent<Rigidbody2D>().velocity = new Vector2(collision.transform.GetComponent<Rigidbody2D>().velocity.x, 0);
+            }
+        }
+    }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Picture"))
@@ -449,10 +480,10 @@ public class PlatformMoving : MonoBehaviour
             }
             for (int i = 0; i < PIC_CAPACITY; i++)
             {
-                if (collision.gameObject == currentPicture && isCrossing[i])
+                if (isCrossing[i])
                 {
                     isCrossing[i] = false;
-                    for(int j=0; j<PIC_CAPACITY; j++)
+                    for (int j = 0; j < PIC_CAPACITY; j++)
                     {
                         if (overLappedPicture[i] != null && overLappedPicture[i].GetComponent<PictureMovement>() != null)
                         {

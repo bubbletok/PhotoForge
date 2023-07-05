@@ -29,7 +29,9 @@ public class TransparentPlatform : MonoBehaviour
         for(int i=0; i<PLATE_CAPACITY; i++)
         {
             newColl[i] = Instantiate(newCollObject, transform.position, Quaternion.identity);
-            if(newColl[i]!=null)
+            newColl[i].GetComponent<MadeByPlatform>().madeByPlatform = gameObject;
+
+            if (newColl[i]!=null)
                 newColl[i].SetActive(false);
         }
 

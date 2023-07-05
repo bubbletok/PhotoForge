@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour
     PlayerInput input;
     BoxCollider2D coll;
     Rigidbody2D rb;
-    Animator anim;
+    public Animator anim;
     SpriteRenderer sprite;
 
     [SerializeField] float speed;
@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] LayerMask jumpableGround;
 
     float dirX;
+    float diffDisY;
     bool onMovingPicture;
     enum MovementState { idle, running, jumping, falling };
     // Start is called before the first frame update
@@ -43,8 +44,15 @@ public class PlayerMovement : MonoBehaviour
         {
             if (isGround && isGround.transform.GetComponent<BoxCollider2D>().isTrigger == false)
             {
-                transform.position += new Vector3(0, 0.0001f, 0);
-                rb.velocity = new Vector2(rb.velocity.x, 0);
+                if (isGround.collider.name == "TransparentNewColl(Clone)")
+                {
+                    transform.position += new Vector3(0, 0.1f, 0);
+                }
+                else
+                {
+                    transform.position += new Vector3(0, 0.0001f, 0);
+                    rb.velocity = new Vector2(rb.velocity.x, 0);
+                }
             }
             if (input.jumped == 1 && isGround && isGround.transform.GetComponent<BoxCollider2D>().isTrigger == false)
             {
@@ -52,6 +60,12 @@ public class PlayerMovement : MonoBehaviour
                 {
                     rb.velocity = new Vector2(rb.velocity.x, 0);
                     rb.AddForce(Vector2.up * jumpForce * 80);
+                }
+                else if((isGround.transform.GetComponent<MadeByPlatform>() != null && isGround.transform.GetComponent<MadeByPlatform>().madeByPlatform.GetComponent<PlatformMoving>() != null
+                    && isGround.transform.GetComponent<MadeByPlatform>().madeByPlatform.GetComponent<PlatformMoving>().directionChoose == 1))
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, 0);
+                    rb.AddForce(Vector2.up * jumpForce * 20);
                 }
                 else
                     rb.velocity = new Vector2(rb.velocity.x, jumpForce);
@@ -68,7 +82,39 @@ public class PlayerMovement : MonoBehaviour
             if (collision.transform.position.y + collision.transform.localScale.y / 2 >= transform.position.y - transform.localScale.y * 1.957911 / 2)
                 jumpForce = -1f;
         }
+        if (collision.collider.GetComponent<PlatformMoving>() != null)
+        {
+            if (collision.collider.GetComponent<PlatformMoving>().directionChoose == 1)
+            {
+                diffDisY = transform.position.y - coll.transform.position.y;
+            }
+        }
     }
+
+    /*private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.collider.name == "TransparentNewColl(Clone)")
+        {
+            //rb.velocity = new Vector2(rb.velocity.x, collision.collider.GetComponent<Rigidbody2D>().velocity.y);
+            transform.position = new Vector2(transform.position.x, coll.transform.position.y);
+            rb.velocity = new Vector2(rb.velocity.x, coll.GetComponent<Rigidbody2D>().velocity.y);
+            *//*            MadeByPlatform byPlatform = collision.collider.GetComponent<MadeByPlatform>();
+                        if (byPlatform.madeByPlatform.GetComponent<PlatformMoving>() != null && byPlatform.madeByPlatform.GetComponent<PlatformMoving>().directionChoose == 1)
+                        {
+                            print("A!@");
+                            rb.velocity = new Vector2(rb.velocity.x, collision.collider.GetComponent<Rigidbody2D>().velocity.y);
+                        }*//*
+        }
+        if(collision.collider.GetComponent<PlatformMoving>() != null)
+        {
+            if(collision.collider.GetComponent<PlatformMoving>().directionChoose == 1)
+            {
+                //print("AFSDFADSF");
+                transform.position = new Vector2(transform.position.x, diffDisY + coll.transform.position.y);
+                rb.velocity = new Vector2(rb.velocity.x, coll.GetComponent<Rigidbody2D>().velocity.y);
+            }
+        }
+    }*/
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.collider.tag == "Platform")
@@ -76,6 +122,23 @@ public class PlayerMovement : MonoBehaviour
             //print("Exit Platform");
             jumpForce = 5.5f;
         }
+/*        if (collision.collider.name == "TransparentNewColl(Clone)")
+        {
+            print("Exit");
+        }*/
+/*        if(collision.collider.name == "TransparentNewColl(Clone)")
+        {
+            MadeByPlatform byPlatform = collision.collider.GetComponent<MadeByPlatform>();
+            if(byPlatform.madeByPlatform.GetComponent<PlatformMoving>() != null && byPlatform.madeByPlatform.GetComponent<PlatformMoving>().directionChoose == 1)
+            {
+                print("!!");
+                if(collision.collider.GetComponent<Rigidbody2D>().velocity.y < 0)
+                {
+                    print("A!@");
+                    rb.velocity = new Vector2(rb.velocity.x,0);
+                }
+            }
+        }*/
     }
 
     void UpdateAnimaion()
@@ -92,12 +155,16 @@ public class PlayerMovement : MonoBehaviour
             sprite.flipX = true;
         }
         else
-            state = MovementState.idle;
-
-        if (rb.velocity.y > .1f)
-            state = MovementState.jumping;
-        else if (rb.velocity.y <= -.1f)
-            state = MovementState.falling;
+        {
+            if (rb.velocity.y > .1f)
+                state = MovementState.jumping;
+            else if (rb.velocity.y <= -.1f)
+                state = MovementState.falling;
+            else
+            {
+                state = MovementState.idle;
+            }
+        }
 
         anim.SetInteger("state", (int)state);
     }

@@ -35,7 +35,7 @@ public class InteractObject : MonoBehaviour
         if (other.transform.tag == "EscapeDoor")
         {
             //작은 문이라면, 플레이어가 축소되었는지 확인
-            if (other.GetComponent<EscapeDoorSetting>().getSmallDoor() && !player.getSmallPlayer())
+            if (other.GetComponent<EscapeDoorSetting>() != null && other.GetComponent<EscapeDoorSetting>().getSmallDoor() && !player.getSmallPlayer())
                 return;
 
             SceneManager.LoadScene("Stages");

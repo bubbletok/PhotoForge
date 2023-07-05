@@ -32,6 +32,10 @@ public class SelectMenu : MonoBehaviour
         Time.timeScale = 1f;
     }
     
+    public void StartMenu()
+    {
+        SceneManager.LoadScene("StartMenu");
+    }
     public void exit()
     {
         Application.Quit();
