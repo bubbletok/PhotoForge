@@ -41,6 +41,10 @@ public class PlayerMovement : MonoBehaviour
         RaycastHit2D[] isGrounds = isGrounded();
         foreach (RaycastHit2D isGround in isGrounds)
         {
+            if (isGround)
+            {
+                transform.position += new Vector3(0, 0.0001f, 0);
+            }
             if (input.jumped == 1 && isGround && isGround.transform.GetComponent<BoxCollider2D>().isTrigger == false)
             {
                 if (isGround.transform.tag == "MovingPlatform" && isGround.transform.GetComponent<PlatformMoving>().directionChoose == 1)
@@ -89,18 +93,16 @@ public class PlayerMovement : MonoBehaviour
         else
             state = MovementState.idle;
 
-        if (input.jumped == 1)
-        {
-            if (rb.velocity.y > .001f)
-                state = MovementState.jumping;
-            else if (rb.velocity.y <= -.001f)
-                state = MovementState.falling;
-        }
+        if (rb.velocity.y > .001f)
+            state = MovementState.jumping;
+        else if (rb.velocity.y <= -.001f)
+            state = MovementState.falling;
+
         anim.SetInteger("state", (int)state);
     }
     RaycastHit2D[] isGrounded()
     {
-        return Physics2D.BoxCastAll(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .01f, jumpableGround);
+        return Physics2D.BoxCastAll(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableGround);
     }
     public void setOnPicture(bool state)
     {

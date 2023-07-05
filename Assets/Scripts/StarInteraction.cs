@@ -9,6 +9,9 @@ public class StarInteraction : MonoBehaviour
     {
         if(collision.tag == "Star")
         {
+            if (collision.gameObject.GetComponent<AudioSource>() == null)
+                gameObject.GetComponent<AudioSource>().Play();
+
             lockObject.SetActive(false);
         }
     }

@@ -7,6 +7,10 @@ using UnityEngine.UIElements;
 public class InteractObject : MonoBehaviour
 {
     PlayerStatus player;
+
+    public AudioClip potionDrink;
+    public AudioClip potionRegen;
+
     private void Start()
     {
         player = gameObject.GetComponent<PlayerStatus>();
@@ -19,6 +23,13 @@ public class InteractObject : MonoBehaviour
             //사진 조각 갯수 + 1
             int fragCount = player.getFragCount();
             player.setFragCount(fragCount + 1);
+
+            if(other.gameObject.GetComponent<AudioSource>() != null)
+            {
+                gameObject.GetComponent<AudioSource>().clip = other.gameObject.GetComponent<AudioSource>().clip;
+                gameObject.GetComponent<AudioSource>().Play();
+            }
+
             other.gameObject.SetActive(false);
         }
         if (other.transform.tag == "EscapeDoor")
@@ -36,6 +47,8 @@ public class InteractObject : MonoBehaviour
         }
         if(other.transform.tag == "Shrink")
         {
+            GetComponent<AudioSource>().clip = potionDrink;
+            GetComponent<AudioSource>().Play();
             //크기 축소
             gameObject.transform.localScale = new Vector3(0.35f, 0.35f, 1f);
             //먹을 때 잠깐 위로 뜨게해서 점프 안되는거 방지
@@ -68,6 +81,8 @@ public class InteractObject : MonoBehaviour
     {
         //10초 후 다시 원래 크기로
         yield return new WaitForSeconds(10f);
+        GetComponent<AudioSource>().clip = potionRegen;
+        GetComponent<AudioSource>().Play();
         gameObject.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
         player.setSizeSmall(false);
     }
