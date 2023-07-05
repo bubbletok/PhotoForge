@@ -46,7 +46,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (isGround.collider.name == "TransparentNewColl(Clone)")
                 {
-                    transform.position += new Vector3(0, 0.1f, 0);
+                    transform.position += new Vector3(0, 0.01f, 0);
                 }
                 else
                 {
@@ -81,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
             //print("Enter Platform");
             if (collision.transform.position.y + collision.transform.localScale.y / 2 >= transform.position.y - transform.localScale.y * 1.957911 / 2)
                 jumpForce = -1f;
+      
         }
         if (collision.collider.GetComponent<PlatformMoving>() != null)
         {

@@ -30,6 +30,7 @@ public class MadeByPlatform : MonoBehaviour
                 {
                     print("∞Ì¡§µ ");
                     hit.transform.position = new Vector2(hit.transform.position.x, diffDisY + transform.position.y);
+                    hit.GetComponent<Rigidbody2D>().velocity = new Vector2(hit.GetComponent<Rigidbody2D>().velocity.x, 0);
                     if(hit.gameObject.GetComponent<PlayerInput>().horizontal == 0)
                         hit.GetComponent<PlayerMovement>().anim.SetInteger("state", 0);
                 }

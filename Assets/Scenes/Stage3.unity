@@ -3110,6 +3110,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5846888817672959122, guid: f540a768f1c4b2341ae0822ff616712e, type: 3}
+      propertyPath: potionDrink
+      value: 
+      objectReference: {fileID: 8300000, guid: 782ee5bfe338e9c43a532c54c4ca0015, type: 3}
+    - target: {fileID: 5846888817672959122, guid: f540a768f1c4b2341ae0822ff616712e, type: 3}
+      propertyPath: potionRegen
+      value: 
+      objectReference: {fileID: 8300000, guid: 36e68e950e0c2884d9c9ae9710dcc48a, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f540a768f1c4b2341ae0822ff616712e, type: 3}
 --- !u!1 &902656223 stripped
@@ -7211,6 +7219,7 @@ MonoBehaviour:
   directionChoose: 1
   platformSpeed: 3
   curPicRigid: {fileID: 0}
+  isOverlap: 0
   isCrossing: 
   distWithPic: 0
 --- !u!1 &1836054100 stripped
@@ -7447,6 +7456,7 @@ MonoBehaviour:
   directionChoose: 0
   platformSpeed: 3
   curPicRigid: {fileID: 0}
+  isOverlap: 0
   isCrossing: 
   distWithPic: 0
 --- !u!1001 &1920269945

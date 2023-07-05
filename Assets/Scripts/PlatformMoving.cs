@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 
 public class PlatformMoving : MonoBehaviour
@@ -21,7 +22,7 @@ public class PlatformMoving : MonoBehaviour
     private Rigidbody2D thisRigid;
     public Rigidbody2D curPicRigid;
 
-    private bool isOverlap;
+    public bool isOverlap;
     public bool[] isCrossing;
 
     public float distWithPic;
@@ -58,19 +59,18 @@ public class PlatformMoving : MonoBehaviour
             overLappedPicture[i] = curPicStatusCode.otherPics[i];
         }
 
-
-        foreach (GameObject overlapPic in overLappedPicture)
+        for(int i=0; i < PIC_CAPACITY; i++)
         {
-            if (overlapPic == null)
+            if (overLappedPicture[i] == null)
             {
                 isOverlap = false;
-                continue;
             }
             else // 겹친 사진이 있는 경우
             {
                 isOverlap = true;
                 break;
             }
+
         }
 
         if (isOverlap)
@@ -86,7 +86,7 @@ public class PlatformMoving : MonoBehaviour
         ErrorPlate_Return();
     }
 
-
+    int isInsideCount = 0;
     void MovingFunction_Overlap(int distinguisher)
     {
         bool[] isInsideArea = new bool[PIC_CAPACITY]; // 겹친 사진의 영역에 포함되는지 판별하는 bool
@@ -118,17 +118,23 @@ public class PlatformMoving : MonoBehaviour
                                     && ((transform.position.y - transform.localScale.y / 2 / 2) >= overLappedPicture[i].transform.position.y - overLappedPicture[i].transform.localScale.y / 2)
                                     ? true : false; // 가로 이동의 경우 겹친 사진의 세로 영역에 포함되는지 판단.
                         if (isInsideArea[i])
+                        {
                             isInsideAtleast = true;
+                        }
                         break;
                     case 1: // 세로 이동 case
                         isInsideArea[i] = ((transform.position.x + transform.localScale.x * 2 / 2) <= overLappedPicture[i].transform.position.x + overLappedPicture[i].transform.localScale.x * 1.81f / 2)
                                     && ((transform.position.x - transform.localScale.x * 2 / 2) >= overLappedPicture[i].transform.position.x - overLappedPicture[i].transform.localScale.x * 1.81f / 2)
                                     ? true : false; // 세로 이동의 경우 겹친 사진의 가로 영역에 포함되는지 판단. 
                         if (isInsideArea[i])
+                        {
                             isInsideAtleast = true;
+                        }
                         break;
                 }
             }
+
+
             // 2. isInsideArea 조건을 만족하는 사진에 대해 좌표값 도출 
             if (overLappedPicture[i] != null && isInsideArea[i]) // 사진이 겹치는 경우와 발판이 겹친 사진의 영역 안에 들어가는 조건 다 만족해야 함.
             {
@@ -175,6 +181,7 @@ public class PlatformMoving : MonoBehaviour
                     direction = 1;
                 }
                 thisRigid.velocity = new Vector2(curPicvel.x + direction * platformSpeed, curPicvel.y);
+
                 break; // 각각에 접근할 것이 아니라, 조건을 만족하는 겹친 사진 '전체'의 평균을 구해야 한다. 
 
             case 1:
@@ -225,7 +232,6 @@ public class PlatformMoving : MonoBehaviour
         Transform curPicTrans = currentPicture.transform;
 
         Vector2 curPicvel = currentPicture.GetComponent<Rigidbody2D>().velocity;
-
         switch (distinguisher)
         {
             case 0:
@@ -330,7 +336,6 @@ public class PlatformMoving : MonoBehaviour
                         if (/*!checkAtLeastOneCrossing() ||
                             */(count == 1 && overLappedPictureWithPlatform.Contains(currentPicture)))
                         {
-                            //print("Alone!!!");
                             currentPicture.GetComponent<PictureMovement>().alertOutline.SetActive(false);
                         }
                     }

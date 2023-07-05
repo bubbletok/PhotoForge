@@ -20,6 +20,8 @@ public class GameSetting : MonoBehaviour
     float[] platformOriginDist;
     GameObject[] platformOriginPic;
 
+    List<GameObject>[] picOriginPlatformList;
+
     int numOfPictureFrag;
     bool isSafe;
     // Start is called before the first frame update
@@ -32,9 +34,12 @@ public class GameSetting : MonoBehaviour
         platformOriginDist = new float[platforms.Length];
         platformOriginPic = new GameObject[platforms.Length];
 
+        picOriginPlatformList = new List<GameObject>[pictures.Length];
+
         for (int i=0; i<pictures.Length; i++)
         {
             picturesOriginPos[i] = pictures[i].transform.position;
+            picOriginPlatformList[i] = new List<GameObject>(pictures[i].GetComponent<PictureStatus>().platformList);
         }
         for (int i = 0; i < platforms.Length; i++)
         {
@@ -53,19 +58,60 @@ public class GameSetting : MonoBehaviour
     void Update()
     {
         PlayerStatus playerStatus = player.GetComponent<PlayerStatus>();
+
+        for(int i=0; i<pictures.Length; ++i)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                foreach (GameObject p in picOriginPlatformList[i])
+                { // picture 3에 horizon 저장된 채로 바뀜 
+                    print(i + " " + pictures[i] + " " + p );
+                }
+            }
+        }
+
+
         if (playerStatus.getFragCount() == numOfPictureFrag)
         {
             foreach (GameObject finalObject in finalObjects)
                 finalObject.SetActive(true);
+            
+            for(int i=0; i<pictures.Length; ++i)
+            {
+                PictureStatus pictureCode = pictures[i].GetComponent<PictureStatus>();
+
+                pictureCode.otherPics = new GameObject[5];
+                pictureCode.platformList = picOriginPlatformList[i];
+
+                foreach(GameObject p in picOriginPlatformList[i])
+                { // picture 3에 horizon 저장된 채로 바뀜 
+                    print(i + " " + pictures[i] + " " + p.name);
+                }
+
+                if (pictures[i].name == "EscapePicture")
+                    continue;
+                pictures[i].GetComponent<PictureMovement>().alertOutline.SetActive(false);
+
+            }
+
             for (int i=0; i<pictures.Length; i++)
             {
                 pictures[i].transform.position = picturesOriginPos[i];
             }
             for (int i = 0; i < platforms.Length; i++)
             {
+
                 platforms[i].transform.position = platformsOriginPos[i];
-                platforms[i].GetComponent<PlatformMoving>().distWithPic = platformOriginDist[i];
-                platforms[i].GetComponent<PlatformMoving>().currentPicture = platformOriginPic[i];
+
+                PlatformMoving platformCode = platforms[i].GetComponent<PlatformMoving>();
+                platformCode.distWithPic = platformOriginDist[i];
+                platformCode.currentPicture = platformOriginPic[i];
+                platformCode.curPicStatusCode = platformOriginPic[i].GetComponent<PictureStatus>();
+                
+            /*    platformCode.isCrossing = new bool[5];
+                platformCode.isOverlap = false;
+                platformCode.overLappedPictureWithPlatform = new GameObject[5];*/
+               
             }
             player.transform.position = playerOriginPos;
             numOfPictureFrag = -1;

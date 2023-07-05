@@ -74,7 +74,6 @@ public class PictureStatus : MonoBehaviour
         return returnBoolArray;
     }
 
-   
 
     private void AddListNoRepeat(List<GameObject> platformList, GameObject platformToPut) // 중복 없이 리스트 추가시키는 함수.
     {
@@ -142,27 +141,14 @@ public class PictureStatus : MonoBehaviour
                         switch(platformCode.directionChoose)
                         {
                             case 0:
-                            /*  bool isUp = mPlatform.transform.position.y >= otherPics[i].transform.position.y ? true : false;
-                                if (isUp)
-                                    platformCode.distWithPic = mPlatform.transform.position.y - otherPics[i].transform.position.y;
-                                else
-                                    platformCode.distWithPic = otherPics[i].transform.position.y - mPlatform.transform.position.y;
-                                platformCode.distWithPic = Mathf.Abs(platformCode.distWithPic);*/
                                 platformCode.distWithPic = mPlatform.transform.position.y - otherPics[i].transform.position.y;
                                 break;
 
                             case 1:
-                        /*      bool isRight = mPlatform.transform.position.x >= otherPics[i].transform.position.x ? true : false;
-                                if (isRight)
-                                    platformCode.distWithPic = mPlatform.transform.position.x - otherPics[i].transform.position.x;
-                                else
-                                    platformCode.distWithPic = otherPics[i].transform.position.x - mPlatform.transform.position.x;
-                                platformCode.distWithPic = Mathf.Abs(platformCode.distWithPic);*/
                                 platformCode.distWithPic = mPlatform.transform.position.x - otherPics[i].transform.position.x;
                                 break;
 
                         }
-
                         platformCode.currentPicture = otherPics[i];
                         platformCode.curPicStatusCode = otherPicCode;
                         platformCode.curPicRigid = otherPics[i].GetComponent<Rigidbody2D>();
