@@ -20,6 +20,12 @@
 
 <br>
 
+# [Download]
+
+<a>https://github.com/bubbletok/PhotoForge/releases/tag/v0.7
+
+<br>
+
 # [게임소개]
 
 여러 장의 사진을 활용하여 기믹을 수행하고 탈출하는 퍼즐 어드벤쳐 게임.
