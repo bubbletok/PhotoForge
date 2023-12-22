@@ -22,7 +22,7 @@
 
 # [Download]
 
-<a>https://github.com/bubbletok/PhotoForge/releases/tag/v0.7
+[Download](https://github.com/bubbletok/PhotoForge/releases/tag/v0.7)
 
 <br>
 
