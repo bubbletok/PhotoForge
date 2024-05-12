@@ -5,7 +5,6 @@ using UnityEngine;
 public class EscapeDoorSetting : MonoBehaviour
 {
     [SerializeField] bool smallDoor;
-    // Start is called before the first frame update
     
     public bool getSmallDoor()
     {

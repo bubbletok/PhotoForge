@@ -19,8 +19,6 @@ public class InteractObject : MonoBehaviour
     {
         if (other.transform.tag == "Frag")
         {
-            //»çÁø Á¶°¢ ¾òÀ¸¸é
-            //»çÁø Á¶°¢ °¹¼ö + 1
             int fragCount = player.getFragCount();
             player.setFragCount(fragCount + 1);
 
@@ -34,7 +32,6 @@ public class InteractObject : MonoBehaviour
         }
         if (other.transform.tag == "EscapeDoor")
         {
-            //ÀÛÀº ¹®ÀÌ¶ó¸é, ÇÃ·¹ÀÌ¾î°¡ Ãà¼ÒµÇ¾ú´ÂÁö È®ÀÎ
             if (other.GetComponent<EscapeDoorSetting>() != null && other.GetComponent<EscapeDoorSetting>().getSmallDoor() && !player.getSmallPlayer())
                 return;
 
@@ -42,16 +39,13 @@ public class InteractObject : MonoBehaviour
         }
         if(other.transform.tag == "Spike")
         {
-            //»ç¸Á
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         if(other.transform.tag == "Shrink")
         {
             GetComponent<AudioSource>().clip = potionDrink;
             GetComponent<AudioSource>().Play();
-            //Å©±â Ãà¼Ò
             gameObject.transform.localScale = new Vector3(0.35f, 0.35f, 1f);
-            //¸ÔÀ» ¶§ Àá±ñ À§·Î ¶ß°ÔÇØ¼­ Á¡ÇÁ ¾ÈµÇ´Â°Å ¹æÁö
             gameObject.GetComponent<Rigidbody2D>().velocity += Vector2.up;
             player.setSizeSmall(true);
             other.gameObject.SetActive(false);
@@ -59,27 +53,9 @@ public class InteractObject : MonoBehaviour
         }
     }
 
-/*    private void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.transform.tag == "MovingPlatform")
-        {
-            print("AAAAAAAAAAAA");
-            Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            //rb.velocity = new Vector2(rb.velocity.x, 0);
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.transform.tag == "MovingPlatform")
-        {
-            GetComponent<PlayerMovement>().jumpForce = 2f;
-        }
-    }*/
-
     IEnumerator waitToExpand()
     {
-        //10ÃÊ ÈÄ ´Ù½Ã ¿ø·¡ Å©±â·Î
+        //10ï¿½ï¿½ ï¿½ï¿½ ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ï¿½
         yield return new WaitForSeconds(10f);
         GetComponent<AudioSource>().clip = potionRegen;
         GetComponent<AudioSource>().Play();

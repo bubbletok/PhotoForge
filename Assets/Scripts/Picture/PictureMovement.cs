@@ -42,8 +42,6 @@ public class PictureMovement : MonoBehaviour
         if (cantMove)
         {
             rb.velocity = Vector2.zero;
-            //alertOutline.SetActive(true);
-            //StartCoroutine(flashWithCollisiion());
         }
         else
         {
@@ -64,9 +62,6 @@ public class PictureMovement : MonoBehaviour
         float maxX = limitArea.transform.position.x + limitArea.transform.localScale.x / 2;
         float minY = limitArea.transform.position.y - limitArea.transform.localScale.y / 2;
         float maxY = limitArea.transform.position.y + limitArea.transform.localScale.y / 2;
-        print("Crash!!!!!!!!!!!!!!!!");
-        //transform.position += (transform.position - limitArea.transform.position) * 0.2f;
-        //transform.position += (Vector3)rb.velocity * -1 * 5f;
     }
 
     bool isOverlap(float min, float pos, float max)
@@ -130,7 +125,6 @@ public class PictureMovement : MonoBehaviour
     private void OnMouseDown()
     {
         cantMove = false;
-        //prevMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         prevPicPos = transform.position;
         diffPicPos = transform.position - prevPicPos;
         if (player != null)
@@ -186,11 +180,6 @@ public class PictureMovement : MonoBehaviour
     private void OnMouseDrag()
     {
         if (cantMove) return;
-
-        //��ġ ��ȯ
-        //moveWithPosition();
-
-        //�ӵ� ��ȯ
         moveWithVelocity();
         getAwayFromLimitArea();
     }
@@ -200,12 +189,6 @@ public class PictureMovement : MonoBehaviour
         if (cantMove) return;
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         prevPicPos = transform.position;
-        //�����Ÿ� �̻� �����̸� ��ǥ ����
-        /*        if ((mousePos - prevMousePos).magnitude > 2f)
-                {
-                    prevMousePos = transform.position;
-                    return;
-                }*/
 
         size = new Vector2(coll.bounds.size.x, coll.bounds.size.y);
         dir = (mousePos - prevPicPos).normalized;
